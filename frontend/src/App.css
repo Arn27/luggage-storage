@@ -1,42 +1,182 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f4;
+  color: #1c1c1e;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0e9488;
+  margin-bottom: 0;
+}
+
+.navbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.language-select {
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px solid #d6d3d1;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  background-color: #ffffff;
+  color: #1c1c1e;
+}
+
+.landing-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.landing-title {
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #1c1c1e;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.landing-subtitle {
+  font-size: clamp(1rem, 3vw, 1.25rem);
+  color: #4b5563;
+  margin-bottom: 2rem;
+}
+
+.search-panel {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid #e7e5e4;
+  transition: box-shadow 0.3s ease;
+}
+
+.search-panel:hover {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid #d6d3d1;
+  background-color: #fdfdfd;
+  color: #1c1c1e;
+  border-radius: 0.5rem;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #0e9488;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #0c7b72;
+}
+
+.btn-search {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .search-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    max-width: 1000px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .input {
+    flex: 1 1 auto;
+    max-width: unset;
+  }
+
+  .input:nth-child(1) {
+    flex: 2 1 40%;
+    max-width: 300px;
+  }
+
+  .input:nth-child(2) {
+    flex: 1 1 20%;
+    max-width: 160px;
+  }
+
+  .input:nth-child(3) {
+    flex: 1 1 10%;
+    max-width: 80px;
+  }
+
+  .btn-search {
+    flex: 1 1 20%;
+    max-width: 200px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar-actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .btn,
+  .language-select {
+    width: 100%;
   }
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  color: #6b7280;
+  font-size: 0.875rem;
 }

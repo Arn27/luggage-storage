@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import Navbar from "./components/Navbar";
+import LandingPage from "./pages/LandingPage";
+import Footer from "./components/Footer";
+import "./App.css";
 
 function App() {
-  const [message, setMessage] = useState("Kraunama...");
-
-  useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/test")
-      .then((res) => res.json())
-      .then((data) => setMessage(data.message))
-      .catch(() => setMessage("Klaida pasiekiant API!"));
-  }, []);
+  const [language, setLanguage] = useState("en");
 
   return (
-    <div>
-      <h1>{message}</h1>
+    <div className="app-container">
+      <Navbar language={language} setLanguage={setLanguage} />
+      <LandingPage language={language} />
+      <Footer language={language} />
     </div>
   );
 }
