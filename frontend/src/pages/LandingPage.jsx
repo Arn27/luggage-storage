@@ -1,37 +1,20 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-function LandingPage({ language }) {
+function LandingPage() {
+  const { t } = useTranslation();
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const [bags, setBags] = useState(1);
 
-  const t = {
-    en: {
-      title: "Welcome to BagStorage!",
-      subtitle: "Find a nearby place for temporary luggage storage.",
-      city: "City",
-      date: "Date",
-      bags: "Number of Bags",
-      search: "Search",
-    },
-    lt: {
-      title: "Sveiki atvykę į BagStorage!",
-      subtitle: "Raskite artimiausią vietą laikinam bagažo saugojimui.",
-      city: "Miestas",
-      date: "Data",
-      bags: "Bagažo kiekis",
-      search: "Ieškoti",
-    },
-  };
-
   return (
     <section className="landing-wrapper">
-      <h1 className="landing-title">{t[language].title}</h1>
-      <p className="landing-subtitle">{t[language].subtitle}</p>
+      <h1 className="landing-title">{t("welcome")}</h1>
+      <p className="landing-subtitle">{t("subtitle")}</p>
       <div className="search-panel">
         <input
           type="text"
-          placeholder={t[language].city}
+          placeholder={t("city")}
           value={city}
           onChange={(e) => setCity(e.target.value)}
           className="input"
@@ -49,7 +32,7 @@ function LandingPage({ language }) {
           onChange={(e) => setBags(e.target.value)}
           className="input"
         />
-        <button className="btn btn-search">{t[language].search}</button>
+        <button className="btn btn-search">{t("search")}</button>
       </div>
     </section>
   );
