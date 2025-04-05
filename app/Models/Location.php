@@ -27,4 +27,9 @@ class Location extends Model
     {
         return $this->belongsTo(Business::class);
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(\App\Models\Review::class);
+    }
 }

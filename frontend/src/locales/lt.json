@@ -14,6 +14,18 @@
     "open_hours": "Darbo laikas",
     "description": "Aprašymas",
     "book_now": "Rezervuoti lokaciją",
-    "confirm_booking": "Patvirtinti rezervaciją"
+    "confirm_booking": "Patvirtinti rezervaciją",
+    "reviews": "Atsiliepimai",
+    "no_reviews": "Atsiliepimų kol kas nėra",
+    "anonymous": "Anonimas",
+    "login": "Prisijungti",
+    "name": "Vardas",
+    "email": "El. paštas",
+    "password": "Slaptažodis",
+    "signup": "Registruotis",
+    "business_name": "Įmonės pavadinimas",
+    "phone": "Telefono numeris",
+    "business_approval_note": "Pastaba: Partnerių paskyros turi būti patvirtintos administracijos.",
+    "logout": "Atsijungti"
   }
   

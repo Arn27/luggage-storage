@@ -67,6 +67,33 @@ const LocationDetail = () => {
         <button className="book-button">{t("confirm_booking")}</button>
       </div>
     </div>
+    <div className="reviews-section">
+  <h2>{t("reviews")}</h2>
+
+  {location.reviews?.length === 0 ? (
+    <p>{t("no_reviews")}</p>
+  ) : (
+    location.reviews?.map((review) => (
+      <div key={review.id} className="review-card">
+        <div className="review-header">
+          <strong>{review.user?.name || t("anonymous")}</strong>
+          <span className="review-date">
+            {new Date(review.created_at).toLocaleDateString()}
+          </span>
+        </div>
+
+        <div className="review-rating">
+          {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
+        </div>
+
+        {review.comment && (
+          <p className="review-comment">{review.comment}</p>
+        )}
+      </div>
+    ))
+  )}
+</div>
+
   </div>
   
   );

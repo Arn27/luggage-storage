@@ -6,6 +6,9 @@ import Footer from "./components/Footer";
 import LandingPage from "./pages/LandingPage";
 import SearchResults from "./pages/SearchResults";
 import LocationDetail from "./pages/LocationDetail";
+import TravellerRegister from "./pages/TravellerRegister";
+import BusinessRegister from "./pages/BusinessRegister";
+import Login from "./pages/Login";
 import "./App.css";
 
 function App() {
@@ -21,6 +24,10 @@ function App() {
                 <Route path="/" element={<LandingPage language={language} />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/location/:id" element={<LocationDetail />} />
+                <Route path="/register" element={<TravellerRegister />} />
+                <Route path="/register/business" element={<BusinessRegister />} />
+                <Route path="/login" element={<Login />} />
+
               </Routes>
             </div>
           <Footer language={language} />

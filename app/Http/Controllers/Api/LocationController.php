@@ -25,7 +25,7 @@ class LocationController extends Controller
 
     public function show($id)
     {
-        $location = \App\Models\Location::findOrFail($id);
+        $location = \App\Models\Location::with(['reviews.user'])->findOrFail($id);
         return response()->json($location);
     }
 

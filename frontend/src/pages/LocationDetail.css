@@ -127,14 +127,14 @@
   }
   
   .form-row input:focus {
-    border-color: #2563eb;
+    border-color: #0e9488;;
     outline: none;
   }
   
   /* Book Button */
   .book-button {
     margin-top: 20px;
-    background-color: #2563eb;
+    background-color: #0e9488;;
     color: white;
     font-weight: 600;
     padding: 12px 16px;
@@ -147,6 +147,59 @@
   }
   
   .book-button:hover {
-    background-color: #1e40af;
+    background-color: #0e9488;;
   }
+
+    /* === Reviews Section === */
+    .reviews-section {
+        margin-top: 60px;
+        padding: 20px;
+        background-color: #fff;
+      }
+      
+      .reviews-section h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+        color: #0e9488;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 10px;
+      }
+      
+      /* --- Updated Review Card --- */
+      .review-card {
+        background-color: #fafafa;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      }
+      
+      .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #1c1c1e;
+        margin-bottom: 10px;
+        font-weight: 500;
+      }
+      
+      .review-date {
+        font-size: 13px;
+        color: #6b7280;
+        font-style: italic;
+      }
+      
+      .review-rating {
+        color: #fbbf24;
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+      
+      .review-comment {
+        font-size: 15px;
+        color: #374151;
+        line-height: 1.6;
+      }
+      
   

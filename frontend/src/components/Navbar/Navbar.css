@@ -77,6 +77,26 @@
   transform: scale(1.1);
 }
 
+.user-btn {
+  background-color: #0e9488;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.user-btn:hover {
+  background-color: #0c7b72;
+}
+
+.navbar-logo:hover {
+  color: #0a6961;
+  text-decoration: none;
+}
+
+
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;

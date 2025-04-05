@@ -14,6 +14,18 @@
     "open_hours": "Open hours",
     "description": "Description",
     "book_now": "Book this location",
-    "confirm_booking": "Confirm Booking"
+    "confirm_booking": "Confirm Booking",
+    "reviews": "Reviews",
+    "no_reviews": "No reviews yet",
+    "anonymous": "Anonymous",
+    "login": "Login",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "signup": "Sign Up",
+    "business_name": "Business Name",
+    "phone": "Phone Number",
+    "business_approval_note": "Note: All partner registrations require admin approval before use.",
+    "logout": "Logout"
   }
   

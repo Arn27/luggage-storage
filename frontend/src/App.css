@@ -5,6 +5,18 @@ body {
   color: #1c1c1e;
 }
 
+a.btn,
+.user-btn {
+  text-decoration: none;
+}
+
+a.btn:hover,
+button.btn:hover,
+.user-btn:hover {
+  color: white;
+  text-decoration: none;
+}
+
 .app-container {
   display: flex;
   flex-direction: column;

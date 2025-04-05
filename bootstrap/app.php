@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
         //
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
+    ->withMiddleware(function (Middleware $middleware) {
+        // Middleware for API
+        $middleware->append(\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class);
+    
+        $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
