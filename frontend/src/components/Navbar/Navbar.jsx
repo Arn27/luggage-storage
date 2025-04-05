@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
@@ -15,7 +16,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-top">
-        <div className="navbar-logo">BagStorage</div>
+      <Link to="/" className="navbar-logo">BagStorage</Link>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? "✖" : "☰"}
         </button>

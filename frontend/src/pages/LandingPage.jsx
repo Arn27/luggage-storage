@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+
 
 function LandingPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [city, setCity] = useState("");
   const [date, setDate] = useState("");
   const [bags, setBags] = useState(1);
@@ -32,7 +35,16 @@ function LandingPage() {
           onChange={(e) => setBags(e.target.value)}
           className="input"
         />
-        <button className="btn btn-search">{t("search")}</button>
+          <button
+            className="btn btn-search"
+            onClick={() => {
+              if (city && date && bags) {
+                navigate(`/search?city=${city}&date=${date}&bags=${bags}`);
+              }
+            }}
+          >
+            {t("search")}
+          </button>
       </div>
     </section>
   );

@@ -82,6 +82,24 @@ body {
   width: 100%;
 }
 
+/* Make sure the app fills the full screen height */
+html, body, #root {
+  height: 100%;
+}
+
+/* This is your app layout */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Page content pushes footer down */
+.main-content {
+  flex: 1;
+}
+
+
 @media (min-width: 768px) {
   .search-panel {
     flex-direction: row;

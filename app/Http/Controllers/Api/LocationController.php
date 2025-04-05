@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Location;
 
 class LocationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = \App\Models\Location::query();
+        $query = Location::query();
 
         if ($request->has('city')) {
             $query->where('city', $request->city);
@@ -19,6 +20,13 @@ class LocationController extends Controller
             $query->where('max_bags', '>=', $request->bags);
         }
 
-        return $query->get();
+        return response()->json($query->get());
     }
+
+    public function show($id)
+    {
+        $location = \App\Models\Location::findOrFail($id);
+        return response()->json($location);
+    }
+
 }

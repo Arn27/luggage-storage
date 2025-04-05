@@ -9,3 +9,5 @@ Route::get('/test', function () {
 });
 
 Route::get('/locations', [LocationController::class, 'index']);
+
+Route::get('/locations/{id}', [LocationController::class, 'show']);

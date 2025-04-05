@@ -7,6 +7,13 @@
     "search": "Ieškoti",
     "partner_signup": "Registruotis kaip partneriui",
     "traveller_signup": "Registruotis kaip keliautojui",
-    "footer": "© 2025 BagStorage. Visos teisės saugomos."
+    "footer": "© 2025 BagStorage. Visos teisės saugomos.",
+    "back": "Atgal",
+    "loading": "Kraunasi...",
+    "max_bags": "Maksimalus kiekis",
+    "open_hours": "Darbo laikas",
+    "description": "Aprašymas",
+    "book_now": "Rezervuoti lokaciją",
+    "confirm_booking": "Patvirtinti rezervaciją"
   }
   

@@ -7,6 +7,13 @@
     "search": "Search",
     "partner_signup": "Partner Sign Up",
     "traveller_signup": "Traveller Sign Up",
-    "footer": "© 2025 BagStorage. All rights reserved."
+    "footer": "© 2025 BagStorage. All rights reserved.",
+    "back": "Back",
+    "loading": "Loading...",
+    "max_bags": "Max bags",
+    "open_hours": "Open hours",
+    "description": "Description",
+    "book_now": "Book this location",
+    "confirm_booking": "Confirm Booking"
   }
   
