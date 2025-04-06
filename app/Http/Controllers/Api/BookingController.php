@@ -62,4 +62,21 @@ class BookingController extends Controller
         return response()->json($booking, 201);
     }
 
+    public function userBookings(Request $request)
+    {
+        $user = $request->user();
+
+        $bookings = $user->bookings()->with('location')->orderBy('date', 'desc')->get();
+
+        return response()->json($bookings);
+    }
+
+    public function destroy($id)
+    {
+        $booking = Booking::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $booking->delete();
+
+        return response()->json(['message' => 'Booking cancelled']);
+    }
+
 }

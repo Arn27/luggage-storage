@@ -123,6 +123,7 @@
     border: 1px solid #d1d5db;
     border-radius: 10px;
     background-color: #f9fafb;
+    color: #1c1c1e;
     transition: border-color 0.2s ease;
   }
   
@@ -201,5 +202,67 @@
         color: #374151;
         line-height: 1.6;
       }
-      
-  
+
+/* === Review Form === */
+.review-form {
+  margin-top: 30px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-form h3 {
+  font-size: 20px;
+  color: #111827;
+}
+
+.review-form label {
+  font-size: 14px;
+  color: #374151;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.review-form input[type="number"] {
+  width: 60px;
+  padding: 8px;
+  font-size: 14px;
+  color: #1c1c1e;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.review-form textarea {
+  width: 100%;
+  max-width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  color: #1c1c1e;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.review-form button {
+  background-color: #0e9488;
+  color: white;
+  font-weight: 600;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.review-form button:hover {
+  background-color: #0b7d74;
+}

@@ -65,6 +65,18 @@
     "login_to_book": "Please log in to book this location.",
     "booking_success": "Booking successful!",
     "booking_error": "Booking failed. Try again.",
-    "register": "Register"
+    "register": "Register",
+    "you_already_booked": "You already booked this place.",
+    "go_to_dashboard": "Go to dashboard",
+    "your_booking": "Your Booking",
+    "contact": "Contact",
+    "status": "Status",
+    "cancel_booking": "Cancel Booking",
+    "review_submitted": "Review submitted successfully!",
+    "review_failed": "Failed to submit review.",
+    "leave_review": "Leave a Review",
+    "submit_review": "Submit Review",
+    "rating": "Rating",
+    "write_review": "Write your comment..."
   }
   

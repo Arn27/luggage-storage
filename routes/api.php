@@ -7,10 +7,8 @@ use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\BusinessDashboardController;
-
-Route::get('/test', function () {
-    return response()->json(['message' => 'API veikia!']);
-});
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\ReviewController;
 
 Route::get('/locations', [LocationController::class, 'index']);
 
@@ -36,6 +34,11 @@ Route::prefix('business')->middleware(['auth:sanctum', 'approved.business'])->gr
 });
 
 Route::middleware('auth:sanctum')->post('/bookings', [BookingController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/user/bookings', [BookingController::class, 'userBookings']);
+Route::middleware('auth:sanctum')->delete('/bookings/{id}', [BookingController::class, 'destroy']);
+Route::middleware('auth:sanctum')->post('/reviews', [ReviewController::class, 'store']);
+
+
 
 Route::middleware(['auth:sanctum', 'approved.business'])->post('/locations', [LocationController::class, 'store']);
 

@@ -65,6 +65,21 @@
     "login_to_book": "Norėdami rezervuoti, prisijunkite.",
     "booking_success": "Rezervacija sėkminga!",
     "booking_error": "Nepavyko rezervuoti. Bandykite dar kartą.",
-    "register": "Registruotis"
+    "register": "Registruotis",
+    "you_already_booked": "Jūs jau rezervavote šią vietą.",
+    "go_to_dashboard": "Į paskyrą",
+    "your_booking": "Tavo rezervacija",
+    "contact": "Kontaktai",
+    "status": "Statusas",
+    "cancel_booking": "Atšaukti rezervaciją",
+    "pending": "Laukiama patvirtinimo",
+    "confirmed": "Patvirtinta",
+    "cancelled": "Atšaukta",
+    "review_submitted": "Atsiliepimas sėkmingai pateiktas!",
+    "review_failed": "Nepavyko pateikti atsiliepimo.",
+    "leave_review": "Palikite atsiliepimą",
+    "submit_review": "Pateikti atsiliepimą",
+    "rating": "Įvertinimas",
+    "write_review": "Parašykite komentarą..."
   }
   
