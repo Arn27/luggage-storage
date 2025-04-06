@@ -1,0 +1,61 @@
+.admin-panel {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  .admin-panel h1 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #0e9488;
+    text-align: center;
+  }
+  
+  /* Business list container */
+  .business-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  /* Business card */
+  .business-card {
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .business-card h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #111827;
+  }
+  
+  .business-card p {
+    margin: 4px 0;
+    color: #374151;
+    font-size: 15px;
+  }
+  
+  /* Approve button */
+  .business-card .btn {
+    align-self: flex-start;
+    background-color: #0e9488;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .business-card .btn:hover {
+    background-color: #0c7b72;
+  }
+  

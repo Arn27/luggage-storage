@@ -163,3 +163,13 @@ html, body, #root {
   color: #6b7280;
   font-size: 0.875rem;
 }
+
+.search-heading {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #0e9488;
+  text-align: center;
+}
+

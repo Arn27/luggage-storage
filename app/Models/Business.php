@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Business extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $fillable = [
         'business_name',
@@ -26,7 +26,6 @@ class Business extends Authenticatable
         'is_approved' => 'boolean',
     ];
 
-    // If businesses have locations:
     public function locations()
     {
         return $this->hasMany(Location::class);

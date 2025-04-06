@@ -10,6 +10,12 @@ import TravellerRegister from "./pages/TravellerRegister";
 import BusinessRegister from "./pages/BusinessRegister";
 import UserDashboard from "./pages/UserDashboard";
 import Login from "./pages/Login";
+import AdminRoute from "./components/AdminRoute";
+import AdminPanel from "./pages/AdminPanel";
+import BusinessDashboard from "./pages/BusinessDashboard";
+import BusinessLocations from "./pages/BusinessLocations";
+import BusinessLocationManage from "./pages/BusinessLocationManage";
+import NewLocationForm from "./pages/NewLocationForm";
 import "./App.css";
 
 function App() {
@@ -17,7 +23,10 @@ function App() {
 
   return (
     <Router>
-       <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+       <LoadScript
+          googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
+          libraries={["places"]}
+        >
         <div className="app-container">
           <Navbar language={language} setLanguage={setLanguage} />
             <div className="main-content">
@@ -29,6 +38,22 @@ function App() {
                 <Route path="/register/business" element={<BusinessRegister />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/user" element={<UserDashboard />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <AdminRoute>
+                      <AdminPanel />
+                    </AdminRoute>
+                  }
+                />
+                <Route path="/business" element={<BusinessDashboard />} />
+                <Route path="/business/locations" element={<BusinessLocations />} />
+                <Route path="/business/locations/new" element={<NewLocationForm />} />
+                <Route path="/business/locations/:id" element={<BusinessLocationManage />} />
+                <Route path="/business/bookings/upcoming" element={<BusinessDashboard />} />
+                <Route path="/business/bookings/past" element={<BusinessDashboard />} />
+                <Route path="/business/bookings/pending" element={<BusinessDashboard />} />
+
               </Routes>
             </div>
           <Footer language={language} />

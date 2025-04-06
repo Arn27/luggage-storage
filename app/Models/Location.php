@@ -16,6 +16,7 @@ class Location extends Model
         'description',
         'max_bags',
         'open_hours',
+        'hourly_rate',
     ];
 
     // Optional: if you want to auto-cast open_hours JSON to array

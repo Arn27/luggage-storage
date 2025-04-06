@@ -33,12 +33,11 @@ const UserDashboard = () => {
       <section className="dashboard-section">
         <h2>{t("actions")}</h2>
         <button className="btn">{t("change_password")}</button>
-        {/* Add edit profile button later */}
       </section>
 
       <section className="dashboard-section">
         <h2>{t("upcoming_bookings")}</h2>
-        <p>{t("no_upcoming_bookings")}</p> {/* Later we’ll replace with real data */}
+        <p>{t("no_upcoming_bookings")}</p>
       </section>
 
       <section className="dashboard-section">

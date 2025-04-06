@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\BusinessController;
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\BusinessDashboardController;
 
 Route::get('/test', function () {
     return response()->json(['message' => 'API veikia!']);
@@ -20,6 +22,24 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/register/business', [BusinessController::class, 'register']);
 
-Route::middleware(['auth:sanctum', 'approved.business'])->get('/business/dashboard', function () {
-    return response()->json(['message' => 'Welcome, approved business!']);
+Route::prefix('business')->middleware(['auth:sanctum', 'approved.business'])->group(function () {
+    Route::get('/dashboard', [BusinessDashboardController::class, 'index']);
+    Route::get('/locations', [LocationController::class, 'businessLocations']);
+    
+    // ✅ Use unique prefix to avoid conflict
+    Route::put('/locations/{id}', [LocationController::class, 'update']);
+    Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
+
+    Route::get('/bookings/upcoming', [BookingController::class, 'upcoming']);
+    Route::get('/bookings/past', [BookingController::class, 'past']);
+    Route::get('/bookings/pending', [BookingController::class, 'pending']);
+});
+
+Route::middleware('auth:sanctum')->post('/bookings', [BookingController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'approved.business'])->post('/locations', [LocationController::class, 'store']);
+
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    Route::get('/pending-businesses', [AdminController::class, 'pendingBusinesses']);
+    Route::post('/approve-business/{id}', [AdminController::class, 'approveBusiness']);
 });

@@ -59,3 +59,25 @@
     color: #6b7280;
     text-align: center;
   }
+
+
+  @media (min-width: 768px) {
+    .auth-container {
+      max-width: 700px;
+    }
+  
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+  
+    .form-grid label {
+      margin-bottom: 0;
+    }
+  
+    .form-grid .grid-full {
+      grid-column: span 2;
+    }
+  }
+  

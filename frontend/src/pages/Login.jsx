@@ -31,9 +31,11 @@ const Login = () => {
         return;
       }
 
+      // Save token, user data, and user type
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      window.dispatchEvent(new Event("userChanged")); // 👈 notify navbar
+      localStorage.setItem("user_type", data.type);
+      window.dispatchEvent(new Event("userChanged"));
       
       navigate("/");
     } catch (err) {

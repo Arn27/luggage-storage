@@ -11,7 +11,7 @@ class EnsureBusinessIsApproved
     {
         $user = auth()->user();
 
-        if (!$user || !$user->business || !$user->business->is_approved) {
+        if (!$user || !$user->is_approved) {
             return response()->json(['message' => 'Your business account is not approved.'], 403);
         }
 

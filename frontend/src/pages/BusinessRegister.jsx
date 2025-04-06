@@ -17,35 +17,79 @@ const BusinessRegister = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: send to backend
-    console.log("Registering business:", form);
-    navigate("/login"); // fake redirect
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/register/business", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || "Registration failed");
+        return;
+      }
+
+      alert("Registration submitted! Please wait for admin approval.");
+      navigate("/");
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("Something went wrong.");
+    }
   };
 
   return (
     <div className="auth-container">
       <h1>{t("partner_signup")}</h1>
-      <p className="auth-note">{t("business_approval_note")}</p>
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           {t("business_name")}
-          <input type="text" name="business_name" value={form.business_name} onChange={handleChange} required />
+          <input
+            type="text"
+            name="business_name"
+            value={form.business_name}
+            onChange={handleChange}
+            required
+          />
         </label>
         <label>
           {t("email")}
-          <input type="email" name="email" value={form.email} onChange={handleChange} required />
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
         </label>
         <label>
           {t("phone")}
-          <input type="tel" name="phone" value={form.phone} onChange={handleChange} required />
+          <input
+            type="text"
+            name="phone"
+            value={form.phone}
+            onChange={handleChange}
+          />
         </label>
         <label>
           {t("password")}
-          <input type="password" name="password" value={form.password} onChange={handleChange} required />
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
         </label>
-        <button type="submit" className="auth-btn">{t("signup")}</button>
+        <button type="submit" className="auth-btn">
+          {t("signup")}
+        </button>
       </form>
     </div>
   );
