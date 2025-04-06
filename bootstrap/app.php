@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->alias([
+            'approved.business' => \App\Http\Middleware\EnsureBusinessIsApproved::class,
+        ]);
+    
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
     ->withMiddleware(function (Middleware $middleware) {
@@ -21,6 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
     
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
+    
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

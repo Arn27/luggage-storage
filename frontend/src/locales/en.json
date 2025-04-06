@@ -26,6 +26,15 @@
     "business_name": "Business Name",
     "phone": "Phone Number",
     "business_approval_note": "Note: All partner registrations require admin approval before use.",
-    "logout": "Logout"
+    "logout": "Logout",
+    "dashboard": "My Account",
+    "account_info": "Account Info",
+    "registered": "Registered on",
+    "actions": "Actions",
+    "change_password": "Change Password",
+    "upcoming_bookings": "Upcoming Bookings",
+    "past_bookings": "Past Bookings",
+    "no_upcoming_bookings": "You have no upcoming bookings.",
+    "no_past_bookings": "No past bookings yet."
   }
   

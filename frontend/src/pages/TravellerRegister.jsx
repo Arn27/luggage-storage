@@ -12,12 +12,33 @@ const TravellerRegister = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: send to backend
-    console.log("Registering user:", form);
-    navigate("/login"); // fake redirect
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        alert(data.message || "Registration failed");
+        return;
+      }
+  
+      alert("Registration successful!");
+      navigate("/login");
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert("Something went wrong");
+    }
   };
+  
 
   return (
     <div className="auth-container">

@@ -26,6 +26,16 @@
     "business_name": "Įmonės pavadinimas",
     "phone": "Telefono numeris",
     "business_approval_note": "Pastaba: Partnerių paskyros turi būti patvirtintos administracijos.",
-    "logout": "Atsijungti"
+    "logout": "Atsijungti",
+    "dashboard": "Mano paskyra",
+    "account_info": "Paskyros informacija",
+    "registered": "Registracijos data",
+    "actions": "Veiksmai",
+    "change_password": "Pakeisti slaptažodį",
+    "upcoming_bookings": "Artėjantys rezervavimai",
+    "past_bookings": "Ankstesni rezervavimai",
+    "no_upcoming_bookings": "Neturite artėjančių rezervavimų.",
+    "no_past_bookings": "Ankstesnių rezervavimų nėra."
+
   }
   

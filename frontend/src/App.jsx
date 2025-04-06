@@ -8,6 +8,7 @@ import SearchResults from "./pages/SearchResults";
 import LocationDetail from "./pages/LocationDetail";
 import TravellerRegister from "./pages/TravellerRegister";
 import BusinessRegister from "./pages/BusinessRegister";
+import UserDashboard from "./pages/UserDashboard";
 import Login from "./pages/Login";
 import "./App.css";
 
@@ -27,7 +28,7 @@ function App() {
                 <Route path="/register" element={<TravellerRegister />} />
                 <Route path="/register/business" element={<BusinessRegister />} />
                 <Route path="/login" element={<Login />} />
-
+                <Route path="/user" element={<UserDashboard />} />
               </Routes>
             </div>
           <Footer language={language} />
