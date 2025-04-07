@@ -51,7 +51,8 @@
     "longitude": "Longitude",
     "from": "From",
     "to": "To",
-    "search_results_for": "Search results for {{city}}, {{date}}, {{bags}} bags",
+    "search_results_for": "Search results in {{city}} on {{date}} for {{count}} bag",
+    "search_results_for_plural": "Search results in {{city}} on {{date}} for {{count}} bags",    
     "your_locations": "Your Locations",
     "add_new_location": "Add New Location",
     "manage": "Manage",
@@ -77,6 +78,7 @@
     "leave_review": "Leave a Review",
     "submit_review": "Submit Review",
     "rating": "Rating",
-    "write_review": "Write your comment..."
+    "write_review": "Write your comment...",
+    "select_date": "Select Date"
   }
   

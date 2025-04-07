@@ -51,7 +51,8 @@
     "longitude": "Ilguma",
     "from": "Nuo",
     "to": "Iki",
-    "search_results_for": "Paieškos rezultatai: {{city}}, {{date}}, {{bags}} krepšiai",
+    "search_results_for": "Rezultatai {{city}} {{date}} - {{count}} lagaminas",
+    "search_results_for_plural": "Rezultatai {{city}} {{date}} - {{count}} lagaminai",  
     "your_locations": "Jūsų vietos",
     "add_new_location": "Pridėti naują vietą",
     "manage": "Tvarkyti",
@@ -80,6 +81,7 @@
     "leave_review": "Palikite atsiliepimą",
     "submit_review": "Pateikti atsiliepimą",
     "rating": "Įvertinimas",
-    "write_review": "Parašykite komentarą..."
+    "write_review": "Parašykite komentarą...",
+    "select_date": "Pasirinkite datą"
   }
   

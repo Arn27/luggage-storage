@@ -5,13 +5,14 @@ const containerStyle = {
   width: "100%",
   height: "600px",
 };
-
-const MapWrapper = () => {
-  const center = { lat: 54.6872, lng: 25.2797 };
+// eslint-disable-next-line no-unused-vars
+const MapWrapper = ({ city, date, bags }) => {
+  const [center, setCenter] = useState({ lat: 54.6872, lng: 25.2797 }); // Default to Vilnius
   const [locations, setLocations] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [domReady, setDomReady] = useState(false);
+
 
   useEffect(() => {
     setDomReady(true);
@@ -20,16 +21,35 @@ const MapWrapper = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/api/locations?city=Vilnius&bags=1");
+        const res = await fetch(`http://127.0.0.1:8000/api/locations?city=${city}&bags=${bags}`);
         const data = await res.json();
-        setLocations(data);
+        const validLocs = data.filter(loc => !isNaN(loc.lat) && !isNaN(loc.lng));
+        setLocations(validLocs);
+
+        if (validLocs.length > 0) {
+          setCenter({ lat: parseFloat(validLocs[0].lat), lng: parseFloat(validLocs[0].lng) });
+        } else if (city) {
+          const geocoder = new window.google.maps.Geocoder();
+          geocoder.geocode({ address: city }, (results, status) => {
+            if (status === "OK" && results[0]) {
+              setCenter({
+                lat: results[0].geometry.location.lat(),
+                lng: results[0].geometry.location.lng(),
+              });
+            } else {
+              setCenter({ lat: 54.6872, lng: 25.2797 }); // fallback to Vilnius
+            }
+          });
+        }
       } catch (err) {
         console.error("Failed to fetch locations:", err);
       }
     };
 
-    fetchLocations();
-  }, []);
+    if (city && bags) {
+      fetchLocations();
+    }
+  }, [city, bags]);
 
   const isValidCoord = (lat, lng) =>
     !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lng));
@@ -61,23 +81,33 @@ const MapWrapper = () => {
         {mapLoaded &&
           selectedMarker &&
           isValidCoord(selectedMarker.lat, selectedMarker.lng) && (
-            <InfoWindow
-              position={{
-                lat: parseFloat(selectedMarker.lat),
-                lng: parseFloat(selectedMarker.lng),
+        <InfoWindow
+          position={{
+            lat: parseFloat(selectedMarker.lat),
+            lng: parseFloat(selectedMarker.lng),
+          }}
+          onCloseClick={() => setSelectedMarker(null)}
+        >
+          <div style={{ width: "200px" }}>
+            <img
+              src="/location.png"
+              alt="Location header"
+              style={{
+                width: "100%",
+                height: "100px",
+                objectFit: "cover",
+                borderRadius: "6px",
+                marginBottom: "8px",
               }}
-              onCloseClick={() => setSelectedMarker(null)}
-            >
-              <div style={{ width: "200px" }}>
-                <h4>{selectedMarker.name}</h4>
-                <p>📍 {selectedMarker.address}</p>
-                <p>
-                  ⏰ {selectedMarker.open_hours?.from}–{selectedMarker.open_hours?.to}
-                </p>
-                <p>🧳 Up to {selectedMarker.max_bags} bags</p>
-                <a href={`/location/${selectedMarker.id}`}>More info</a>
-              </div>
-            </InfoWindow>
+            />
+            <h4>{selectedMarker.name}</h4>
+            <p>📍 {selectedMarker.address}</p>
+            <p>⏰ {selectedMarker.open_hours?.from}-{selectedMarker.open_hours?.to}</p>
+            <p>🧳 Up to {selectedMarker.max_bags} bags</p>
+            <p>💰 {parseFloat(selectedMarker.hourly_rate).toFixed(2)} €/hour</p>
+            <a href={`/location/${selectedMarker.id}`}>More info</a>
+          </div>
+        </InfoWindow>
           )}
       </GoogleMap>
     </div>

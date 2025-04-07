@@ -134,7 +134,7 @@ const LocationDetail = () => {
       </button>
 
       <img
-        src={location.image_url || "https://fakeimg.pl/600x400"}
+        src={location.image_url || "/location.png"}
         alt={location.name}
         className="location-image"
       />
@@ -143,9 +143,16 @@ const LocationDetail = () => {
         <div className="location-info">
           <h1>{location.name}</h1>
           <p>📍 {location.address}, {location.city}</p>
-          <p>🚯 {t("max_bags")}: {location.max_bags}</p>
-          <p>⏰ {t("open_hours")}: {location.open_hours.from}–{location.open_hours.to}</p>
+          <p>🧳 {t("max_bags")}: {location.max_bags}</p>
+          <p>
+            💰 {t("hourly_rate")}: €
+            {Number(location.hourly_rate) > 0
+              ? Number(location.hourly_rate).toFixed(2)
+              : "0.00"}
+          </p>
+          <p>⏰ {t("open_hours")}: {location.open_hours.from}-{location.open_hours.to}</p>
           <p>📝 {t("description")}: {location.description}</p>
+          <p>📞 {t("contact")}: {location.phone || location.email || "N/A"}</p>
         </div>
 
         <div className="booking-form">
@@ -153,9 +160,8 @@ const LocationDetail = () => {
             <div className="user-booking-box">
               <h2>{t("your_booking")}</h2>
               <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
-              <p>🚯 {t("bags")}: {userBooking.bag_count}</p>
+              <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
               <p>🔒 {t("status")}: {t(userBooking.status)}</p>
-              <p>📞 {t("contact")}: {location.phone || location.email || "N/A"}</p>
               <button className="cancel-btn" onClick={handleCancel}>{t("cancel_booking")}</button>
             </div>
           ) : isLoggedIn ? (
