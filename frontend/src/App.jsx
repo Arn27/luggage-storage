@@ -15,7 +15,10 @@ import AdminPanel from "./pages/AdminPanel";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessLocations from "./pages/BusinessLocations";
 import BusinessLocationManage from "./pages/BusinessLocationManage";
+import BusinessBookingsPage from "./pages/BusinessBookingsPage";
 import NewLocationForm from "./pages/NewLocationForm";
+import PendingBookings from "./pages/PendingBookings";
+
 import "./App.css";
 
 function App() {
@@ -52,8 +55,7 @@ function App() {
                 <Route path="/business/locations/:id" element={<BusinessLocationManage />} />
                 <Route path="/business/bookings/upcoming" element={<BusinessDashboard />} />
                 <Route path="/business/bookings/past" element={<BusinessDashboard />} />
-                <Route path="/business/bookings/pending" element={<BusinessDashboard />} />
-
+                <Route path="/business/bookings/pending" element={<PendingBookings />} />
               </Routes>
             </div>
           <Footer language={language} />

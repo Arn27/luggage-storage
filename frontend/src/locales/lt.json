@@ -46,7 +46,7 @@
     "add_location": "Pridėti naują vietą",
     "create_location": "Sukurti vietą",
     "address": "Adresas",
-    "hourly_rate": "Valandinis įkainis (€)",
+    "hourly_rate": "Valandinis įkainis",
     "latitude": "Platuma",
     "longitude": "Ilguma",
     "from": "Nuo",
@@ -82,6 +82,19 @@
     "submit_review": "Pateikti atsiliepimą",
     "rating": "Įvertinimas",
     "write_review": "Parašykite komentarą...",
-    "select_date": "Pasirinkite datą"
+    "select_date": "Pasirinkite datą",
+    "users": "Vartotojai",
+    "businesses": "Verslai",
+    "delete": "Ištrinti",
+    "confirm_delete_user": "Ar tikrai norite ištrinti šį vartotoją?",
+    "confirm_delete_business": "Ar tikrai norite ištrinti šį verslą?",
+    "locations_list": "Visos vietos",
+    "no_users": "Vartotojų nerasta.",
+    "no_businesses": "Verslų nerasta.",
+    "no_locations": "Vietų nerasta.",
+    "confirm": "Patvirtinti",
+    "cancel": "Atšaukti",
+    "confirm_delete_review": "Ar tikrai norite ištrinti šią apžvalgą?",
+    "no_pending_bookings": "Nėra laukiančių rezervacijų."
   }
   

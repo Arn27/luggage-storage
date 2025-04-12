@@ -27,16 +27,16 @@ class LocationController extends Controller
 
     public function show($id)
     {
-        $location = Location::with(['reviews.user'])->find($id);
+        $location = Location::with(['reviews.user'])->findOrFail($id);
     
-        if (!$location) {
-            return response()->json(['message' => 'Location not found'], 404);
+        if (Auth::check()) {
+            $location->current_user = Auth::user(); // Only if user is logged in
         }
     
         return response()->json($location);
     }
     
-
+    
     public function businessLocations()
     {
         $businessId = Auth::id();
@@ -139,7 +139,5 @@ class LocationController extends Controller
 
         return response()->json(['message' => 'Location deleted.']);
     }
-
-
 
 }

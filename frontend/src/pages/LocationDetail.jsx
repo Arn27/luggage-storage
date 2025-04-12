@@ -1,7 +1,9 @@
-// LocationDetail.jsx (updated for review eligibility)
+// LocationDetail.jsx (updated with confirm modal for review deletion)
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ConfirmModal from "../components/admin/ConfirmModal";
+
 import "./LocationDetail.css";
 
 const LocationDetail = () => {
@@ -17,8 +19,13 @@ const LocationDetail = () => {
   const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(5);
   const [reviewSuccess, setReviewSuccess] = useState("");
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState(null);
 
   const isLoggedIn = !!localStorage.getItem("token");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const localUserId = storedUser?.id;
+  const isAdmin = storedUser?.is_admin;
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -105,13 +112,12 @@ const LocationDetail = () => {
         comment: reviewText,
       }),
     });
-  
+
     if (res.ok) {
       setReviewSuccess(t("review_submitted"));
       setReviewText("");
       setRating(5);
-  
-      // Re-fetch location to update review list
+
       try {
         const updated = await fetch(`http://127.0.0.1:8000/api/locations/${id}`);
         const data = await updated.json();
@@ -121,7 +127,36 @@ const LocationDetail = () => {
       }
     }
   };
+
+  const handleDeleteReview = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/reviews/${reviewToDelete}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      alert(data.message);
   
+      const updated = await fetch(`http://127.0.0.1:8000/api/locations/${id}`);
+      const dataRefreshed = await updated.json();
+      setLocation(dataRefreshed);
+    } catch (err) {
+      console.error("Failed to delete review:", err);
+      alert("Something went wrong.");
+    } finally {
+      setShowDeleteConfirm(false);
+      setReviewToDelete(null);
+    }
+  };
+  
+
+  const handleDeleteClick = (id) => {
+    setReviewToDelete(id);
+    setShowDeleteConfirm(true);
+  };
 
   if (!location) return <p>{t("loading")}</p>;
 
@@ -145,10 +180,10 @@ const LocationDetail = () => {
           <p>📍 {location.address}, {location.city}</p>
           <p>🧳 {t("max_bags")}: {location.max_bags}</p>
           <p>
-            💰 {t("hourly_rate")}: €
+            💰 {t("hourly_rate")}: 
             {Number(location.hourly_rate) > 0
               ? Number(location.hourly_rate).toFixed(2)
-              : "0.00"}
+              : "0.00"} €
           </p>
           <p>⏰ {t("open_hours")}: {location.open_hours.from}-{location.open_hours.to}</p>
           <p>📝 {t("description")}: {location.description}</p>
@@ -227,12 +262,21 @@ const LocationDetail = () => {
           location.reviews?.map((review) => (
             <div key={review.id} className="review-card">
               <div className="review-header">
-                <strong>{review.user?.name || t("anonymous")}</strong>
-                <span className="review-date">
-                  {new Date(review.created_at).toLocaleDateString()}
-                </span>
+                <div>
+                  <strong>{review.user?.name || t("anonymous")}</strong>
+                  <span className="review-date">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+                {(review.user?.id === localUserId || isAdmin) && (
+                  <button
+                    className="delete-review"
+                    onClick={() => handleDeleteClick(review.id)}
+                  >
+                    ❌
+                  </button>
+                )}
               </div>
-
               <div className="review-rating">
                 {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
               </div>
@@ -244,6 +288,13 @@ const LocationDetail = () => {
           ))
         )}
       </div>
+
+      <ConfirmModal
+        show={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDeleteReview}
+        message={t("confirm_delete_review") || "Are you sure you want to delete this review?"}
+      />
     </div>
   );
 };

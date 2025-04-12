@@ -21,8 +21,18 @@ class BookingController extends Controller
 
     public function pending()
     {
-        return $this->getBookings('pending');
+        $businessId = auth()->user()->id;
+    
+        $bookings = Booking::with(['location', 'user']) // include related user
+            ->whereHas('location', function ($query) use ($businessId) {
+                $query->where('business_id', $businessId);
+            })
+            ->where('status', 'pending')
+            ->get();
+    
+        return response()->json($bookings);
     }
+    
 
     private function getBookings($type)
     {
@@ -78,5 +88,15 @@ class BookingController extends Controller
 
         return response()->json(['message' => 'Booking cancelled']);
     }
+
+    public function confirm($id)
+    {
+        $booking = Booking::findOrFail($id);
+        $booking->status = 'confirmed';
+        $booking->save();
+
+        return response()->json(['message' => 'Booking confirmed successfully']);
+    }
+
 
 }

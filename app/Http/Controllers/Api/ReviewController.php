@@ -38,4 +38,23 @@ class ReviewController extends Controller
 
         return response()->json($review, 201);
     }
+
+    public function destroy($id)
+    {
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['message' => 'Review not found'], 404);
+        }
+
+        $user = Auth::user();
+
+        if ($user->id !== $review->user_id && !$user->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $review->delete();
+
+        return response()->json(['message' => 'Review deleted successfully']);
+    }
 }
