@@ -15,9 +15,13 @@ import AdminPanel from "./pages/AdminPanel";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import BusinessLocations from "./pages/BusinessLocations";
 import BusinessLocationManage from "./pages/BusinessLocationManage";
-import BusinessBookingsPage from "./pages/BusinessBookingsPage";
 import NewLocationForm from "./pages/NewLocationForm";
 import PendingBookings from "./pages/PendingBookings";
+import PastBookings from "./pages/PastBookings";
+import UpcomingBookings from "./pages/UpcomingBookings";
+import ActiveBookings from "./pages/ActiveBookings";
+import UserActiveBooking from "./pages/UserActiveBooking";
+import WalkInBookingPage from "./pages/WalkInBookingPage";
 
 import "./App.css";
 
@@ -53,9 +57,12 @@ function App() {
                 <Route path="/business/locations" element={<BusinessLocations />} />
                 <Route path="/business/locations/new" element={<NewLocationForm />} />
                 <Route path="/business/locations/:id" element={<BusinessLocationManage />} />
-                <Route path="/business/bookings/upcoming" element={<BusinessDashboard />} />
-                <Route path="/business/bookings/past" element={<BusinessDashboard />} />
                 <Route path="/business/bookings/pending" element={<PendingBookings />} />
+                <Route path="/business/bookings/past" element={<PastBookings />} />
+                <Route path="/business/bookings/upcoming" element={<UpcomingBookings />} />
+                <Route path="/user/booking/active" element={<UserActiveBooking />} />
+                <Route path="/business/bookings/active" element={<ActiveBookings />} />
+                <Route path="/location/:id/walk-in" element={<WalkInBookingPage />} />
               </Routes>
             </div>
           <Footer language={language} />

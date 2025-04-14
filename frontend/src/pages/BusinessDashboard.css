@@ -45,4 +45,14 @@
     margin: 0;
     color: #374151;
   }
+
+  /* in BusinessDashboard.css */
+.contact-info {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  background: #f9fafb;
+  padding: 0.75rem;
+  border-radius: 8px;
+}
+
   

@@ -35,6 +35,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store']);
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 
+    // Booking time tracking & photos
+    Route::post('/bookings/{id}/start', [BookingController::class, 'start']);
+    Route::post('/bookings/{id}/upload-photo', [BookingController::class, 'uploadPhoto']);
+    Route::post('/bookings/{id}/initiate-close', [BookingController::class, 'initiateClose']);
+    Route::post('/bookings/{id}/confirm-close', [BookingController::class, 'confirmClose']);
+    Route::get('/business/bookings/active', [BookingController::class, 'active']);
+
+
     // Business-only routes (approved only)
     Route::middleware('approved.business')->prefix('business')->group(function () {
         Route::get('/dashboard', [BusinessDashboardController::class, 'index']);

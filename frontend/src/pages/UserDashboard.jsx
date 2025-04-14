@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "./UserDashboard.css";
 
 const UserDashboard = () => {
@@ -63,6 +63,9 @@ const UserDashboard = () => {
       <section className="dashboard-section">
         <h2>{t("actions")}</h2>
         <button className="btn">{t("change_password")}</button>
+        <Link to="/user/booking/active" className="btn" style={{ marginLeft: "1rem" }}>
+          {t("active_booking")}
+        </Link>
       </section>
 
       <section className="dashboard-section">

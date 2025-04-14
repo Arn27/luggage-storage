@@ -95,6 +95,10 @@
     "confirm": "Patvirtinti",
     "cancel": "Atšaukti",
     "confirm_delete_review": "Ar tikrai norite ištrinti šią apžvalgą?",
-    "no_pending_bookings": "Nėra laukiančių rezervacijų."
+    "no_pending_bookings": "Nėra laukiančių rezervacijų.",
+    "active_bookings": "Aktyvūs užsakymai",
+    "no_active_bookings": "Aktyvių užsakymų nėra",
+    "user": "Naudotojas",
+    "active_booking": "Aktyvus užsakymas"
   }
   

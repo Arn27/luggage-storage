@@ -10,12 +10,13 @@ const BusinessDashboard = () => {
     upcomingBookings: 0,
     pastBookings: 0,
     pendingBookings: 0,
+    activeBookings: 0,
   });
 
   useEffect(() => {
     const fetchStats = async () => {
       const token = localStorage.getItem("token");
-  
+
       try {
         const res = await fetch("http://localhost:8000/api/business/dashboard", {
           headers: {
@@ -23,23 +24,22 @@ const BusinessDashboard = () => {
             Accept: "application/json",
           },
         });
-  
+
         if (!res.ok) {
           const text = await res.text();
           console.error("Server error:", res.status, text);
           return;
         }
-  
+
         const data = await res.json();
         setStats(data);
       } catch (err) {
         console.error("Failed to load dashboard stats", err);
       }
     };
-  
+
     fetchStats();
   }, []);
-  
 
   return (
     <div className="dashboard-container">
@@ -60,6 +60,10 @@ const BusinessDashboard = () => {
         <Link to="/business/bookings/pending" className="card">
           <h2>{stats.pendingBookings}</h2>
           <p>{t("pending_bookings")}</p>
+        </Link>
+        <Link to="/business/bookings/active" className="card">
+          <h2>{stats.activeBookings}</h2>
+          <p>{t("active_bookings")}</p>
         </Link>
       </div>
     </div>

@@ -14,6 +14,7 @@ const PendingBookings = () => {
 
   useEffect(() => {
     fetchPendingBookings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchPendingBookings = async () => {
@@ -81,7 +82,7 @@ const PendingBookings = () => {
           <p>📅 {new Date(b.date).toLocaleDateString()}</p>
           <p>📦 {b.bag_count} {t("bags")}</p>
 
-          <div style={{ marginTop: "1rem", fontSize: "0.9rem", background: "#f9fafb", padding: "0.75rem", borderRadius: "8px" }}>
+          <div className="contact-info">
             <p><strong>{t("name")}:</strong> {b.user?.name}</p>
             <p><strong>{t("email")}:</strong> {b.user?.email}</p>
             <p><strong>{t("phone")}:</strong> {b.user?.phone || t("no_phone")}</p>
