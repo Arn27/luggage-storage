@@ -13,38 +13,41 @@ const UserDashboard = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
+    const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+
+    if (!storedUser || !roles.includes("traveller")) {
       navigate("/login");
-    } else {
-      const userData = JSON.parse(storedUser);
-      setUser(userData);
-
-      const token = localStorage.getItem("token");
-
-      const fetchBookings = async () => {
-        try {
-          const res = await fetch("http://127.0.0.1:8000/api/user/bookings", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          });
-
-          const data = await res.json();
-          const now = new Date();
-
-          const upcoming = data.filter((b) => new Date(b.date) >= now);
-          const past = data.filter((b) => new Date(b.date) < now);
-
-          setUpcomingBookings(upcoming);
-          setPastBookings(past);
-        } catch (err) {
-          console.error("Failed to load bookings", err);
-        }
-      };
-
-      fetchBookings();
+      return;
     }
+
+    const userData = JSON.parse(storedUser);
+    setUser(userData);
+
+    const token = localStorage.getItem("token");
+
+    const fetchBookings = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/user/bookings", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+
+        const data = await res.json();
+        const now = new Date();
+
+        const upcoming = data.filter((b) => new Date(b.date) >= now);
+        const past = data.filter((b) => new Date(b.date) < now);
+
+        setUpcomingBookings(upcoming);
+        setPastBookings(past);
+      } catch (err) {
+        console.error("Failed to load bookings", err);
+      }
+    };
+
+    fetchBookings();
   }, [navigate]);
 
   if (!user) return null;

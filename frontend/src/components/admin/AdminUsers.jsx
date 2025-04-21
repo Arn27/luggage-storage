@@ -1,4 +1,3 @@
-// components/admin/AdminUsers.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "./ConfirmModal";
@@ -12,23 +11,26 @@ const AdminUsers = () => {
   const token = localStorage.getItem("token");
 
   const fetchUsers = async () => {
+    if (!token) return;
+
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/admin/users", {
+      const res = await fetch("http://localhost:8000/api/admin/users", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
       });
+      if (!res.ok) throw new Error("Failed to fetch users");
       const data = await res.json();
       setUsers(data);
     } catch (err) {
-      console.error("Failed to fetch users:", err);
+      console.error("Failed to fetch users", err);
     }
   };
 
   const deleteUser = async (id) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/admin/users/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/admin/users/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -58,10 +60,13 @@ const AdminUsers = () => {
           <div key={user.id} className="business-card">
             <h3>{user.name}</h3>
             <p>📧 {user.email}</p>
-            <button className="btn" onClick={() => {
-              setSelectedUser(user);
-              setShowModal(true);
-            }}>
+            <button
+              className="btn"
+              onClick={() => {
+                setSelectedUser(user);
+                setShowModal(true);
+              }}
+            >
               🗑️ {t("delete")}
             </button>
           </div>

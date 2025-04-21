@@ -1,10 +1,12 @@
 // src/pages/PastBookings.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import "./BusinessDashboard.css";
 
 const PastBookings = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
 
   useEffect(() => {
@@ -26,6 +28,12 @@ const PastBookings = () => {
 
     fetchBookings();
   }, []);
+
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  if (!roles.includes("business")) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <div className="dashboard-container">

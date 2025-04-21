@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import "./UserDashboard.css";
 
 const ActiveBookings = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const token = localStorage.getItem("token");
 
@@ -19,6 +21,12 @@ const ActiveBookings = () => {
       .catch((err) => console.error("Failed to fetch active bookings", err));
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  if (!roles.includes("business")) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <div className="dashboard-container">

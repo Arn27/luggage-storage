@@ -1,34 +1,117 @@
+:root {
+  /* Define a color palette */
+  --primary-color: #0c7b72; /* The new main color */
+  --secondary-color: #dbe2ef; /* Keeping a light complementary color */
+  --text-color: #4a4a4a; /* Slightly softer black */
+  --border-color: #c5cad9; /* A muted default border color */
+  --background-color: #f9f7f7; /* A very light background */
+  --error-color: #e74c3c; /* A clear error red */
+  --success-color: #2ecc71; /* A success green */
+}
+
 .new-location-form {
-    max-width: 600px;
-    margin: auto;
-    padding: 2rem;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
-  
-  .new-location-form label {
-    display: block;
-    margin-top: 1rem;
-    font-weight: bold;
-  }
-  
-  .new-location-form input,
-  .new-location-form textarea {
-    width: 100%;
-    padding: 0.5rem;
-    margin-top: 0.25rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
-  .hours-row {
-    display: flex;
-    gap: 1rem;
-  }
-  
-  .error {
-    color: #c00;
-    font-size: 0.9rem;
-  }
-  
+  max-width: 600px;
+  margin: 60px auto;
+  background-color: var(--background-color);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.new-location-form h1 {
+  font-size: 28px;
+  text-align: center;
+  color: var(--primary-color); /* Using the new primary color for heading */
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.new-location-form label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.new-location-form input,
+.new-location-form textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color); /* Default border remains muted */
+  background-color: #ffffff;
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin-bottom: 25px;
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.new-location-form input:focus,
+.new-location-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color); /* Primary color border on focus */
+  box-shadow: 0 0 8px rgba(var(--primary-color), 0.2); /* Primary color shadow on focus */
+  background-color: #fefe Ladd; /* Very light highlight on focus */
+}
+
+.new-location-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.hours-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.hours-row > div {
+    flex: 1;
+    min-width: 150px;
+}
+
+.new-location-form .btn {
+  width: 100%;
+  background-color: var(--primary-color); /* Using the new primary color for button background */
+  color: white;
+  font-weight: 700;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.new-location-form .btn:hover {
+  background-color: #0a635c; /* A slightly darker shade of #0c7b72 for hover */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(var(--primary-color), 0.3); /* Primary color shadow on hover */
+}
+
+.new-location-form .btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 0.9rem;
+  margin-top: -15px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.new-location-form input.error-border,
+.new-location-form textarea.error-border {
+    border-color: var(--error-color);
+}

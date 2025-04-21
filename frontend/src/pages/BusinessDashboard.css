@@ -1,58 +1,82 @@
 .dashboard-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-  
-  .dashboard-container h1 {
-    margin-bottom: 2rem;
-    color: #0e9488;
-  }
-  
-  .dashboard-cards {
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .card {
-    flex: 1 1 250px;
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 1.5rem;
-    text-align: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
-    color: #1c1c1e;
-    text-decoration: none;
-  }
-  
-  .card:hover {
-    transform: translateY(-3px);
-    border-color: #0e9488;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  }
-  
-  .card h2 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: #0e9488;
-  }
-  
-  .card p {
-    margin: 0;
-    color: #374151;
-  }
-
-  /* in BusinessDashboard.css */
-.contact-info {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  background: #f9fafb;
-  padding: 0.75rem;
-  border-radius: 8px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, sans-serif;
 }
 
-  
+.dashboard-container h1 {
+  font-size: 2.25rem;
+  margin-bottom: 2.5rem;
+  color: var(--heading-color);
+  text-align: center;
+  font-weight: 700;
+}
+
+.dashboard-cards {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  flex: 1 1 250px;
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary-color);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.card p {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.contact-info {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  background: var(--background-color);
+  padding: 1rem;
+  border-radius: 8px;
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1.5rem;
+  }
+
+  .dashboard-cards {
+      gap: 1rem;
+  }
+
+  .card {
+    flex-basis: 100%;
+    padding: 1rem;
+  }
+
+  .card h2 {
+      font-size: 2rem;
+  }
+}

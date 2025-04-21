@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../components/admin/ConfirmModal";
 
 const PendingBookings = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [selectedBookingId, setSelectedBookingId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
 
 
   const token = localStorage.getItem("token");
@@ -16,6 +19,12 @@ const PendingBookings = () => {
     fetchPendingBookings();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  if (!roles.includes("business")) {
+    navigate("/");
+    return null;
+  }
 
   const fetchPendingBookings = async () => {
     try {

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LocationController;
@@ -10,69 +9,47 @@ use App\Http\Controllers\Api\BusinessDashboardController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ReviewController;
 
-// --------------------
 // Public Routes
-// --------------------
-
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/register/business', [BusinessController::class, 'register']);
 
 Route::get('/locations', [LocationController::class, 'index']);
-Route::get('/locations/{id}', [LocationController::class, 'show']); // visible to everyone
+Route::get('/locations/{id}', [LocationController::class, 'show']);
 
-// --------------------
-// Authenticated User Routes
-// --------------------
-
+// Authenticated Routes
 Route::middleware('auth:sanctum')->group(function () {
+
     // Bookings
     Route::post('/bookings', [BookingController::class, 'store']);
-    Route::get('/user/bookings', [BookingController::class, 'userBookings']);
-    Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);
+    Route::get('/bookings/active', [BookingController::class, 'activeBookings']);
+    Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
 
     // Reviews
     Route::post('/reviews', [ReviewController::class, 'store']);
-    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 
-    // Booking time tracking & photos
-    Route::post('/bookings/{id}/start', [BookingController::class, 'start']);
-    Route::post('/bookings/{id}/upload-photo', [BookingController::class, 'uploadPhoto']);
-    Route::post('/bookings/{id}/initiate-close', [BookingController::class, 'initiateClose']);
-    Route::post('/bookings/{id}/confirm-close', [BookingController::class, 'confirmClose']);
-    Route::get('/business/bookings/active', [BookingController::class, 'active']);
-
-
-    // Business-only routes (approved only)
-    Route::middleware('approved.business')->prefix('business')->group(function () {
-        Route::get('/dashboard', [BusinessDashboardController::class, 'index']);
-        Route::get('/locations', [LocationController::class, 'businessLocations']);
-        Route::post('/locations', [LocationController::class, 'store']);
-        Route::put('/locations/{id}', [LocationController::class, 'update']);
-        Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
-        Route::post('/bookings/{id}/confirm', [BookingController::class, 'confirm']);
-
-
-        // Bookings management
-        Route::get('/bookings/upcoming', [BookingController::class, 'upcoming']);
-        Route::get('/bookings/past', [BookingController::class, 'past']);
-        Route::get('/bookings/pending', [BookingController::class, 'pending']);
+    // Business Dashboard (only approved businesses)
+    Route::middleware(['ensure.business.approved'])->group(function () {
+        Route::get('/dashboard/business', [BusinessDashboardController::class, 'index']);
     });
 
-    // Admin-only routes
-    Route::middleware('admin')->prefix('admin')->group(function () {
-        // Business approval
-        Route::get('/pending-businesses', [AdminController::class, 'pendingBusinesses']);
-        Route::post('/approve-business/{id}', [AdminController::class, 'approveBusiness']);
+    // Admin Panel
+    Route::middleware(['is.admin'])->group(function () {
+        Route::get('/admin/pending-businesses', [AdminController::class, 'pendingBusinesses']);
+        Route::post('/admin/approve-business/{id}', [AdminController::class, 'approveBusiness']);
 
-        // Manage users & businesses
-        Route::get('/users', [AdminController::class, 'getAllUsers']);
-        Route::get('/businesses', [AdminController::class, 'getAllBusinesses']);
-        Route::delete('/users/{id}', [AdminController::class, 'deleteUser']);
-        Route::delete('/businesses/{id}', [AdminController::class, 'deleteBusiness']);
+        Route::get('/admin/users', [AdminController::class, 'getAllUsers']);
+        Route::delete('/admin/user/{id}', [AdminController::class, 'deleteUser']);
 
-        // Manage locations
-        Route::get('/locations', [AdminController::class, 'getAllLocations']);
-        Route::delete('/locations/{id}', [AdminController::class, 'deleteLocation']);
+        Route::get('/admin/businesses', [AdminController::class, 'getAllBusinesses']);
+        Route::delete('/admin/business/{id}', [AdminController::class, 'deleteBusiness']);
+
+        Route::get('/admin/locations', [AdminController::class, 'getAllLocations']);
+        Route::delete('/admin/location/{id}', [AdminController::class, 'deleteLocation']);
     });
+
+    // Location management (for businesses)
+    Route::post('/locations', [LocationController::class, 'store']);
+    Route::put('/locations/{id}', [LocationController::class, 'update']);
+    Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 });

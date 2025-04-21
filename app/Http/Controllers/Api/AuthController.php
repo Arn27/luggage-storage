@@ -5,77 +5,62 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use App\Models\User;
-use App\Models\Business;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required'
         ]);
 
-        // Try user login
-        if ($user = User::where('email', $request->email)->first()) {
-            if (Hash::check($request->password, $user->password)) {
-                return response()->json([
-                    'token' => $user->createToken('auth_token')->plainTextToken,
-                    'user' => $user,
-                    'type' => 'user'
-                ]);
-            }
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // Try business login
-        if ($biz = Business::where('email', $request->email)->first()) {
-            if (!Hash::check($request->password, $biz->password)) {
-                return response()->json(['message' => 'Invalid credentials'], 401);
-            }
-
-            if (!$biz->is_approved) {
-                return response()->json(['message' => 'Business not approved yet'], 403);
-            }
-
-            return response()->json([
-                'token' => $biz->createToken('auth_token')->plainTextToken,
-                'user' => $biz,
-                'type' => 'business'
-            ]);
+        // Block login for unapproved businesses
+        if (
+            $user->hasRole('business') &&
+            optional($user->businessProfile)->is_approved === false
+        ) {
+            return response()->json(['message' => 'Business not approved yet'], 403);
         }
 
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        return response()->json([
+            'token' => $user->createToken('auth_token')->plainTextToken,
+            'user' => $user->only(['id', 'name', 'email', 'created_at']),
+            'roles' => $user->roles->pluck('name')
+        ]);
     }
 
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => [
-                'required', 'email',
-                function ($attribute, $value, $fail) {
-                    $existsInUsers = DB::table('users')->where('email', $value)->exists();
-                    $existsInBusinesses = DB::table('businesses')->where('email', $value)->exists();
-                    if ($existsInUsers || $existsInBusinesses) {
-                        $fail('This email is already taken.');
-                    }
-                }
-            ],
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
+        $role = Role::where('name', 'traveller')->first();
+        if ($role) {
+            $user->roles()->attach($role);
+        }
+
         return response()->json([
             'message' => 'User registered successfully',
-            'user' => $user,
+            'user' => $user->only(['id', 'name', 'email', 'created_at']),
+            'roles' => $user->roles->pluck('name')
         ]);
     }
 }

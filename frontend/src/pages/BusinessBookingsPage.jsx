@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import "./BusinessDashboard.css";
 
 const BusinessBookingsPage = () => {
   const { t } = useTranslation();
   const { type } = useParams();
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +36,12 @@ const BusinessBookingsPage = () => {
 
     fetchBookings();
   }, [type]);
+
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  if (!roles.includes("business")) {
+    navigate("/");
+    return null;
+  }
 
   const formatDate = (dateStr) => new Date(dateStr).toLocaleDateString();
 

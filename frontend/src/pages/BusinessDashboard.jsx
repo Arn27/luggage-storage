@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import "./BusinessDashboard.css";
 
 const BusinessDashboard = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [stats, setStats] = useState({
     locations: 0,
     upcomingBookings: 0,
@@ -14,11 +15,16 @@ const BusinessDashboard = () => {
   });
 
   useEffect(() => {
+    const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+    if (!roles.includes("business")) {
+      navigate("/");
+    }
+
     const fetchStats = async () => {
       const token = localStorage.getItem("token");
 
       try {
-        const res = await fetch("http://localhost:8000/api/business/dashboard", {
+        const res = await fetch("http://localhost:8000/api/dashboard/business", {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
@@ -39,7 +45,7 @@ const BusinessDashboard = () => {
     };
 
     fetchStats();
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="dashboard-container">

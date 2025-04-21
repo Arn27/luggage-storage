@@ -1,4 +1,3 @@
-// components/admin/AdminBusinesses.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "./ConfirmModal";
@@ -8,12 +7,14 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [approveMode, setApproveMode] = useState(false);
+
   const token = localStorage.getItem("token");
 
   const fetchBusinesses = async () => {
     const url = pendingOnly
-      ? "http://127.0.0.1:8000/api/admin/pending-businesses"
-      : "http://127.0.0.1:8000/api/admin/businesses";
+      ? "http://localhost:8000/api/admin/pending-businesses"
+      : "http://localhost:8000/api/admin/businesses";
     try {
       const res = await fetch(url, {
         headers: {
@@ -29,9 +30,8 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
   };
 
   const approveBusiness = async (id) => {
-    if (!confirm("Are you sure you want to approve this business?")) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/admin/approve-business/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/admin/approve-business/${id}`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -49,7 +49,7 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
 
   const deleteBusiness = async (id) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/admin/businesses/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/admin/businesses/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,14 +81,25 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
             <p>📧 {b.email}</p>
             <p>📞 {b.phone || t("no_phone")}</p>
             {pendingOnly ? (
-              <button className="btn" onClick={() => approveBusiness(b.id)}>
+              <button
+                className="btn"
+                onClick={() => {
+                  setSelectedBusiness(b);
+                  setApproveMode(true);
+                  setShowModal(true);
+                }}
+              >
                 ✅ {t("approve")}
               </button>
             ) : (
-              <button className="btn" onClick={() => {
-                setSelectedBusiness(b);
-                setShowModal(true);
-              }}>
+              <button
+                className="btn"
+                onClick={() => {
+                  setSelectedBusiness(b);
+                  setApproveMode(false);
+                  setShowModal(true);
+                }}
+              >
                 🗑️ {t("delete")}
               </button>
             )}
@@ -100,10 +111,18 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
         show={showModal}
         onClose={() => setShowModal(false)}
         onConfirm={() => {
-          if (selectedBusiness) deleteBusiness(selectedBusiness.id);
+          if (selectedBusiness) {
+            approveMode
+              ? approveBusiness(selectedBusiness.id)
+              : deleteBusiness(selectedBusiness.id);
+          }
           setShowModal(false);
         }}
-        message={t("confirm_delete_business")}
+        message={
+          approveMode
+            ? t("confirm_approve_business")
+            : t("confirm_delete_business")
+        }
       />
     </div>
   );

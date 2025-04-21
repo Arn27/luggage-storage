@@ -7,6 +7,7 @@ const BusinessRegister = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({
+    name: "",
     business_name: "",
     email: "",
     phone: "",
@@ -48,6 +49,16 @@ const BusinessRegister = () => {
     <div className="auth-container">
       <h1>{t("partner_signup")}</h1>
       <form className="auth-form" onSubmit={handleSubmit}>
+        <label>
+          {t("name")} (Owner)
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
+        </label>
         <label>
           {t("business_name")}
           <input

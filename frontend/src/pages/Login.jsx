@@ -31,12 +31,11 @@ const Login = () => {
         return;
       }
 
-      // Save token, user data, and user type
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-      localStorage.setItem("user_type", data.type);
+      localStorage.setItem("roles", JSON.stringify(data.roles));
       window.dispatchEvent(new Event("userChanged"));
-      
+
       navigate("/");
     } catch (err) {
       console.error("Login error:", err);

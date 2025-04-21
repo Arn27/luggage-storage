@@ -96,6 +96,13 @@
     "active_bookings": "Active bookings",
     "no_active_bookings": "No active bookings",
     "user": "User",
-    "active_booking": "Active Booking"
+    "active_booking": "Active Booking",
+    "confirm_approve_business": "Are you sure you want to approve this business?",
+    "select_business": "Select a business",
+    "edit": "Edit",
+    "location_not_found": "Location not found",
+    "update_location": "Update Location",
+    "open_from": "Open from",
+    "open_to": "Open to"
   }
   

@@ -12,7 +12,11 @@ class BusinessDashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $businessId = Auth::id();
+        $businessId = Auth::user()?->business_id;
+
+        if (!$businessId) {
+            return response()->json(['message' => 'Business not assigned.'], 403);
+        }
 
         $locationsCount = Location::where('business_id', $businessId)->count();
 

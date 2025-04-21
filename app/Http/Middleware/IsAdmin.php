@@ -7,12 +7,14 @@ use Illuminate\Http\Request;
 
 class IsAdmin
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        if (!auth()->check() || !auth()->user()->is_admin) {
+        $user = $request->user();
+    
+        if (!$user || !$user->hasRole('admin')) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-
+    
         return $next($request);
-    }
+    }    
 }

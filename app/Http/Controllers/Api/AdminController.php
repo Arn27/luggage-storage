@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Business;
+use App\Models\BusinessProfile;
 use App\Models\Location;
 use App\Models\User;
 
@@ -11,35 +11,34 @@ class AdminController extends Controller
 {
     public function pendingBusinesses()
     {
-        return Business::where('is_approved', false)->get();
+        return BusinessProfile::where('is_approved', false)->get();
     }
 
     public function approveBusiness($id)
     {
-        $business = Business::findOrFail($id);
+        $business = BusinessProfile::findOrFail($id);
         $business->is_approved = true;
         $business->save();
 
-        return response()->json(['message' => 'Business approved successfully.']);
+        return response()->json(['message' => 'Business approved successfully']);
     }
 
     public function getAllUsers()
     {
-        $users = User::all();
-        \Log::info("getAllUsers() called");
-
-        return response()->json($users);
+        return response()->json(User::with('roles')->get());
     }
 
     public function getAllBusinesses()
     {
-        $businesses = Business::all();
-        return response()->json($businesses);
+        return response()->json(
+            BusinessProfile::with('users.roles')->get()
+        );
     }
 
     public function deleteUser($id)
     {
         $user = User::find($id);
+
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
         }
@@ -50,7 +49,8 @@ class AdminController extends Controller
 
     public function deleteBusiness($id)
     {
-        $business = Business::find($id);
+        $business = BusinessProfile::find($id);
+
         if (!$business) {
             return response()->json(['message' => 'Business not found'], 404);
         }
@@ -61,13 +61,15 @@ class AdminController extends Controller
 
     public function getAllLocations()
     {
-        $locations = Location::with('business')->get();
-        return response()->json($locations);
+        return response()->json(
+            Location::with('business')->get()
+        );
     }
 
     public function deleteLocation($id)
     {
         $location = Location::find($id);
+
         if (!$location) {
             return response()->json(['message' => 'Location not found'], 404);
         }
@@ -75,5 +77,4 @@ class AdminController extends Controller
         $location->delete();
         return response()->json(['message' => 'Location deleted successfully']);
     }
-
 }

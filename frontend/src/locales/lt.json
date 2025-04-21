@@ -99,6 +99,12 @@
     "active_bookings": "Aktyvūs užsakymai",
     "no_active_bookings": "Aktyvių užsakymų nėra",
     "user": "Naudotojas",
-    "active_booking": "Aktyvus užsakymas"
+    "active_booking": "Aktyvus užsakymas",
+    "confirm_approve_business": "Ar tikrai norite patvirtinti šį verslą?",
+    "select_business": "Pasirinkite verslą",
+    "location_not_found": "Vieta nerasta",
+    "update_location": "Atnaujinti vietą",
+    "open_from": "Atidaryta nuo",
+    "open_to": "Atidaryta iki"
   }
   

@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 
 class EnsureBusinessIsApproved
 {
-    public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        $user = auth()->user();
-
-        if (!$user || !$user->is_approved) {
-            return response()->json(['message' => 'Your business account is not approved.'], 403);
+        $user = $request->user();
+    
+        if (!$user || !$user->hasRole('business')) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
-
+    
+        if (!$user->businessProfile || !$user->businessProfile->is_approved) {
+            return response()->json(['message' => 'Business not approved'], 403);
+        }
+    
         return $next($request);
-    }
+    }    
 }

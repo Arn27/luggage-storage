@@ -22,8 +22,33 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    // Bookings relationship
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    // Roles relationship (many-to-many)
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    // Business profile if applicable
+    public function businessProfile()
+    {
+        return $this->belongsTo(BusinessProfile::class, 'business_id');
+    }
+
+    // Role check helper
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    // Optional: get all role names easily
+    public function getRoleNames()
+    {
+        return $this->roles->pluck('name');
     }
 }

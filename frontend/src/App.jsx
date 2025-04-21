@@ -22,6 +22,9 @@ import UpcomingBookings from "./pages/UpcomingBookings";
 import ActiveBookings from "./pages/ActiveBookings";
 import UserActiveBooking from "./pages/UserActiveBooking";
 import WalkInBookingPage from "./pages/WalkInBookingPage";
+import AdminLocationForm from "./components/admin/AdminLocationForm";
+import AdminLocationEdit from "./components/admin/AdminLocationEdit";
+
 
 import "./App.css";
 
@@ -46,13 +49,29 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/user" element={<UserDashboard />} />
                 <Route
-                  path="/admin"
-                  element={
-                    <AdminRoute>
-                      <AdminPanel />
-                    </AdminRoute>
-                  }
-                />
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminPanel />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/locations/new"
+                element={
+                  <AdminRoute>
+                    <AdminLocationForm />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/locations/:id/edit"
+                element={
+                  <AdminRoute>
+                    <AdminLocationEdit />
+                  </AdminRoute>
+                }
+              />
                 <Route path="/business" element={<BusinessDashboard />} />
                 <Route path="/business/locations" element={<BusinessLocations />} />
                 <Route path="/business/locations/new" element={<NewLocationForm />} />

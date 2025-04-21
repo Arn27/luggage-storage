@@ -1,61 +1,95 @@
+/* === Admin Panel Styles === */
 .admin-panel {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, sans-serif;
+}
+
+.admin-panel h1 {
+  font-size: 2.25rem;
+  margin-bottom: 2.5rem;
+  color: var(--heading-color);
+  text-align: center;
+  font-weight: 700;
+}
+
+.business-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.business-card {
+  background-color: var(--card-background);
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.business-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.35rem;
+  color: var(--heading-color);
+  font-weight: 600;
+}
+
+.business-card p {
+  margin: 0;
+  color: var(--text-color);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.business-card strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.business-card .btn {
+  align-self: flex-start;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.business-card .btn:hover {
+  background-color: var(--dark-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(var(--primary-color), 0.2);
+}
+
+.business-card .btn:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* === Responsive Adjustments === */
+@media (max-width: 768px) {
+  .admin-panel {
+    padding: 1.5rem;
   }
-  
-  .admin-panel h1 {
-    font-size: 28px;
-    margin-bottom: 30px;
-    color: #0e9488;
-    text-align: center;
-  }
-  
-  /* Business list container */
-  .business-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  /* Business card */
+
   .business-card {
-    padding: 20px;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+    padding: 1.5rem;
   }
-  
-  .business-card h3 {
-    margin: 0;
-    font-size: 20px;
-    color: #111827;
+
+   .business-card .btn {
+     margin-right: 1rem;
+     margin-bottom: 0.5rem;
   }
-  
-  .business-card p {
-    margin: 4px 0;
-    color: #374151;
-    font-size: 15px;
-  }
-  
-  /* Approve button */
-  .business-card .btn {
-    align-self: flex-start;
-    background-color: #0e9488;
-    color: white;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-  
-  .business-card .btn:hover {
-    background-color: #0c7b72;
-  }
-  
+}

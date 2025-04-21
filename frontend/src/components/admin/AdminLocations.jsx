@@ -1,10 +1,11 @@
-// components/admin/AdminLocations.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import ConfirmModal from "./ConfirmModal";
 
 const AdminLocations = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -12,7 +13,7 @@ const AdminLocations = () => {
 
   const fetchLocations = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/admin/locations", {
+      const res = await fetch("http://localhost:8000/api/admin/locations", {
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
@@ -27,7 +28,7 @@ const AdminLocations = () => {
 
   const deleteLocation = async (id) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/admin/locations/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/admin/locations/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -50,6 +51,12 @@ const AdminLocations = () => {
 
   return (
     <div className="business-list">
+      <div style={{ textAlign: "right", marginBottom: "1rem" }}>
+        <button className="btn" onClick={() => navigate("/admin/locations/new")}>
+          ➕ {t("add_location")}
+        </button>
+      </div>
+
       {locations.length === 0 ? (
         <p>{t("no_locations")}</p>
       ) : (
@@ -58,12 +65,20 @@ const AdminLocations = () => {
             <h3>{loc.address}</h3>
             <p>📍 {loc.city || "N/A"}</p>
             <p>🏷️ {loc.business?.business_name || "-"}</p>
-            <button className="btn" onClick={() => {
-              setSelectedLocation(loc);
-              setShowModal(true);
-            }}>
-              🗑️ {t("delete")}
-            </button>
+            <div style={{ display: "flex", gap: "1rem", marginTop: "0.75rem" }}>
+            <button className="btn" onClick={() => navigate(`/admin/locations/${loc.id}/edit`)}>
+                ✏️ {t("edit")}
+              </button>
+              <button
+                className="btn"
+                onClick={() => {
+                  setSelectedLocation(loc);
+                  setShowModal(true);
+                }}
+              >
+                🗑️ {t("delete")}
+              </button>
+            </div>
           </div>
         ))
       )}

@@ -8,14 +8,14 @@ function Navbar() {
   const [showLang, setShowLang] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const [userType, setUserType] = useState(null);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const syncUser = () => {
       const user = localStorage.getItem("user");
-      const type = localStorage.getItem("user_type");
+      const roles = localStorage.getItem("roles");
       setCurrentUser(user ? JSON.parse(user) : null);
-      setUserType(type || null);
+      setRoles(roles ? JSON.parse(roles) : []);
     };
 
     syncUser();
@@ -32,9 +32,9 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    localStorage.removeItem("user_type");
+    localStorage.removeItem("roles");
     setCurrentUser(null);
-    setUserType(null);
+    setRoles([]);
     window.dispatchEvent(new Event("userChanged"));
     window.location.href = "/";
   };
@@ -43,6 +43,14 @@ function Navbar() {
     i18n.changeLanguage(lang);
     setShowLang(false);
   };
+
+  const isAdmin = roles.includes("admin");
+  const isBusiness = roles.includes("business");
+  const isTraveller = roles.includes("traveller");
+
+  useEffect(() => {
+    console.log("Roles detected in Navbar:", roles);
+  }, [roles]);
 
   return (
     <nav className="navbar">
@@ -56,17 +64,17 @@ function Navbar() {
       <div className={`navbar-menu ${menuOpen ? "open" : ""}`}>
         {currentUser ? (
           <>
-            {(userType === "user" || currentUser.is_admin) && (
+            {(isTraveller || isAdmin) && (
               <Link to="/user" className="btn user-btn">
                 👤 {currentUser.name}
               </Link>
             )}
-            {userType === "business" && !currentUser.is_admin && (
+            {isBusiness && !isAdmin && (
               <Link to="/business" className="btn user-btn">
-                🧳 {currentUser.business_name || currentUser.name}
+                🧳 {currentUser.name}
               </Link>
             )}
-            {currentUser.is_admin && (
+            {isAdmin && (
               <Link to="/admin" className="btn">{t("admin_panel")}</Link>
             )}
             <button className="btn" onClick={handleLogout}>{t("logout")}</button>

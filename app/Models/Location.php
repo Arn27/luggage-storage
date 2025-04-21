@@ -19,14 +19,13 @@ class Location extends Model
         'hourly_rate',
     ];
 
-    // Optional: if you want to auto-cast open_hours JSON to array
     protected $casts = [
         'open_hours' => 'array',
     ];
 
     public function business()
     {
-        return $this->belongsTo(Business::class);
+        return $this->belongsTo(\App\Models\BusinessProfile::class, 'business_id');
     }
 
     public function reviews()

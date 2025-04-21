@@ -1,4 +1,3 @@
-// LocationDetail.jsx (updated with confirm modal for review deletion)
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -24,8 +23,9 @@ const LocationDetail = () => {
 
   const isLoggedIn = !!localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const localUserId = storedUser?.id;
-  const isAdmin = storedUser?.is_admin;
+  const isAdmin = roles.includes("admin");
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -139,7 +139,7 @@ const LocationDetail = () => {
       });
       const data = await res.json();
       alert(data.message);
-  
+
       const updated = await fetch(`http://127.0.0.1:8000/api/locations/${id}`);
       const dataRefreshed = await updated.json();
       setLocation(dataRefreshed);
@@ -151,7 +151,6 @@ const LocationDetail = () => {
       setReviewToDelete(null);
     }
   };
-  
 
   const handleDeleteClick = (id) => {
     setReviewToDelete(id);

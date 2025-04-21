@@ -23,14 +23,14 @@ const TravellerRegister = () => {
         },
         body: JSON.stringify(form),
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         alert(data.message || "Registration failed");
         return;
       }
-  
+
       alert("Registration successful!");
       navigate("/login");
     } catch (err) {
@@ -38,7 +38,6 @@ const TravellerRegister = () => {
       alert("Something went wrong");
     }
   };
-  
 
   return (
     <div className="auth-container">
