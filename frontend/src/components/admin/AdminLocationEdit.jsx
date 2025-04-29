@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ConfirmModal from "./ConfirmModal";
 import "../../pages/NewLocationForm.css";
 
 const AdminLocationEdit = () => {
@@ -15,8 +16,11 @@ const AdminLocationEdit = () => {
     description: "",
     open_hours: { from: "09:00", to: "18:00" },
     phone: "",
-    email: ""
+    email: "",
   });
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("success");
+  const [modalMessage, setModalMessage] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -60,12 +64,26 @@ const AdminLocationEdit = () => {
         body: JSON.stringify(form),
       });
       const data = await res.json();
-      alert(data.message || t("location_updated"));
-      navigate("/admin");
+      if (res.ok) {
+        setModalType("success");
+        setModalMessage(data.message || t("location_updated"));
+        setShowModal(true);
+      } else {
+        setModalType("error");
+        setModalMessage(data.message || t("update_failed"));
+        setShowModal(true);
+      }
     } catch (err) {
       console.error("Update failed:", err);
-      alert(t("update_failed"));
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
     }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    if (modalType === "success") navigate("/admin");
   };
 
   return (
@@ -77,7 +95,7 @@ const AdminLocationEdit = () => {
         <input name="max_bags" type="number" min="1" placeholder={t("max_bags")} value={form.max_bags} onChange={handleChange} />
         <input name="hourly_rate" type="number" step="0.01" placeholder={t("hourly_rate")} value={form.hourly_rate} onChange={handleChange} />
         <textarea name="description" placeholder={t("description")} value={form.description} onChange={handleChange}></textarea>
-  
+
         <div className="hours-row">
           <label>
             {t("open_from")}
@@ -88,14 +106,21 @@ const AdminLocationEdit = () => {
             <input type="time" name="open_hours.to" value={form.open_hours.to} onChange={handleChange} />
           </label>
         </div>
-  
+
         <input name="phone" placeholder={t("phone") + ` (${t("optional")})`} value={form.phone || ""} onChange={handleChange} />
         <input name="email" placeholder={t("email") + ` (${t("optional")})`} value={form.email || ""} onChange={handleChange} />
-  
+
         <button type="submit" className="btn">{t("update_location")}</button>
       </form>
+
+      <ConfirmModal
+        show={showModal}
+        onClose={handleModalClose}
+        message={modalMessage}
+        type={modalType}
+      />
     </div>
   );
-}  
+};
 
 export default AdminLocationEdit;

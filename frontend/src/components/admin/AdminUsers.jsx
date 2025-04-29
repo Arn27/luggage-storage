@@ -1,3 +1,4 @@
+// Updated AdminUsers.jsx
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "./ConfirmModal";
@@ -6,6 +7,8 @@ const AdminUsers = () => {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [modalType, setModalType] = useState("confirm");
+  const [modalMessage, setModalMessage] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -30,7 +33,7 @@ const AdminUsers = () => {
 
   const deleteUser = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8000/api/admin/users/${id}`, {
+      const res = await fetch(`http://localhost:8000/api/admin/user/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -38,11 +41,15 @@ const AdminUsers = () => {
         },
       });
       const data = await res.json();
-      alert(data.message);
+      setModalType("success");
+      setModalMessage(data.message);
+      setShowModal(true);
       fetchUsers();
     } catch (err) {
       console.error("Delete failed:", err);
-      alert("Something went wrong.");
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
     }
   };
 
@@ -51,36 +58,42 @@ const AdminUsers = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleConfirm = () => {
+    if (selectedUser) deleteUser(selectedUser.id);
+    setSelectedUser(null);
+  };
+
   return (
     <div className="user-list">
       {users.length === 0 ? (
         <p>{t("no_users")}</p>
       ) : (
         users.map((user) => (
-          <div key={user.id} className="business-card">
-            <h3>{user.name}</h3>
-            <p>📧 {user.email}</p>
-            <button
-              className="btn"
-              onClick={() => {
-                setSelectedUser(user);
-                setShowModal(true);
-              }}
-            >
-              🗑️ {t("delete")}
-            </button>
-          </div>
+        <div key={user.id} className="business-card">
+          <h3>{user.name}</h3>
+          <p>📧 {user.email}</p>
+          <button
+            className="btn"
+            onClick={() => {
+              setSelectedUser(user);
+              setModalType("confirm");
+              setModalMessage(t("confirm_delete_user"));
+              setShowModal(true);
+            }}
+          >
+            🗑️ {t("delete")}
+          </button>
+        </div>
+
         ))
       )}
 
       <ConfirmModal
         show={showModal}
         onClose={() => setShowModal(false)}
-        onConfirm={() => {
-          if (selectedUser) deleteUser(selectedUser.id);
-          setShowModal(false);
-        }}
-        message={t("confirm_delete_user")}
+        onConfirm={handleConfirm}
+        message={modalMessage}
+        type={modalType}
       />
     </div>
   );

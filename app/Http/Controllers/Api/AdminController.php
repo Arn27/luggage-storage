@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\BusinessProfile;
 use App\Models\Location;
 use App\Models\User;
+use App\Models\Business;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -64,6 +66,21 @@ class AdminController extends Controller
         return response()->json(
             Location::with('business')->get()
         );
+    }
+
+    public function adminStats()
+    {
+        $usersCount = User::count();
+        $businessesCount = BusinessProfile::count();
+        $locationsCount = Location::count();
+        $pendingBusinessesCount = BusinessProfile::where('is_approved', false)->count();
+    
+        return response()->json([
+            'users' => $usersCount,
+            'businesses' => $businessesCount,
+            'locations' => $locationsCount,
+            'pendingBusinesses' => $pendingBusinessesCount,
+        ]);
     }
 
     public function deleteLocation($id)

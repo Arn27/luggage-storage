@@ -2,7 +2,8 @@
 import { useTranslation } from "react-i18next";
 
 const tabs = [
-  { key: "pending", label: "admin_panel" },
+  { key: "dashboard", label: "dashboard" }, // new
+  { key: "pending", label: "pending_businesses" }, // renamed for clarity
   { key: "users", label: "users" },
   { key: "businesses", label: "businesses" },
   { key: "locations", label: "locations" }

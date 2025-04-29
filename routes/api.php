@@ -35,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin Panel
     Route::middleware(['is.admin'])->group(function () {
+        Route::get('/admin/stats', [AdminController::class, 'adminStats']);
+
         Route::get('/admin/pending-businesses', [AdminController::class, 'pendingBusinesses']);
         Route::post('/admin/approve-business/{id}', [AdminController::class, 'approveBusiness']);
 

@@ -9,6 +9,8 @@ const AdminLocations = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("confirm");
+  const [modalMessage, setModalMessage] = useState("");
   const token = localStorage.getItem("token");
 
   const fetchLocations = async () => {
@@ -36,11 +38,15 @@ const AdminLocations = () => {
         },
       });
       const data = await res.json();
-      alert(data.message);
+      setModalType("success");
+      setModalMessage(data.message);
+      setShowModal(true);
       fetchLocations();
     } catch (err) {
       console.error("Delete failed:", err);
-      alert("Something went wrong.");
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
     }
   };
 
@@ -49,12 +55,15 @@ const AdminLocations = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleConfirm = () => {
+    if (selectedLocation) deleteLocation(selectedLocation.id);
+    setSelectedLocation(null);
+  };
+
   return (
     <div className="business-list">
       <div style={{ textAlign: "right", marginBottom: "1rem" }}>
-        <button className="btn" onClick={() => navigate("/admin/locations/new")}>
-          ➕ {t("add_location")}
-        </button>
+        <button className="btn" onClick={() => navigate("/admin/locations/new")}>➕ {t("add_location")}</button>
       </div>
 
       {locations.length === 0 ? (
@@ -66,13 +75,13 @@ const AdminLocations = () => {
             <p>📍 {loc.city || "N/A"}</p>
             <p>🏷️ {loc.business?.business_name || "-"}</p>
             <div style={{ display: "flex", gap: "1rem", marginTop: "0.75rem" }}>
-            <button className="btn" onClick={() => navigate(`/admin/locations/${loc.id}/edit`)}>
-                ✏️ {t("edit")}
-              </button>
+              <button className="btn" onClick={() => navigate(`/admin/locations/${loc.id}/edit`)}>✏️ {t("edit")}</button>
               <button
                 className="btn"
                 onClick={() => {
                   setSelectedLocation(loc);
+                  setModalType("confirm");
+                  setModalMessage(t("confirm_delete_location"));
                   setShowModal(true);
                 }}
               >
@@ -86,11 +95,9 @@ const AdminLocations = () => {
       <ConfirmModal
         show={showModal}
         onClose={() => setShowModal(false)}
-        onConfirm={() => {
-          if (selectedLocation) deleteLocation(selectedLocation.id);
-          setShowModal(false);
-        }}
-        message={t("confirm_delete_location")}
+        onConfirm={handleConfirm}
+        message={modalMessage}
+        type={modalType}
       />
     </div>
   );

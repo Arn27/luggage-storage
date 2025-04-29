@@ -80,6 +80,34 @@
     box-shadow: none;
 }
 
+.confirm-btn.confirm {
+  background-color: var(--error-color);
+  color: var(--white);
+}
+
+.confirm-btn.confirm:hover {
+  background-color: #c0392b;
+}
+
+.confirm-btn.success {
+  background-color: var(--success-color, #2ecc71); /* Green if not defined */
+  color: var(--white);
+}
+
+.confirm-btn.success:hover {
+  background-color: #27ae60;
+}
+
+.confirm-btn.error {
+  background-color: var(--error-color);
+  color: var(--white);
+}
+
+.confirm-btn.error:hover {
+  background-color: #c0392b;
+}
+
+
 @media (max-width: 480px) {
     .confirm-modal-content {
         padding: 1.5rem;

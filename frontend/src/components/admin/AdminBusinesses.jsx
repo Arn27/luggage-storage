@@ -7,6 +7,8 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
   const [businesses, setBusinesses] = useState([]);
   const [selectedBusiness, setSelectedBusiness] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("confirm");
+  const [modalMessage, setModalMessage] = useState("");
   const [approveMode, setApproveMode] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -39,11 +41,15 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
         },
       });
       const data = await res.json();
-      alert(data.message);
+      setModalType("success");
+      setModalMessage(data.message);
+      setShowModal(true);
       fetchBusinesses();
     } catch (err) {
       console.error("Approval failed:", err);
-      alert("Something went wrong.");
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
     }
   };
 
@@ -57,11 +63,15 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
         },
       });
       const data = await res.json();
-      alert(data.message);
+      setModalType("success");
+      setModalMessage(data.message);
+      setShowModal(true);
       fetchBusinesses();
     } catch (err) {
       console.error("Delete failed:", err);
-      alert("Something went wrong.");
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
     }
   };
 
@@ -69,6 +79,15 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
     fetchBusinesses();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleConfirm = () => {
+    if (selectedBusiness) {
+      approveMode
+        ? approveBusiness(selectedBusiness.id)
+        : deleteBusiness(selectedBusiness.id);
+    }
+    setSelectedBusiness(null);
+  };
 
   return (
     <div className="business-list">
@@ -78,14 +97,16 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
         businesses.map((b) => (
           <div key={b.id} className="business-card">
             <h3>{b.business_name}</h3>
-            <p>📧 {b.email}</p>
-            <p>📞 {b.phone || t("no_phone")}</p>
+            <p>\ud83d\udce7 {b.email}</p>
+            <p>\ud83d\udcde {b.phone || t("no_phone")}</p>
             {pendingOnly ? (
               <button
                 className="btn"
                 onClick={() => {
                   setSelectedBusiness(b);
                   setApproveMode(true);
+                  setModalType("confirm");
+                  setModalMessage(t("confirm_approve_business"));
                   setShowModal(true);
                 }}
               >
@@ -97,6 +118,8 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
                 onClick={() => {
                   setSelectedBusiness(b);
                   setApproveMode(false);
+                  setModalType("confirm");
+                  setModalMessage(t("confirm_delete_business"));
                   setShowModal(true);
                 }}
               >
@@ -110,19 +133,9 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
       <ConfirmModal
         show={showModal}
         onClose={() => setShowModal(false)}
-        onConfirm={() => {
-          if (selectedBusiness) {
-            approveMode
-              ? approveBusiness(selectedBusiness.id)
-              : deleteBusiness(selectedBusiness.id);
-          }
-          setShowModal(false);
-        }}
-        message={
-          approveMode
-            ? t("confirm_approve_business")
-            : t("confirm_delete_business")
-        }
+        onConfirm={handleConfirm}
+        message={modalMessage}
+        type={modalType}
       />
     </div>
   );

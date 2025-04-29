@@ -103,6 +103,11 @@
     "location_not_found": "Location not found",
     "update_location": "Update Location",
     "open_from": "Open from",
-    "open_to": "Open to"
+    "open_to": "Open to",
+    "ok": "OK",
+    "something_went_wrong": "Something went wrong.",
+    "location_created": "Location created successfully.",
+    "update_failed": "Failed to update location.",
+    "pending_businesses": "Pending Businesses"
   }
   

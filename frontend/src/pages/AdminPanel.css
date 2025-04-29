@@ -78,6 +78,44 @@
     box-shadow: none;
 }
 
+/* === Dashboard Cards === */
+.dashboard-cards {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  background-color: var(--card-background);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: var(--heading-color);
+  font-weight: 700;
+}
+
+.dashboard-card p {
+  font-size: 2rem;
+  color: var(--primary-color);
+  font-weight: 700;
+  margin: 0;
+}
+
+
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {
   .admin-panel {
@@ -92,4 +130,5 @@
      margin-right: 1rem;
      margin-bottom: 0.5rem;
   }
+
 }

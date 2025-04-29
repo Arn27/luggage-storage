@@ -105,6 +105,11 @@
     "location_not_found": "Vieta nerasta",
     "update_location": "Atnaujinti vietą",
     "open_from": "Atidaryta nuo",
-    "open_to": "Atidaryta iki"
+    "open_to": "Atidaryta iki",
+    "ok": "Gerai",
+    "something_went_wrong": "Kažkas nepavyko.",
+    "location_created": "Vieta sėkmingai sukurta.",
+    "update_failed": "Nepavyko atnaujinti vietos.",
+    "pending_businesses": "Laukiantys verslai"
   }
   

@@ -1,8 +1,9 @@
-// components/admin/AdminLocationForm.jsx
+// Updated AdminLocationForm.jsx
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Autocomplete } from "@react-google-maps/api";
+import ConfirmModal from "./ConfirmModal"; // Added
 import "../../pages/Auth.css"; // reuse styling
 
 const AdminLocationForm = () => {
@@ -26,6 +27,10 @@ const AdminLocationForm = () => {
   const [businesses, setBusinesses] = useState([]);
   const [autocomplete, setAutocomplete] = useState(null);
   const addressRef = useRef(null);
+
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState("success");
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -89,15 +94,31 @@ const AdminLocationForm = () => {
         body: JSON.stringify(form),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const data = await res.json();
         setErrors(data.errors || { general: [data.message] });
+        setModalType("error");
+        setModalMessage(data.message || t("something_went_wrong"));
+        setShowModal(true);
         return;
       }
 
-      navigate("/admin"); // or redirect to admin/locations if separate
+      setModalType("success");
+      setModalMessage(t("location_created"));
+      setShowModal(true);
     } catch (err) {
       console.error("Submission failed", err);
+      setModalType("error");
+      setModalMessage(t("something_went_wrong"));
+      setShowModal(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    if (modalType === "success") {
+      navigate("/admin");
     }
   };
 
@@ -205,6 +226,13 @@ const AdminLocationForm = () => {
           {t("create_location")}
         </button>
       </form>
+
+      <ConfirmModal
+        show={showModal}
+        onClose={handleModalClose}
+        message={modalMessage}
+        type={modalType}
+      />
     </div>
   );
 };
