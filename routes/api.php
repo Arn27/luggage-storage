@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store']);
 
     // Business Dashboard (only approved businesses)
-    Route::middleware(['ensure.business.approved'])->group(function () {
+    Route::middleware(['approved.business'])->group(function () {
         Route::get('/dashboard/business', [BusinessDashboardController::class, 'index']);
     });
 

@@ -67,34 +67,28 @@ class LocationController extends Controller
 
     public function store(Request $request)
     {
+        $user = auth()->user();
+        $businessProfile = $user->businessProfile;
+
+        if (!$businessProfile) {
+            return response()->json(['message' => 'Business profile not found'], 403);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
+            'address' => 'required|string',
+            'city' => 'required|string',
             'description' => 'nullable|string',
-            'lat' => 'nullable|numeric',
-            'lng' => 'nullable|numeric',
-            'max_bags' => 'required|integer|min:1',
-            'hourly_rate' => 'required|numeric|min:0',
-            'open_hours' => 'nullable|array',
-            'open_hours.from' => 'nullable|string',
-            'open_hours.to' => 'nullable|string',
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric',
+            'max_bags' => 'required|integer',
+            'hourly_rate' => 'required|numeric',
+            'open_hours' => 'required|json',
         ]);
 
-        $location = \App\Models\Location::create([
-            'business_id' => auth()->id(),
-            'name' => $validated['name'],
-            'address' => $validated['address'],
-            'city' => $validated['city'],
-            'description' => $validated['description'] ?? null,
-            'lat' => $validated['lat'] ?? null,
-            'lng' => $validated['lng'] ?? null,
-            'max_bags' => $validated['max_bags'],
-            'hourly_rate' => $validated['hourly_rate'],
-            'open_hours' => [
-                'from' => $validated['open_hours']['from'] ?? null,
-                'to' => $validated['open_hours']['to'] ?? null,
-            ],
+        $location = Location::create([
+            'business_id' => $businessProfile->id,
+            ...$validated
         ]);
 
         return response()->json($location, 201);

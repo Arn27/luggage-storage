@@ -16,42 +16,45 @@ class BusinessController extends Controller
     {
         $validated = $request->validate([
             'business_name' => 'required|string|max:255',
-            'email' => [
-                'required', 'email', 'unique:users,email'
-            ],
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:6',
             'phone' => 'nullable|string|max:20',
             'name' => 'required|string|max:255',
         ]);
-
+    
         DB::beginTransaction();
-
+    
         try {
-            $profile = BusinessProfile::create([
+            // 1. Create business profile
+            $business = BusinessProfile::create([
                 'name' => $validated['business_name'],
-                'phone' => $validated['phone'] ?? null,
-                'is_approved' => false,
+                'phone' => $validated['phone'],
+                'is_approved' => false, // admin must approve
             ]);
-
+    
+            // 2. Create user and assign business_id
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
-                'business_id' => $profile->id,
+                'business_id' => $business->id,
             ]);
-
-            $businessRole = Role::where('name', 'business')->first();
-            $user->roles()->attach($businessRole);
-
+    
+            // 3. Assign business role
+            $role = Role::where('name', 'business')->first();
+            $user->roles()->attach($role);
+    
             DB::commit();
-
+    
             return response()->json([
                 'message' => 'Business registered. Awaiting admin approval.',
                 'user' => $user,
-            ]);
-        } catch (\Throwable $e) {
+            ], 201);
+    
+        } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Registration failed.'], 500);
+            return response()->json(['message' => 'Registration failed.'], 500);
         }
     }
+    
 }
