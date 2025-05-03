@@ -24,7 +24,17 @@ const MapWrapper = ({ city, date, bags }) => {
         const res = await fetch(`http://127.0.0.1:8000/api/locations?city=${city}&bags=${bags}`);
         const data = await res.json();
         const validLocs = data.filter(loc => !isNaN(loc.lat) && !isNaN(loc.lng));
-        setLocations(validLocs);
+        const parsedLocs = validLocs.map(loc => {
+          if (typeof loc.open_hours === "string") {
+            try {
+              loc.open_hours = JSON.parse(loc.open_hours);
+            } catch {
+              loc.open_hours = { from: "?", to: "?" };
+            }
+          }
+          return loc;
+        });
+        setLocations(parsedLocs);
 
         if (validLocs.length > 0) {
           setCenter({ lat: parseFloat(validLocs[0].lat), lng: parseFloat(validLocs[0].lng) });

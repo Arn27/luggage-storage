@@ -12,4 +12,9 @@ class BusinessProfile extends Model
     {
         return $this->hasMany(User::class, 'business_id');
     }
+
+    public function locations()
+    {
+        return $this->hasMany(Location::class, 'business_id');
+    }
 }

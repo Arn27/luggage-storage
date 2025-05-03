@@ -32,6 +32,13 @@ const LocationDetail = () => {
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/locations/${id}`);
         const data = await res.json();
+        if (typeof data.open_hours === "string") {
+          try {
+            data.open_hours = JSON.parse(data.open_hours);
+          } catch {
+            data.open_hours = { from: "?", to: "?" };
+          }
+        }
         setLocation(data);
       } catch (err) {
         console.error("Failed to fetch location:", err);

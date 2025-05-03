@@ -47,4 +47,18 @@ class BusinessDashboardController extends Controller
             'pendingBookings' => $pendingBookings,
         ]);
     }
+
+    public function locations()
+    {
+        $businessId = auth()->user()?->business_id;
+    
+        if (!$businessId) {
+            return response()->json(['message' => 'Business not found.'], 404);
+        }
+    
+        $locations = Location::where('business_id', $businessId)->get();
+    
+        return response()->json($locations);
+    }
+    
 }

@@ -86,7 +86,7 @@ const NewLocationForm = () => {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
         },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, open_hours: JSON.stringify(form.open_hours) }),
       });
 
       if (!res.ok) {

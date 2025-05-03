@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\BusinessDashboardController;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\UserDashboardController;
 
 // Public Routes
 Route::post('/login', [AuthController::class, 'login']);
@@ -25,12 +26,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/bookings/active', [BookingController::class, 'activeBookings']);
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
 
+    // User Dashboard
+    Route::get('/user/bookings', [UserDashboardController::class, 'bookings']);
+
+
     // Reviews
     Route::post('/reviews', [ReviewController::class, 'store']);
 
     // Business Dashboard (only approved businesses)
     Route::middleware(['approved.business'])->group(function () {
         Route::get('/dashboard/business', [BusinessDashboardController::class, 'index']);
+        Route::get('/business/locations', [BusinessDashboardController::class, 'locations']);
     });
 
     // Admin Panel
