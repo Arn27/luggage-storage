@@ -12,7 +12,21 @@ class Booking extends Model
         'date',
         'bag_count',
         'status',
+        'start_time',
+        'end_time',
+        'user_luggage_photo',
+        'business_luggage_photo',
+        'user_close_photo',
+        'business_close_photo',
+        'user_start_photo',
+        'business_start_photo',
+        'user_end_photo',
+        'business_end_photo',
+        'started_at',
+        'ended_at',
+        'is_walkin',
     ];
+    
 
     protected $casts = [
         'date' => 'date',

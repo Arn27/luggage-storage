@@ -28,6 +28,11 @@ class Location extends Model
         return $this->belongsTo(\App\Models\BusinessProfile::class, 'business_id');
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
     public function reviews()
     {
         return $this->hasMany(\App\Models\Review::class);

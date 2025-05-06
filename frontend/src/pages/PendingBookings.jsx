@@ -31,20 +31,20 @@ const PendingBookings = () => {
           Accept: "application/json",
         },
       });
-  
+
       const data = await res.json();
       if (Array.isArray(data)) {
-        setBookings(data);
+        const relevantStatuses = ['pending_start', 'user_started'];
+        setBookings(data.filter(b => relevantStatuses.includes(b.status)));
       } else {
         console.error("Invalid data:", data);
-        setBookings([]); // prevent map crash
+        setBookings([]);
       }
     } catch (err) {
       console.error("Failed to fetch pending bookings", err);
       setBookings([]);
     }
   };
-  
 
   const handleStart = async (id) => {
     if (!photo) return alert("Please select a photo.");
@@ -94,6 +94,8 @@ const PendingBookings = () => {
               <p>📍 <strong>{b.location?.name}</strong></p>
               <p>📅 {new Date(b.date).toLocaleDateString()}</p>
               <p>📦 {b.bag_count} {t("bags")}</p>
+              <p>🔒 {t("status")}: {t(b.status)}</p>
+              {b.user_start_photo && <p>✅ {t("user_uploaded_photo")}</p>}
 
               <div className="contact-info">
                 <p><strong>{t("name")}:</strong> {b.user?.name}</p>

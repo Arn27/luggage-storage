@@ -10,43 +10,34 @@ use Illuminate\Support\Facades\Auth;
 
 class BusinessDashboardController extends Controller
 {
-    public function index(Request $request)
-    {
-        $businessId = Auth::user()?->business_id;
-
-        if (!$businessId) {
-            return response()->json(['message' => 'Business not assigned.'], 403);
+        public function index(Request $request)
+        {
+            $user = Auth::user();
+    
+            if (!$user || !$user->businessProfile) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+    
+            $business = $user->businessProfile;
+    
+            $locations = $business->locations()->count();
+    
+            $bookings = $business->locations()->with('bookings')->get()->flatMap(function ($location) {
+                return $location->bookings;
+            });
+    
+            $stats = [
+                'locations' => $locations,
+                'upcomingBookings' => $bookings->where('status', 'confirmed')->where('start_time', '>', now())->count(),
+                'pastBookings' => $bookings->where('status', 'confirmed')->where('end_time', '<', now())->count(),
+                'pendingBookings' => $bookings->where('status', 'pending')->count(),
+                'activeBookings' => $bookings->where('status', 'active')->count(),
+            ];
+    
+            return response()->json($stats);
         }
 
-        $locationsCount = Location::where('business_id', $businessId)->count();
-
-        $upcomingBookings = Booking::whereHas('location', function ($query) use ($businessId) {
-            $query->where('business_id', $businessId);
-        })
-        ->whereDate('date', '>', now())
-        ->where('status', 'confirmed')
-        ->count();
-
-        $pastBookings = Booking::whereHas('location', function ($query) use ($businessId) {
-            $query->where('business_id', $businessId);
-        })
-        ->whereDate('date', '<=', now())
-        ->where('status', 'confirmed')
-        ->count();
-
-        $pendingBookings = Booking::whereHas('location', function ($query) use ($businessId) {
-            $query->where('business_id', $businessId);
-        })
-        ->where('status', 'pending')
-        ->count();
-
-        return response()->json([
-            'locations' => $locationsCount,
-            'upcomingBookings' => $upcomingBookings,
-            'pastBookings' => $pastBookings,
-            'pendingBookings' => $pendingBookings,
-        ]);
-    }
+    
 
     public function locations()
     {

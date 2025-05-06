@@ -1,9 +1,8 @@
-// src/pages/StartBooking.jsx
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const StartBooking = () => {
-  const { id } = useParams(); // booking ID
+  const { id } = useParams();
   const navigate = useNavigate();
   const [booking, setBooking] = useState(null);
   const [photo, setPhoto] = useState(null);
@@ -39,7 +38,7 @@ const StartBooking = () => {
 
     const data = await res.json();
     if (res.ok) {
-      setMessage("Booking started! Waiting for business to confirm.");
+      setMessage("✅ Booking started! Waiting for business to confirm.");
       setTimeout(() => navigate("/user/booking/active"), 1500);
     } else {
       setMessage(data?.message || "Something went wrong.");
@@ -48,21 +47,37 @@ const StartBooking = () => {
 
   if (!booking) return <p>Loading...</p>;
 
+  const showUpload = booking.status === "pending_start" || booking.status === "business_started";
+  const businessUploaded = !!booking.business_start_photo;
+
   return (
     <div className="dashboard-container">
       <h1>Start Booking</h1>
-      <p>Location: {booking.location?.name}</p>
-      <p>Date: {new Date(booking.date).toLocaleString()}</p>
-      <p>Bags: {booking.bag_count}</p>
+      <p>📍 Location: {booking.location?.name}</p>
+      <p>📅 Date: {new Date(booking.date).toLocaleString()}</p>
+      <p>🧳 Bags: {booking.bag_count}</p>
+      <p>🔒 Status: {booking.status}</p>
 
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(e) => setPhoto(e.target.files[0])}
-      />
-      <button className="btn" onClick={handleUpload}>
-        Upload Bag Photo & Confirm
-      </button>
+      {businessUploaded && (
+        <p style={{ color: "green" }}>✅ Business has uploaded a photo.</p>
+      )}
+
+      {!showUpload ? (
+        <p style={{ color: "red" }}>
+          You can't start this booking at the moment.
+        </p>
+      ) : (
+        <>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhoto(e.target.files[0])}
+          />
+          <button className="btn" onClick={handleUpload}>
+            Upload Bag Photo & Confirm
+          </button>
+        </>
+      )}
 
       {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
     </div>

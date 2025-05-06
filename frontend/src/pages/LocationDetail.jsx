@@ -197,75 +197,94 @@ const LocationDetail = () => {
         </div>
 
         <div className="booking-form">
-          {userBooking ? (
-            <div className="user-booking-box">
-              <h2>{t("your_booking")}</h2>
-              <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
-              <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
-              <p>🔒 {t("status")}: {t(userBooking.status)}</p>
-              {new Date(userBooking.date).toDateString() === new Date().toDateString() &&
-                userBooking.status === "pending_start" ? (
-                  <Link to={`/booking/${userBooking.id}/start`} className="btn">
-                    {t("start_booking")}
-                  </Link>
-                ) : (
-                  <button className="cancel-btn" onClick={handleCancel}>
-                    {t("cancel_booking")}
-                  </button>
-                )}
-            </div>
-          ) : isLoggedIn ? (
-            <>
-              <h2>{t("book_now")}</h2>
-              <div className="form-row">
-                <label>
-                  {t("date")}
-                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-                </label>
+  {userBooking ? (
+    <div className="user-booking-box">
+      <h2>{t("your_booking")}</h2>
+      <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
+      <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
+      <p>🔒 {t("status")}: {t(userBooking.status)}</p>
 
-                <label>
-                  {t("bags")}
-                  <input
-                    type="number"
-                    min="1"
-                    value={bags}
-                    onChange={(e) => setBags(e.target.value)}
-                  />
-                </label>
-              </div>
+      {userBooking.status === "user_started" && (
+        <p style={{ color: "#0e9488" }}>{t("waiting_business_confirm")}</p>
+      )}
 
-              <button className="book-button" onClick={handleBooking}>
-                {t("confirm_booking")}
-              </button>
+      {userBooking.status === "business_started" && !userBooking.user_start_photo && (
+        <Link to={`/booking/${userBooking.id}/start`} className="btn">
+          {t("start_booking")}
+        </Link>
+      )}
 
-              {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
-            </>
-          ) : (
-            <div className="guest-message">
-              <p>{t("login_to_book")}</p>
-              <div style={{ display: "flex", gap: "1rem" }}>
-                <Link to="/login" className="auth-btn">{t("login")}</Link>
-                <Link to="/register" className="auth-btn">{t("register")}</Link>
-              </div>
-            </div>
-          )}
+      {new Date(userBooking.date).toDateString() === new Date().toDateString() &&
+        userBooking.status === "pending_start" && (
+          <Link to={`/booking/${userBooking.id}/start`} className="btn">
+            {t("start_booking")}
+          </Link>
+      )}
 
-          {canReview && (
-            <div className="review-form">
-              <h3>{t("leave_review")}</h3>
-              <label>
-                {t("rating")}: <input type="number" min="1" max="5" value={rating} onChange={(e) => setRating(e.target.value)} />
-              </label>
-              <textarea
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                placeholder={t("write_review")}
-              ></textarea>
-              <button onClick={handleReviewSubmit}>{t("submit_review")}</button>
-              {reviewSuccess && <p>{reviewSuccess}</p>}
-            </div>
-          )}
-        </div>
+      <button className="cancel-btn" onClick={handleCancel}>
+        {t("cancel_booking")}
+      </button>
+    </div>
+  ) : isLoggedIn ? (
+    <>
+      <h2>{t("book_now")}</h2>
+      <div className="form-row">
+        <label>
+          {t("date")}
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        </label>
+
+        <label>
+          {t("bags")}
+          <input
+            type="number"
+            min="1"
+            value={bags}
+            onChange={(e) => setBags(e.target.value)}
+          />
+        </label>
+      </div>
+
+      <button className="book-button" onClick={handleBooking}>
+        {t("confirm_booking")}
+      </button>
+
+      {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
+    </>
+  ) : (
+    <div className="guest-message">
+      <p>{t("login_to_book")}</p>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        <Link to="/login" className="auth-btn">{t("login")}</Link>
+        <Link to="/register" className="auth-btn">{t("register")}</Link>
+      </div>
+    </div>
+  )}
+
+  {canReview && (
+    <div className="review-form">
+      <h3>{t("leave_review")}</h3>
+      <label>
+        {t("rating")}:{" "}
+        <input
+          type="number"
+          min="1"
+          max="5"
+          value={rating}
+          onChange={(e) => setRating(e.target.value)}
+        />
+      </label>
+      <textarea
+        value={reviewText}
+        onChange={(e) => setReviewText(e.target.value)}
+        placeholder={t("write_review")}
+      ></textarea>
+      <button onClick={handleReviewSubmit}>{t("submit_review")}</button>
+      {reviewSuccess && <p>{reviewSuccess}</p>}
+    </div>
+  )}
+</div>
+
       </div>
 
       <div className="reviews-section">
