@@ -110,6 +110,12 @@
     "something_went_wrong": "Kažkas nepavyko.",
     "location_created": "Vieta sėkmingai sukurta.",
     "update_failed": "Nepavyko atnaujinti vietos.",
-    "pending_businesses": "Laukiantys verslai"
+    "pending_businesses": "Laukiantys verslai",
+    "current_password": "Dabartinis slaptažodis",
+    "new_password": "Naujas slaptažodis",
+    "confirm_password": "Patvirtinkite naują slaptažodį",
+    "update_password": "Atnaujinti slaptažodį",
+    "password_updated": "Slaptažodis sėkmingai atnaujintas.",
+    "password_error": "Nepavyko atnaujinti slaptažodžio."
   }
   

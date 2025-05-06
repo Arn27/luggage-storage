@@ -9,6 +9,9 @@ use App\Models\BusinessProfile;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Booking;
+
 
 class BusinessController extends Controller
 {

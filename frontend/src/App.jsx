@@ -24,7 +24,8 @@ import UserActiveBooking from "./pages/UserActiveBooking";
 import WalkInBookingPage from "./pages/WalkInBookingPage";
 import AdminLocationForm from "./components/admin/AdminLocationForm";
 import AdminLocationEdit from "./components/admin/AdminLocationEdit";
-
+import ChangePassword from "./pages/ChangePassword";
+import StartBooking from "./pages/StartBooking";
 
 import "./App.css";
 
@@ -48,6 +49,8 @@ function App() {
                 <Route path="/register/business" element={<BusinessRegister />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/user" element={<UserDashboard />} />
+                <Route path="/user/change-password" element={<ChangePassword />} />
+                <Route path="/booking/:id/start" element={<StartBooking />} />
                 <Route
                 path="/admin"
                 element={

@@ -203,7 +203,16 @@ const LocationDetail = () => {
               <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
               <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
               <p>🔒 {t("status")}: {t(userBooking.status)}</p>
-              <button className="cancel-btn" onClick={handleCancel}>{t("cancel_booking")}</button>
+              {new Date(userBooking.date).toDateString() === new Date().toDateString() &&
+                userBooking.status === "pending_start" ? (
+                  <Link to={`/booking/${userBooking.id}/start`} className="btn">
+                    {t("start_booking")}
+                  </Link>
+                ) : (
+                  <button className="cancel-btn" onClick={handleCancel}>
+                    {t("cancel_booking")}
+                  </button>
+                )}
             </div>
           ) : isLoggedIn ? (
             <>

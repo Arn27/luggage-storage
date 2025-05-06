@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
+import ChangePasswordForm from "../components/ChangePasswordForm";
 import "./UserDashboard.css";
 
 const UserDashboard = () => {
@@ -65,11 +66,15 @@ const UserDashboard = () => {
 
       <section className="dashboard-section">
         <h2>{t("actions")}</h2>
-        <button className="btn">{t("change_password")}</button>
-        <Link to="/user/booking/active" className="btn" style={{ marginLeft: "1rem" }}>
+        <Link to="/user/change-password" className="btn">
+          {t("change_password")}
+        </Link>
+
+        <Link to="/user/booking/active" className="btn" style={{ marginTop: "1rem" }}>
           {t("active_booking")}
         </Link>
       </section>
+
 
       <section className="dashboard-section">
         <h2>{t("upcoming_bookings")}</h2>
@@ -83,10 +88,38 @@ const UserDashboard = () => {
                   {booking.location?.name}
                 </a> — {new Date(booking.date).toLocaleDateString()}
               </p>
+              <button
+                className="btn small-btn"
+                onClick={async () => {
+                  const token = localStorage.getItem("token");
+                  try {
+                    const res = await fetch(`http://localhost:8000/api/bookings/${booking.id}/cancel`, {
+                      method: "POST",
+                      headers: {
+                        Authorization: `Bearer ${token}`,
+                        Accept: "application/json",
+                      },
+                    });
+                    if (res.ok) {
+                      alert(t("booking_cancelled"));
+                      // Optional: re-fetch bookings here or remove from state
+                    } else {
+                      const data = await res.json();
+                      alert(data.message || "Error cancelling booking.");
+                    }
+                  } catch (err) {
+                    console.error("Cancel failed", err);
+                    alert("Something went wrong.");
+                  }
+                }}
+              >
+                {t("cancel")}
+              </button>
             </div>
           ))
         )}
       </section>
+
 
       <section className="dashboard-section">
         <h2>{t("past_bookings")}</h2>

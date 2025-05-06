@@ -108,6 +108,12 @@
     "something_went_wrong": "Something went wrong.",
     "location_created": "Location created successfully.",
     "update_failed": "Failed to update location.",
-    "pending_businesses": "Pending Businesses"
+    "pending_businesses": "Pending Businesses",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "update_password": "Update Password",
+    "password_updated": "Password updated successfully.",
+    "password_error": "Failed to update password."
   }
   

@@ -22,18 +22,23 @@ class BookingController extends Controller
 
     public function pending()
     {
-        $businessId = auth()->user()->id;
-
+        $businessId = auth()->user()->business_id;
+    
+        \Log::info("Business ID: " . $businessId);
+    
         $bookings = Booking::with(['location', 'user'])
             ->whereHas('location', function ($query) use ($businessId) {
                 $query->where('business_id', $businessId);
             })
-            ->where('status', 'pending')
+            ->where('status', 'pending_start')
             ->get();
-
+    
+        \Log::info("Found " . $bookings->count() . " pending bookings.");
+    
         return response()->json($bookings);
     }
-
+    
+    
     private function getBookings($type)
     {
         $businessId = Auth::id();
@@ -67,7 +72,7 @@ class BookingController extends Controller
             'location_id' => $request->location_id,
             'date' => $request->date,
             'bag_count' => $request->bag_count,
-            'status' => 'pending',
+            'status' => 'pending_start',
         ]);
 
         return response()->json($booking, 201);
@@ -118,7 +123,7 @@ class BookingController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
     
-        $booking->start_time = now();
+        $booking->started_at = now();
         $booking->status = 'active';
     
         if ($request->hasFile('photo')) {
@@ -184,7 +189,7 @@ class BookingController extends Controller
         $booking->business_close_photo = $photoPath;
 
         // Set end time
-        $booking->end_time = now();
+        $booking->ended_at = now();
 
         // Calculate fee based on duration
         if ($booking->start_time && $booking->end_time) {
@@ -206,5 +211,102 @@ class BookingController extends Controller
             'estimated_fee' => $fee,
         ]);
     }
+
+    public function userStart(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|max:5120', // 5MB max
+        ]);
+    
+        $booking = Booking::with('user')->findOrFail($id);
+    
+        if ($booking->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+    
+        if ($booking->status !== 'pending_start') {
+            return response()->json(['message' => 'Booking already started or completed.'], 400);
+        }
+    
+        // Upload user photo
+        $path = $request->file('photo')->store('booking_photos', 'public');
+        $booking->user_start_photo = $path;
+    
+        // Reload booking with latest business photo
+        $booking = $booking->fresh();
+    
+        if ($booking->business_start_photo) {
+            $booking->status = 'active';
+            $booking->started_at = now();
+        }
+    
+        $booking->save();
+    
+        return response()->json(['message' => 'Start photo uploaded successfully.']);
+    }
+    
+
+    public function show($id)
+    {
+        $booking = Booking::with('location')->findOrFail($id);
+
+        // Optional: check if the user has access to this booking
+        if ($booking->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($booking);
+    }
+
+    public function activeUserBooking(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $booking = Booking::with('location')
+            ->where('user_id', $userId)
+            ->where('status', 'active')
+            ->latest()
+            ->first();
+
+        if (!$booking) {
+            return response()->json(null, 200); // No active booking
+        }
+
+        return response()->json($booking);
+    }
+
+    public function businessStart(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|max:5120',
+        ]);
+    
+        $booking = Booking::with('location')->findOrFail($id);
+    
+        if ($booking->location->business_id !== auth()->user()->business_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+    
+        if ($booking->status !== 'pending_start') {
+            return response()->json(['message' => 'Booking already started or completed.'], 400);
+        }
+    
+        // Store photo and update
+        $path = $request->file('photo')->store('booking_photos', 'public');
+        $booking->business_start_photo = $path;
+    
+        // Refresh to get any user_start_photo that may already exist
+        $booking = $booking->fresh();
+    
+        if ($booking->user_start_photo) {
+            $booking->status = 'active';
+            $booking->started_at = now();
+        }
+    
+        $booking->save();
+    
+        return response()->json(['message' => 'Business confirmed booking start.']);
+    }
+    
 
 }

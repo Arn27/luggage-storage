@@ -24,11 +24,20 @@ Route::middleware('auth:sanctum')->group(function () {
     // Bookings
     Route::post('/bookings', [BookingController::class, 'store']);
     Route::get('/bookings/active', [BookingController::class, 'activeBookings']);
+    Route::get('/bookings/{id}', [BookingController::class, 'show']);
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
+
+    Route::post('/bookings/{id}/user-start', [BookingController::class, 'userStart']);
+    Route::post('/bookings/{id}/business-start', [BookingController::class, 'businessStart']);
+
 
     // User Dashboard
     Route::get('/user/bookings', [UserDashboardController::class, 'bookings']);
+    Route::get('/user/bookings/active', [BookingController::class, 'activeUserBooking']);
+    Route::post('/user/change-password', [UserDashboardController::class, 'changePassword']);
 
+
+    Route::get('/business/bookings/pending', [BookingController::class, 'pending']);
 
     // Reviews
     Route::post('/reviews', [ReviewController::class, 'store']);

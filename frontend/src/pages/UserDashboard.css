@@ -97,6 +97,46 @@
     border-bottom: none;
 }
 
+.form-group {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+}
+
+.form-group input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  box-sizing: border-box;
+}
+
+.status-message {
+  margin-bottom: 1rem;
+  color: green;
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.3rem;
+}
+
+form .btn[type="submit"] {
+  display: block;
+  margin: 1.5rem auto 0 auto; /* center it */
+}
+
+
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {
   .dashboard-container {
