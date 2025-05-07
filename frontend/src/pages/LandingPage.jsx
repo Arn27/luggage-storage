@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -10,6 +10,13 @@ function LandingPage() {
   const [city, setCity] = useState("");
   const [date, setDate] = useState(null);
   const [bags, setBags] = useState(1);
+
+  useEffect(() => {
+    const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+    if (roles.includes("business")) {
+      navigate("/business");
+    }
+  }, [navigate]);
 
   return (
     <section className="landing-bg">

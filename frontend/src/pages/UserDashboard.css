@@ -136,6 +136,63 @@ form .btn[type="submit"] {
   margin: 1.5rem auto 0 auto; /* center it */
 }
 
+.booking-card {
+  background: #f9f9f9;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  margin-top: 1rem;
+}
+
+.photo-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.photo-grid img {
+  max-width: 200px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.booking-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.stop-btn {
+  background-color: #0e9488;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.stop-btn:hover {
+  background-color: #0c7b73;
+}
+
+.active-booking-banner {
+  background-color: #ecfdf5;
+  border: 2px solid #0e9488;
+  border-radius: 6px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #065f46;
+  font-weight: 500;
+}
+
+.highlight-link {
+  color: #0e9488;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 
 /* === Responsive Adjustments === */
 @media (max-width: 768px) {

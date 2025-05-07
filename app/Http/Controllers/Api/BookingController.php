@@ -103,7 +103,7 @@ class BookingController extends Controller
 
     public function active()
     {
-        $businessId = auth()->id();
+        $businessId = auth()->user()->business_id;
         $bookings = Booking::with(['location', 'user'])
             ->where('status', 'active')
             ->whereHas('location', function ($query) use ($businessId) {
@@ -231,15 +231,16 @@ class BookingController extends Controller
     public function activeUserBooking(Request $request)
     {
         $userId = $request->user()->id;
-
+    
         $booking = Booking::with('location')
             ->where('user_id', $userId)
             ->where('status', 'active')
             ->latest()
             ->first();
-
+    
         return response()->json($booking);
     }
+    
 
     public function businessStart(Request $request, $id)
     {

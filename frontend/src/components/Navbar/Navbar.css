@@ -117,20 +117,23 @@
 }
 
 .navbar .btn {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
-    border: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  line-height: 1.25;
+  font-size: 1rem;
 }
+
 
 .navbar .btn:hover {
   background-color: var(--dark-hover);
@@ -141,6 +144,12 @@
 .navbar .btn:active {
     transform: translateY(0);
     box-shadow: none;
+}
+
+.highlight-active-booking {
+  background-color: #ffd700;
+  color: black;
+  font-weight: bold;
 }
 
 

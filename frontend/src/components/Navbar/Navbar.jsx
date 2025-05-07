@@ -9,6 +9,7 @@ function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [hasActiveBooking, setHasActiveBooking] = useState(false); // NEW
 
   useEffect(() => {
     const syncUser = () => {
@@ -19,7 +20,6 @@ function Navbar() {
     };
 
     syncUser();
-
     window.addEventListener("storage", syncUser);
     window.addEventListener("userChanged", syncUser);
 
@@ -49,7 +49,24 @@ function Navbar() {
   const isTraveller = roles.includes("traveller");
 
   useEffect(() => {
-    console.log("Roles detected in Navbar:", roles);
+    const checkActiveBooking = async () => {
+      if (!roles.includes("traveller")) return;
+      const token = localStorage.getItem("token");
+      try {
+        const res = await fetch("http://localhost:8000/api/user/booking/active", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
+        const data = await res.json();
+        if (data?.id) setHasActiveBooking(true);
+      } catch (err) {
+        console.error("Failed to check active booking", err);
+      }
+    };
+
+    checkActiveBooking();
   }, [roles]);
 
   return (
@@ -64,6 +81,11 @@ function Navbar() {
       <div className={`navbar-menu ${menuOpen ? "open" : ""}`}>
         {currentUser ? (
           <>
+            {isTraveller && hasActiveBooking && (
+              <Link to="/user/booking/active" className="btn highlight-active-booking">
+                📦 {t("active_booking")}
+              </Link>
+            )}
             {(isTraveller || isAdmin) && (
               <Link to="/user" className="btn user-btn">
                 👤 {currentUser.name}

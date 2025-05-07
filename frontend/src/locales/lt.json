@@ -116,6 +116,19 @@
     "confirm_password": "Patvirtinkite naują slaptažodį",
     "update_password": "Atnaujinti slaptažodį",
     "password_updated": "Slaptažodis sėkmingai atnaujintas.",
-    "password_error": "Nepavyko atnaujinti slaptažodžio."
+    "password_error": "Nepavyko atnaujinti slaptažodžio.",
+    "location": "Vieta",
+    "start": "Pradžia",
+    "duration": "Trukmė",
+    "estimated_fee": "Numatoma kaina",
+    "user_photo": "Naudotojo nuotrauka",
+    "business_photo": "Verslo nuotrauka",
+    "no_active_booking": "Aktyvių rezervacijų nėra",
+    "stop_booking": "Baigti rezervaciją",
+    "your_active_booking": "Jūsų aktyvus rezervavimas",
+    "your_photo": "Jūsų nuotrauka",
+    "request_end": "Prašyti pabaigos",
+    "you_have_active_booking": "Turite aktyvią rezervaciją",
+    "view_active_booking": "Peržiūrėti"
   }
   

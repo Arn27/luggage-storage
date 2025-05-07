@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // User Dashboard
     Route::get('/user/bookings', [UserDashboardController::class, 'bookings']);
-    Route::get('/user/bookings/active', [BookingController::class, 'activeUserBooking']);
     Route::post('/user/change-password', [UserDashboardController::class, 'changePassword']);
+    Route::get('/user/booking/active', [BookingController::class, 'activeUserBooking']);
 
 
     Route::get('/business/bookings/pending', [BookingController::class, 'pending']);
@@ -47,6 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/dashboard/business', [BusinessDashboardController::class, 'index']);
         Route::get('/business/locations', [BusinessDashboardController::class, 'locations']);
     });
+
+    Route::middleware(['auth:sanctum', 'approved.business'])->get('/business/bookings/active', [BookingController::class, 'active']);
 
     // Admin Panel
     Route::middleware(['is.admin'])->group(function () {

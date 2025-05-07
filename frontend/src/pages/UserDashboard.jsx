@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
-import ChangePasswordForm from "../components/ChangePasswordForm";
 import "./UserDashboard.css";
 
 const UserDashboard = () => {
@@ -11,6 +10,7 @@ const UserDashboard = () => {
   const [user, setUser] = useState(null);
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
+  const [activeBooking, setActiveBooking] = useState(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -36,10 +36,17 @@ const UserDashboard = () => {
         });
 
         const data = await res.json();
-        const now = new Date();
 
-        const upcoming = data.filter((b) => new Date(b.date) >= now);
-        const past = data.filter((b) => new Date(b.date) < now);
+        const active = data.find((b) => b.status === "active");
+        setActiveBooking(active || null);
+
+        const upcoming = data.filter((b) =>
+          ["confirmed", "pending_start", "user_started"].includes(b.status)
+        );
+
+        const past = data.filter((b) =>
+          ["completed", "cancelled", "declined"].includes(b.status)
+        );
 
         setUpcomingBookings(upcoming);
         setPastBookings(past);
@@ -57,6 +64,35 @@ const UserDashboard = () => {
     <div className="dashboard-container">
       <h1>{t("dashboard")}</h1>
 
+      {activeBooking && (
+        <section className="dashboard-section active-booking-box">
+          <h2>{t("active_booking")}</h2>
+          <table className="booking-table">
+            <tbody>
+              <tr>
+                <th>{t("location")}</th>
+                <td>{activeBooking.location?.name}</td>
+              </tr>
+              <tr>
+                <th>{t("date")}</th>
+                <td>{new Date(activeBooking.date).toLocaleDateString()}</td>
+              </tr>
+              <tr>
+                <th>{t("bags")}</th>
+                <td>{activeBooking.bag_count}</td>
+              </tr>
+              <tr>
+                <th>{t("status")}</th>
+                <td>{t(activeBooking.status)}</td>
+              </tr>
+            </tbody>
+          </table>
+          <Link to="/user/booking/active" className="btn small-btn" style={{ marginTop: "1rem" }}>
+            {t("view_active_booking")}
+          </Link>
+        </section>
+      )}
+
       <section className="dashboard-section">
         <h2>{t("account_info")}</h2>
         <p><strong>{t("name")}</strong>: {user.name}</p>
@@ -69,12 +105,7 @@ const UserDashboard = () => {
         <Link to="/user/change-password" className="btn">
           {t("change_password")}
         </Link>
-
-        <Link to="/user/booking/active" className="btn" style={{ marginTop: "1rem" }}>
-          {t("active_booking")}
-        </Link>
       </section>
-
 
       <section className="dashboard-section">
         <h2>{t("upcoming_bookings")}</h2>
@@ -102,7 +133,6 @@ const UserDashboard = () => {
                     });
                     if (res.ok) {
                       alert(t("booking_cancelled"));
-                      // Optional: re-fetch bookings here or remove from state
                     } else {
                       const data = await res.json();
                       alert(data.message || "Error cancelling booking.");
@@ -119,7 +149,6 @@ const UserDashboard = () => {
           ))
         )}
       </section>
-
 
       <section className="dashboard-section">
         <h2>{t("past_bookings")}</h2>

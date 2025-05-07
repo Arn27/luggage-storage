@@ -114,6 +114,19 @@
     "confirm_password": "Confirm New Password",
     "update_password": "Update Password",
     "password_updated": "Password updated successfully.",
-    "password_error": "Failed to update password."
+    "password_error": "Failed to update password.",
+    "location": "Location",
+    "start": "Start",
+    "duration": "Duration",
+    "estimated_fee": "Estimated Fee",
+    "user_photo": "User Photo",
+    "business_photo": "Business Photo",
+    "no_active_booking": "No active bookings",
+    "stop_booking": "Stop Booking",
+    "your_active_booking": "Your Active Booking",
+    "your_photo": "Your Photo",
+    "request_end": "Request End",
+    "you_have_active_booking": "You have an active booking",
+    "view_active_booking": "View it here"
   }
   
