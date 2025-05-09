@@ -105,14 +105,15 @@ class BookingController extends Controller
     {
         $businessId = auth()->user()->business_id;
         $bookings = Booking::with(['location', 'user'])
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'pending_end'])
             ->whereHas('location', function ($query) use ($businessId) {
                 $query->where('business_id', $businessId);
             })
             ->get();
-
+    
         return response()->json($bookings);
     }
+    
 
     public function uploadPhoto(Request $request, $id)
     {
@@ -234,14 +235,13 @@ class BookingController extends Controller
     
         $booking = Booking::with('location')
             ->where('user_id', $userId)
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'pending_end'])
             ->latest()
             ->first();
     
         return response()->json($booking);
     }
     
-
     public function businessStart(Request $request, $id)
     {
         $request->validate([
@@ -272,5 +272,102 @@ class BookingController extends Controller
 
         return response()->json(['message' => 'Business confirmed booking start.']);
     }
+
+    public function businessStop(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|max:5120',
+        ]);
+    
+        $booking = Booking::with('location')->findOrFail($id);
+    
+        if ($booking->location->business_id !== optional(auth()->user()->businessProfile)->id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+    
+        if ($booking->status !== 'active' && $booking->status !== 'pending_end') {
+            return response()->json(['message' => 'Booking is not active.'], 400);
+        }
+    
+        $path = $request->file('photo')->store('booking_photos', 'public');
+        $booking->business_end_photo = $path;
+    
+        if ($booking->user_end_photo) {
+            $booking->status = 'completed';
+            $booking->ended_at = now();
+    
+            if ($booking->started_at) {
+                $minutes = now()->diffInMinutes($booking->started_at);
+                $rate = (float) $booking->location->hourly_rate;
+                $booking->fee_to_pay = round(($minutes / 60) * $rate, 2);
+            } else {
+                $booking->fee_to_pay = 0;
+            }
+        } else {
+            $booking->status = 'pending_end';
+        }
+    
+        $booking->save();
+    
+        return response()->json([
+            'message' => $booking->status === 'completed' ? 'Booking completed.' : 'Waiting for user confirmation.',
+            'estimated_fee' => $booking->fee_to_pay,
+            'status' => $booking->status,
+        ]);
+    }
+    
+    public function userStop(Request $request, $id)
+    {
+        $request->validate([
+            'photo' => 'required|image|max:5120',
+        ]);
+    
+        $booking = Booking::with('location')->findOrFail($id);
+    
+        if ($booking->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+    
+        if ($booking->status !== 'active' && $booking->status !== 'pending_end') {
+            return response()->json(['message' => 'Booking is not active.'], 400);
+        }
+    
+        $path = $request->file('photo')->store('booking_photos', 'public');
+        $booking->user_end_photo = $path;
+    
+        if ($booking->business_end_photo) {
+            $booking->status = 'completed';
+            $booking->ended_at = now();
+    
+            if ($booking->started_at) {
+                $minutes = now()->diffInMinutes($booking->started_at);
+                $rate = (float) $booking->location->hourly_rate;
+                $booking->fee_to_pay = round(($minutes / 60) * $rate, 2);
+            } else {
+                $booking->fee_to_pay = 0;
+            }
+        } else {
+            $booking->status = 'pending_end';
+        }
+    
+        $booking->save();
+    
+        return response()->json([
+            'message' => $booking->status === 'completed' ? 'Booking completed.' : 'Waiting for business to confirm.',
+            'estimated_fee' => $booking->fee_to_pay,
+            'status' => $booking->status,
+        ]);
+    }
+
+    public function userBookingDetail($id)
+        {
+            $booking = Booking::with('location')
+                ->where('id', $id)
+                ->where('user_id', auth()->id())
+                ->firstOrFail();
+
+            return response()->json($booking);
+        }
+
     
 }

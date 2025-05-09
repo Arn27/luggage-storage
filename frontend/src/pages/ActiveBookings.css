@@ -64,3 +64,46 @@
     background-color: #b91c1c;
   }
   
+  .upload-instructions {
+    margin-top: 1rem;
+    font-style: italic;
+    color: #444;
+  }
+  
+  input[type="file"] {
+    margin-top: 0.5rem;
+    padding: 0.3rem;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .confirm-btn {
+    background-color: #0e9488;
+    color: white;
+    border: none;
+    padding: 0.45rem 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 0.75rem;
+    transition: background 0.2s ease;
+  }
+  
+  .confirm-btn:hover {
+    background-color: #0b766c;
+  }
+  
+  .booking-actions p {
+    margin-top: 0.75rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .upload-instructions {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+  
+  

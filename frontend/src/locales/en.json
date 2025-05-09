@@ -127,6 +127,27 @@
     "your_photo": "Your Photo",
     "request_end": "Request End",
     "you_have_active_booking": "You have an active booking",
-    "view_active_booking": "View it here"
+    "view_active_booking": "View it here",
+    "confirm_photo_upload": "Confirm Photo Upload",
+    "upload_required": "Please select a photo before confirming.",
+    "request_submitted": "Booking stop request submitted.",
+    "error": "Something went wrong.",
+    "please_upload_luggage_photo_to_confirm": "📸 Please upload a photo of the luggage to confirm booking end.",
+    "waiting_for_user_confirmation": "Waiting for user confirmation.",
+    "waiting_for_business_to_confirm": "Waiting for business to confirm.",
+    "booking_completed": "Booking completed successfully.",
+    "back_to_dashboard": "Back to Dashboard",
+    "created_at": "Created At",
+    "started_at": "Start",
+    "ended_at": "End",
+    "fee_to_pay": "Fee to Pay",
+    "location_info": "Location Info",
+    "photos": "Photos",
+    "user_start_photo": "User Start",
+    "business_start_photo": "Business Start",
+    "user_end_photo": "User End",
+    "business_end_photo": "Business End",
+    "view_location": "View Location",
+    "booking_details": "Booking Details"
   }
   

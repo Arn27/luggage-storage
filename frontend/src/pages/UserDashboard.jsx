@@ -11,21 +11,22 @@ const UserDashboard = () => {
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
   const [activeBooking, setActiveBooking] = useState(null);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const roles = JSON.parse(localStorage.getItem("roles") || "[]");
-
+  
     if (!storedUser || !roles.includes("traveller")) {
       navigate("/login");
       return;
     }
-
+  
     const userData = JSON.parse(storedUser);
     setUser(userData);
-
+  
     const token = localStorage.getItem("token");
-
+  
     const fetchBookings = async () => {
       try {
         const res = await fetch("http://127.0.0.1:8000/api/user/bookings", {
@@ -34,35 +35,47 @@ const UserDashboard = () => {
             Accept: "application/json",
           },
         });
-
+  
         const data = await res.json();
-
-        const active = data.find((b) => b.status === "active");
+  
+        const active = data.find((b) =>
+          ["active", "pending_end"].includes(b.status)
+        );        
         setActiveBooking(active || null);
-
+  
         const upcoming = data.filter((b) =>
           ["confirmed", "pending_start", "user_started"].includes(b.status)
         );
-
+  
         const past = data.filter((b) =>
           ["completed", "cancelled", "declined"].includes(b.status)
         );
-
+  
         setUpcomingBookings(upcoming);
         setPastBookings(past);
       } catch (err) {
         console.error("Failed to load bookings", err);
       }
+  
+      const msg = localStorage.getItem("bookingClosedMessage");
+      if (msg) {
+        setConfirmationMessage(msg);
+        localStorage.removeItem("bookingClosedMessage");
+      }
     };
-
+  
     fetchBookings();
   }, [navigate]);
+  
 
   if (!user) return null;
 
   return (
     <div className="dashboard-container">
       <h1>{t("dashboard")}</h1>
+          {confirmationMessage && (
+              <div className="confirmation-message">{confirmationMessage}</div>
+            )}
 
       {activeBooking && (
         <section className="dashboard-section active-booking-box">
@@ -115,9 +128,9 @@ const UserDashboard = () => {
           upcomingBookings.map((booking) => (
             <div key={booking.id} className="booking-item">
               <p>
-                📍 <a href={`/location/${booking.location.id}`} className="link">
+                📍 <Link to={`/user/bookings/${booking.id}`} className="link">
                   {booking.location?.name}
-                </a> — {new Date(booking.date).toLocaleDateString()}
+                </Link> — {new Date(booking.date).toLocaleDateString()}
               </p>
               <button
                 className="btn small-btn"
@@ -158,14 +171,15 @@ const UserDashboard = () => {
           pastBookings.map((booking) => (
             <div key={booking.id} className="booking-item">
               <p>
-                📍 <a href={`/location/${booking.location.id}`} className="link">
+                📍 <Link to={`/user/bookings/${booking.id}`} className="link">
                   {booking.location?.name}
-                </a> — {new Date(booking.date).toLocaleDateString()}
+                </Link> — {new Date(booking.date).toLocaleDateString()}
               </p>
             </div>
           ))
         )}
       </section>
+
     </div>
   );
 };

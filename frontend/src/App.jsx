@@ -26,6 +26,7 @@ import AdminLocationForm from "./components/admin/AdminLocationForm";
 import AdminLocationEdit from "./components/admin/AdminLocationEdit";
 import ChangePassword from "./pages/ChangePassword";
 import StartBooking from "./pages/StartBooking";
+import UserBookingDetail from "./pages/UserBookingDetail";
 
 import "./App.css";
 
@@ -51,6 +52,7 @@ function App() {
                 <Route path="/user" element={<UserDashboard />} />
                 <Route path="/user/change-password" element={<ChangePassword />} />
                 <Route path="/booking/:id/start" element={<StartBooking />} />
+                <Route path="/user/bookings/:id" element={<UserBookingDetail />} />
                 <Route
                 path="/admin"
                 element={

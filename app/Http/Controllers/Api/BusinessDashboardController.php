@@ -31,7 +31,7 @@ class BusinessDashboardController extends Controller
                 'upcomingBookings' => $bookings->where('status', 'confirmed')->where('start_time', '>', now())->count(),
                 'pastBookings' => $bookings->where('status', 'confirmed')->where('end_time', '<', now())->count(),
                 'pendingBookings' => $bookings->where('status', 'pending')->count(),
-                'activeBookings' => $bookings->where('status', 'active')->count(),
+                'activeBookings' => $bookings->whereIn('status', ['active', 'pending_end'])->count(),
             ];
     
             return response()->json($stats);
