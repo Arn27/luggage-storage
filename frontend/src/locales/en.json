@@ -148,6 +148,9 @@
     "user_end_photo": "User End",
     "business_end_photo": "Business End",
     "view_location": "View Location",
-    "booking_details": "Booking Details"
+    "booking_details": "Booking Details",
+    "qr_checkin_title": "Quick Check-In",
+    "upload_luggage_photo": "Upload a photo of your luggage",
+    "checkin_now": "Check In Now"
   }
   

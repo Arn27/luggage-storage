@@ -1,5 +1,4 @@
 :root {
-  /* Consistent Color Palette from your theme */
   --primary-color: #0c7b72;
   --secondary-color: #dbe2ef;
   --text-color: #4a4a4a;
@@ -12,8 +11,6 @@
   --shadow-color: rgba(0, 0, 0, 0.08);
   --dark-hover: #0a635c;
   --error-color: #e74c3c;
-
-  /* Keep font synthesis and rendering settings */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -24,7 +21,6 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  /* Font family, background color, and text color are now handled by App.css body rule using the variables */
 }
 
 html, body, #root {

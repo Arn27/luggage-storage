@@ -66,8 +66,8 @@
   .location-info,
   .booking-form {
     flex: 1;
-    max-width: calc(50% - 2rem); /* Account for the gap and separator */
-    padding: 0 1rem; /* Add padding around the separator */
+    max-width: calc(50% - 2rem);
+    padding: 0 1rem;
   }
 }
 
@@ -369,8 +369,8 @@
    @media (min-width: 768px) {
        .location-info,
        .booking-form {
-           max-width: calc(50% - 1.5rem); /* Adjust max-width for smaller gap */
-           padding: 0 0.75rem; /* Adjust padding around separator */
+           max-width: calc(50% - 1.5rem);
+           padding: 0 0.75rem;
        }
    }
 

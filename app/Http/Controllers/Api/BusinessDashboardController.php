@@ -10,34 +10,40 @@ use Illuminate\Support\Facades\Auth;
 
 class BusinessDashboardController extends Controller
 {
-        public function index(Request $request)
+    public function index(Request $request)
         {
             $user = Auth::user();
-    
+
             if (!$user || !$user->businessProfile) {
                 return response()->json(['error' => 'Unauthorized'], 403);
             }
-    
+
             $business = $user->businessProfile;
-    
+
             $locations = $business->locations()->count();
-    
+
             $bookings = $business->locations()->with('bookings')->get()->flatMap(function ($location) {
                 return $location->bookings;
             });
-    
+
             $stats = [
                 'locations' => $locations,
-                'upcomingBookings' => $bookings->where('status', 'confirmed')->where('start_time', '>', now())->count(),
-                'pastBookings' => $bookings->where('status', 'confirmed')->where('end_time', '<', now())->count(),
-                'pendingBookings' => $bookings->where('status', 'pending')->count(),
-                'activeBookings' => $bookings->whereIn('status', ['active', 'pending_end'])->count(),
+                'upcomingBookings' => $bookings
+                    ->where('status', 'pending_start')
+                    ->count(),
+                'pendingBookings' => $bookings
+                    ->whereIn('status', ['user_started', 'business_started'])
+                    ->count(),
+                'activeBookings' => $bookings
+                    ->whereIn('status', ['active', 'pending_end'])
+                    ->count(),
+                'pastBookings' => $bookings
+                    ->whereIn('status', ['completed', 'declined', 'cancelled'])
+                    ->count(),
             ];
-    
+
             return response()->json($stats);
         }
-
-    
 
     public function locations()
     {

@@ -1,12 +1,12 @@
 :root {
   /* Define a color palette */
-  --primary-color: #0c7b72; /* The new main color */
-  --secondary-color: #dbe2ef; /* Keeping a light complementary color */
-  --text-color: #4a4a4a; /* Slightly softer black */
-  --border-color: #c5cad9; /* A muted default border color */
-  --background-color: #f9f7f7; /* A very light background */
-  --error-color: #e74c3c; /* A clear error red */
-  --success-color: #2ecc71; /* A success green */
+  --primary-color: #0c7b72;
+  --secondary-color: #dbe2ef;
+  --text-color: #4a4a4a;
+  --border-color: #c5cad9;
+  --background-color: #f9f7f7;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
 }
 
 .new-location-form {
@@ -23,7 +23,7 @@
 .new-location-form h1 {
   font-size: 28px;
   text-align: center;
-  color: var(--primary-color); /* Using the new primary color for heading */
+  color: var(--primary-color);
   margin-bottom: 30px;
   font-weight: 600;
 }
@@ -42,7 +42,7 @@
   width: 100%;
   padding: 14px 18px;
   border-radius: 10px;
-  border: 1px solid var(--border-color); /* Default border remains muted */
+  border: 1px solid var(--border-color);
   background-color: #ffffff;
   color: var(--text-color);
   font-size: 1rem;
@@ -54,9 +54,9 @@
 .new-location-form input:focus,
 .new-location-form textarea:focus {
   outline: none;
-  border-color: var(--primary-color); /* Primary color border on focus */
-  box-shadow: 0 0 8px rgba(var(--primary-color), 0.2); /* Primary color shadow on focus */
-  background-color: #fefe Ladd; /* Very light highlight on focus */
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(var(--primary-color), 0.2);
+  background-color: #fefeff;
 }
 
 .new-location-form textarea {
@@ -78,7 +78,7 @@
 
 .new-location-form .btn {
   width: 100%;
-  background-color: var(--primary-color); /* Using the new primary color for button background */
+  background-color: var(--primary-color);
   color: white;
   font-weight: 700;
   padding: 14px 20px;
@@ -93,9 +93,9 @@
 }
 
 .new-location-form .btn:hover {
-  background-color: #0a635c; /* A slightly darker shade of #0c7b72 for hover */
+  background-color: #0a635c;
   transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(var(--primary-color), 0.3); /* Primary color shadow on hover */
+  box-shadow: 0 4px 10px rgba(var(--primary-color), 0.3);
 }
 
 .new-location-form .btn:active {

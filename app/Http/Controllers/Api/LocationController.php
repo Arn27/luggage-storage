@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Str;
 
 class LocationController extends Controller
 {
@@ -35,7 +35,6 @@ class LocationController extends Controller
     
         return response()->json($location);
     }
-    
     
     public function businessLocations()
     {
@@ -88,6 +87,7 @@ class LocationController extends Controller
 
         $location = Location::create([
             'business_id' => $businessProfile->id,
+            'qr_token' => Str::uuid(),
             ...$validated
         ]);
 
@@ -133,5 +133,4 @@ class LocationController extends Controller
 
         return response()->json(['message' => 'Location deleted.']);
     }
-
 }

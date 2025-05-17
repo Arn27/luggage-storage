@@ -1,0 +1,79 @@
+.qr-checkin-container {
+  max-width: 500px;
+  margin: 3rem auto;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.qr-checkin-container h2 {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--heading-color);
+}
+
+.qr-form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.qr-form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+}
+
+.qr-form-group input[type="number"],
+.qr-form-group input[type="file"] {
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--white);
+}
+
+.qr-form-group input[type="file"] {
+  background-color: #fff;
+}
+
+.qr-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+.qr-submit-btn:hover {
+  background-color: var(--dark-hover);
+}
+
+.qr-message {
+  margin-top: 1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.qr-message.success {
+  color: #065f46;
+  background-color: #d1fae5;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid #10b981;
+}
+
+.qr-message.error {
+  color: red;
+}

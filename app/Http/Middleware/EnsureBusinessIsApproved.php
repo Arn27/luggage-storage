@@ -15,7 +15,7 @@ class EnsureBusinessIsApproved
             return response()->json(['message' => 'User not authenticated'], 403);
         }
     
-        $user->loadMissing('roles'); // 🔑 Ensure roles are loaded
+        $user->loadMissing('roles');
     
         if (!$user->hasRole('business')) {
             return response()->json(['message' => 'User is not a business'], 403);

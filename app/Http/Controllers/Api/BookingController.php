@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Booking;
 use App\Models\Location;
 
@@ -369,5 +370,98 @@ class BookingController extends Controller
             return response()->json($booking);
         }
 
-    
+    public function qrCheckIn(Request $request, $qr_token)
+        {
+            $user = auth()->user();
+
+            $location = Location::where('qr_token', $qr_token)->firstOrFail();
+
+            // Check if user already has an active/pending booking
+            $hasBooking = Booking::where('user_id', $user->id)
+                ->whereIn('status', ['user_started', 'business_started', 'active'])
+                ->exists();
+
+            if ($hasBooking) {
+                return response()->json(['message' => 'You already have an active booking.'], 400);
+            }
+
+            $validator = Validator::make($request->all(), [
+                'bag_count' => 'required|integer|min:1',
+                'photo' => 'required|image|max:5120',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 422);
+            }
+
+            // Check capacity
+            $currentBags = Booking::where('location_id', $location->id)
+                ->whereIn('status', ['user_started', 'business_started', 'active'])
+                ->sum('bag_count');
+
+            if ($currentBags + $request->bag_count > $location->max_bags) {
+                return response()->json(['message' => 'Not enough capacity at this location.'], 400);
+            }
+
+            // Store photo
+            $path = $request->file('photo')->store('booking_photos', 'public');
+
+            $booking = Booking::create([
+                'user_id' => $user->id,
+                'location_id' => $location->id,
+                'date' => now()->toDateString(),
+                'bag_count' => $request->bag_count,
+                'status' => 'user_started',
+                'user_start_photo' => $path,
+                'started_at' => now(),
+                'is_walkin' => true,
+            ]);
+
+            return response()->json(['message' => 'Booking created successfully.', 'booking' => $booking], 201);
+        }
+
+        public function businessPendingBookings()
+        {
+            $businessId = auth()->user()->businessProfile->id;
+
+            $bookings = Booking::whereIn('status', ['user_started', 'business_started'])
+                ->whereHas('location', function ($query) use ($businessId) {
+                    $query->where('business_id', $businessId);
+                })
+                ->with(['user', 'location'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json($bookings);
+        }
+
+        public function businessUpcomingBookings()
+        {
+            $businessId = auth()->user()->businessProfile->id;
+
+            $bookings = Booking::where('status', 'pending_start')
+                ->whereHas('location', function ($query) use ($businessId) {
+                    $query->where('business_id', $businessId);
+                })
+                ->with(['user', 'location'])
+                ->orderBy('date', 'asc')
+                ->get();
+
+            return response()->json($bookings);
+        }
+
+        public function businessPastBookings()
+        {
+            $businessId = auth()->user()->businessProfile->id;
+
+            $bookings = Booking::whereHas('location', function ($query) use ($businessId) {
+                $query->where('business_id', $businessId);
+            })
+            ->whereIn('status', ['completed', 'declined', 'cancelled'])
+            ->with(['user', 'location'])
+            ->orderBy('ended_at', 'desc')
+            ->get();
+
+            return response()->json($bookings);
+        }
 }

@@ -33,13 +33,12 @@ const PendingBookings = () => {
       });
 
       const data = await res.json();
-      if (Array.isArray(data)) {
-        const relevantStatuses = ['pending_start', 'user_started'];
-        setBookings(data.filter(b => relevantStatuses.includes(b.status)));
-      } else {
-        console.error("Invalid data:", data);
-        setBookings([]);
-      }
+        if (Array.isArray(data)) {
+          setBookings(data);
+        } else {
+          console.error("Invalid data:", data);
+          setBookings([]);
+        }
     } catch (err) {
       console.error("Failed to fetch pending bookings", err);
       setBookings([]);

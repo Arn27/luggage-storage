@@ -15,7 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Middleware aliases
         $middleware->alias([
             'approved.business' => \App\Http\Middleware\EnsureBusinessIsApproved::class,
-            'is.admin' => \App\Http\Middleware\IsAdmin::class, // renamed from 'admin' to 'is.admin'
+            'is.admin' => \App\Http\Middleware\IsAdmin::class,
         ]);
 
         // Global middleware
@@ -23,7 +23,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(\Illuminate\Http\Middleware\HandleCors::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Fix the "Route [login] not defined" error for Sanctum
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
             return response()->json(['message' => 'Unauthenticated.'], 401);
         });

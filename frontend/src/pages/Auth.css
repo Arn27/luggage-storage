@@ -1,132 +1,114 @@
 :root {
-  /* Define a color palette - consistent with the new-location-form */
-  --primary-color: #0c7b72; /* The main color */
-  --secondary-color: #dbe2ef; /* A light complementary color */
-  --text-color: #4a4a4a; /* Slightly softer black */
-  --border-color: #c5cad9; /* A muted default border color */
-  --background-color: #f9f7f7; /* A very light background */
-  --error-color: #e74c3c; /* A clear error red */
-  --success-color: #2ecc71; /* A success green */
+  /* Define a color palette */
+  --primary-color: #0c7b72;
+  --secondary-color: #dbe2ef;
+  --text-color: #4a4a4a;
+  --border-color: #c5cad9;
+  --background-color: #f9f7f7;
+  --error-color: #e74c3c;
+  --success-color: #2ecc71;
 }
-
 .auth-container {
-  max-width: 400px; /* Keeping max-width slightly smaller for auth forms */
+  max-width: 400px;
   margin: 60px auto;
-  background-color: var(--background-color); /* Use defined background color */
-  padding: 40px 30px; /* Increased padding */
-  border-radius: 16px; /* Larger border-radius */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+  background-color: var(--background-color);
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; /* Consistent font stack */
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
-
 .auth-container h1 {
-  margin-bottom: 30px; /* Increased bottom margin */
-  font-size: 28px; /* Larger heading */
+  margin-bottom: 30px;
+  font-size: 28px;
   text-align: center;
-  color: var(--primary-color); /* Use primary color for heading */
+  color: var(--primary-color);
   font-weight: 600;
 }
-
 .auth-form label {
   display: block;
-  margin-bottom: 10px; /* Adjusted margin */
-  font-weight: 600; /* Bolder labels */
-  color: var(--text-color); /* Use defined text color */
-  text-transform: uppercase; /* Uppercase labels */
-  font-size: 0.9rem; /* Slightly smaller label font size */
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
-
 .auth-form input {
   width: 100%;
-  padding: 14px 18px; /* Increased padding */
-  margin-top: 0; /* Remove margin-top to rely on label margin-bottom */
-  margin-bottom: 25px; /* Increased bottom margin */
-  border-radius: 10px; /* Larger border-radius */
-  border: 1px solid var(--border-color); /* Muted default border */
-  background-color: #ffffff; /* White input background */
-  color: var(--text-color); /* Use defined text color */
-  font-size: 1rem; /* Standard font size */
+  padding: 14px 18px;
+  margin-top: 0;
+  margin-bottom: 25px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-color);
+  font-size: 1rem;
   box-sizing: border-box;
-  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add transition */
+  transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-
 .auth-form input:focus {
-  outline: none; /* Remove default outline */
-  border-color: var(--primary-color); /* Primary color border on focus */
-  box-shadow: 0 0 8px rgba(var(--primary-color), 0.2); /* Subtle primary color shadow on focus */
-  background-color: #fefe Ladd; /* Very light highlight on focus */
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(var(--primary-color), 0.2);
+  background-color: #fefeff;
 }
-
 .auth-btn {
   width: 100%;
-  margin-top: 30px; /* Increased top margin for button */
-  background-color: var(--primary-color); /* Use primary color for button */
+  margin-top: 30px;
+  background-color: var(--primary-color);
   color: white;
-  font-weight: 700; /* Bolder button text */
-  padding: 14px 20px; /* Increased padding */
+  font-weight: 700;
+  padding: 14px 20px;
   border: none;
-  border-radius: 10px; /* Match input border-radius */
-  font-size: 1.1rem; /* Larger font size for button */
+  border-radius: 10px;
+  font-size: 1.1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out; /* Add transitions */
-  letter-spacing: 0.5px; /* Add slight letter spacing */
-  text-transform: uppercase; /* Uppercase button text */
+  transition: background-color 0.3s ease-in-out, transform 0.1s ease-in-out;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
-
 .auth-btn:hover {
-  background-color: #0a635c; /* Slightly darker shade for hover */
-  transform: translateY(-2px); /* Lift button slightly */
-  box-shadow: 0 4px 10px rgba(var(--primary-color), 0.3); /* Primary color shadow on hover */
+  background-color: #0a635c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(var(--primary-color), 0.3);
 }
-
 .auth-btn:active {
-    transform: translateY(0); /* Return to original position on click */
-    box-shadow: none; /* Remove shadow on click */
+  transform: translateY(0);
+  box-shadow: none;
 }
-
 .auth-note {
-  margin-top: 20px; /* Add some space above the note */
-  margin-bottom: 0; /* Remove bottom margin if it's the last element */
-  font-size: 0.9rem; /* Slightly smaller font size */
-  color: #6b7280; /* Keeping a similar muted color */
+  margin-top: 20px;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+  color: #6b7280;
   text-align: center;
-  line-height: 1.5; /* Improve readability */
+  line-height: 1.5;
 }
 
-/* Optional: Add styles for links within auth-note */
 .auth-note a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
 }
-
 .auth-note a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
-
-/* Responsive Grid Styles - adjusted for new spacing */
 @media (min-width: 768px) {
   .auth-container {
-    max-width: 700px; /* Increased max-width on larger screens */
+    max-width: 700px;
   }
-
   .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px; /* Increased gap to match other spacing */
+    gap: 30px;
   }
-
   .form-grid label {
-    margin-bottom: 0; /* Labels are above inputs within grid items */
+    margin-bottom: 0;
   }
-
   .form-grid .grid-full {
     grid-column: span 2;
   }
-
-   /* Adjust input margin inside grid */
   .form-grid input {
     margin-bottom: 0;
   }
