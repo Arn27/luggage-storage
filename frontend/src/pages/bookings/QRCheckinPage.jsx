@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import "./QRCheckin.css";
+import "../styles/QRCheckin.css";
 
 const QRCheckinPage = () => {
   const { qr_token } = useParams();

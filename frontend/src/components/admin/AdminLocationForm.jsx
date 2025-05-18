@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Autocomplete } from "@react-google-maps/api";
 import ConfirmModal from "./ConfirmModal"; // Added
-import "../../pages/Auth.css"; // reuse styling
+import "../../pages/styles/Auth.css"; // reuse styling
 
 const AdminLocationForm = () => {
   const navigate = useNavigate();

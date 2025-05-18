@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import "./UserDashboard.css";
-import "./ActiveBookings.css";
+import "../styles/UserDashboard.css";
+import "../styles/ActiveBookings.css";
 
 const ActiveBookings = () => {
   const { t } = useTranslation();

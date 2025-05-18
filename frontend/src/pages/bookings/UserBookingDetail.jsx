@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import "./UserDashboard.css";
+import "../styles/UserDashboard.css";
 
 const UserBookingDetails = () => {
   const { id } = useParams();

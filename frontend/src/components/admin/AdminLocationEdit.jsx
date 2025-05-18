@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "./ConfirmModal";
-import "../../pages/NewLocationForm.css";
+import "../../pages/styles/NewLocationForm.css";
 
 const AdminLocationEdit = () => {
   const { id } = useParams();

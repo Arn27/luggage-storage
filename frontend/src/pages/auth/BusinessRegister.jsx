@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import "./Auth.css";
+import "../styles/Auth.css";
 
 const BusinessRegister = () => {
   const { t } = useTranslation();

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import AdminUsers from "../components/admin/AdminUsers";
-import AdminBusinesses from "../components/admin/AdminBusinesses";
-import AdminLocations from "../components/admin/AdminLocations";
-import "./AdminPanel.css";
+import AdminUsers from "../../components/admin/AdminUsers";
+import AdminBusinesses from "../../components/admin/AdminBusinesses";
+import AdminLocations from "../../components/admin/AdminLocations";
+import "../styles/AdminPanel.css";
 
 const AdminPanel = () => {
   const { t } = useTranslation();

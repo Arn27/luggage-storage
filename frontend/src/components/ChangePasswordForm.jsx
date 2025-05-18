@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import "../pages/UserDashboard.css";
+import "../pages/styles/UserDashboard.css";
 
 const ChangePasswordForm = () => {
   const { t } = useTranslation();

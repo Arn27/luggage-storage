@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import ConfirmModal from "../components/admin/ConfirmModal";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 
-import "./LocationDetail.css";
+import "../styles/LocationDetail.css";
 
 const LocationDetail = () => {
   const { id } = useParams();

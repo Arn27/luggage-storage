@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
-import "./UserDashboard.css";
+import "../styles/UserDashboard.css";
 
 const UserDashboard = () => {
   const { t } = useTranslation();

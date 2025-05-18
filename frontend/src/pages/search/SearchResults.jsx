@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import MapWrapper from "../components/MapWrapper";
-import SearchBar from "../components/SearchBar";
+import MapWrapper from "../../components/MapWrapper";
+import SearchBar from "../../components/SearchBar";
 
 const SearchResults = () => {
   const location = useLocation();

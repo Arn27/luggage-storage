@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Autocomplete } from "@react-google-maps/api";
-import "./Auth.css";
+import "../styles/Auth.css";
 
 const NewLocationForm = () => {
   const navigate = useNavigate();

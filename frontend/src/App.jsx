@@ -3,31 +3,30 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LoadScript } from "@react-google-maps/api";
 import Navbar from "./components/Navbar/Navbar";
 import Footer from "./components/Footer";
-import LandingPage from "./pages/LandingPage";
-import SearchResults from "./pages/SearchResults";
-import LocationDetail from "./pages/LocationDetail";
-import TravellerRegister from "./pages/TravellerRegister";
-import BusinessRegister from "./pages/BusinessRegister";
-import UserDashboard from "./pages/UserDashboard";
-import Login from "./pages/Login";
+import LandingPage from "./pages/landing/LandingPage";
+import SearchResults from "./pages/search/SearchResults";
+import LocationDetail from "./pages/search/LocationDetail";
+import TravellerRegister from "./pages/auth/TravellerRegister";
+import BusinessRegister from "./pages/auth/BusinessRegister";
+import UserDashboard from "./pages/dashboard/UserDashboard";
+import Login from "./pages/auth/Login";
 import AdminRoute from "./components/AdminRoute";
-import AdminPanel from "./pages/AdminPanel";
-import BusinessDashboard from "./pages/BusinessDashboard";
-import BusinessLocations from "./pages/BusinessLocations";
-import BusinessLocationManage from "./pages/BusinessLocationManage";
-import NewLocationForm from "./pages/NewLocationForm";
-import PendingBookings from "./pages/PendingBookings";
-import PastBookings from "./pages/PastBookings";
-import UpcomingBookings from "./pages/UpcomingBookings";
-import ActiveBookings from "./pages/ActiveBookings";
-import UserActiveBooking from "./pages/UserActiveBooking";
-import WalkInBookingPage from "./pages/WalkInBookingPage";
+import AdminPanel from "./pages/dashboard/AdminPanel";
+import BusinessDashboard from "./pages/dashboard/BusinessDashboard";
+import BusinessLocations from "./pages/business/BusinessLocations";
+import BusinessLocationManage from "./pages/business/BusinessLocationManage";
+import NewLocationForm from "./pages/business/NewLocationForm";
+import PendingBookings from "./pages/bookings/PendingBookings";
+import PastBookings from "./pages/bookings/PastBookings";
+import UpcomingBookings from "./pages/bookings/UpcomingBookings";
+import ActiveBookings from "./pages/bookings/ActiveBookings";
+import UserActiveBooking from "./pages/bookings/UserActiveBooking";
 import AdminLocationForm from "./components/admin/AdminLocationForm";
 import AdminLocationEdit from "./components/admin/AdminLocationEdit";
-import ChangePassword from "./pages/ChangePassword";
-import StartBooking from "./pages/StartBooking";
-import UserBookingDetail from "./pages/UserBookingDetail";
-import QRCheckinPage from "./pages/QRCheckinPage";
+import ChangePassword from "./pages/auth/ChangePassword";
+import StartBooking from "./pages/bookings/StartBooking";
+import UserBookingDetail from "./pages/bookings/UserBookingDetail";
+import QRCheckinPage from "./pages/bookings/QRCheckinPage";
 
 import "./App.css";
 
@@ -88,7 +87,6 @@ function App() {
                 <Route path="/business/bookings/upcoming" element={<UpcomingBookings />} />
                 <Route path="/user/booking/active" element={<UserActiveBooking />} />
                 <Route path="/business/bookings/active" element={<ActiveBookings />} />
-                <Route path="/location/:id/walk-in" element={<WalkInBookingPage />} />
               </Routes>
             </div>
           <Footer language={language} />
