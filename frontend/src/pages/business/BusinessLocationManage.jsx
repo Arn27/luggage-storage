@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 import "../styles/Auth.css";
 
 const BusinessLocationManage = () => {
@@ -11,17 +12,26 @@ const BusinessLocationManage = () => {
   const [form, setForm] = useState(null);
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+  const [images, setImages] = useState([]);
+  const [modal, setModal] = useState({ show: false, message: "", type: "info" });
+  const [previewImage, setPreviewImage] = useState(null);
+
+  const token = localStorage.getItem("token");
+
+  const fetchLocation = async () => {
+    const res = await fetch(`http://localhost:8000/api/locations/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setForm(data);
+    setImages(data.images || []);
+  };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch(`http://localhost:8000/api/locations/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setForm(data))
-      .catch((err) => console.error("Failed to fetch location", err));
-  }, [id]);
+    fetchLocation();
+  }, 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,8 +52,6 @@ const BusinessLocationManage = () => {
     setSubmitting(true);
     setErrors({});
 
-    const token = localStorage.getItem("token");
-
     const res = await fetch(`http://localhost:8000/api/locations/${id}`, {
       method: "PUT",
       headers: {
@@ -54,7 +62,7 @@ const BusinessLocationManage = () => {
     });
 
     if (res.ok) {
-      alert(t("location_updated"));
+      setModal({ show: true, message: t("location_updated"), type: "info" });
     } else {
       const data = await res.json();
       setErrors(data.errors || {});
@@ -66,8 +74,6 @@ const BusinessLocationManage = () => {
   const handleDelete = async () => {
     if (!confirm(t("confirm_delete_location"))) return;
 
-    const token = localStorage.getItem("token");
-
     const res = await fetch(`http://localhost:8000/api/locations/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
@@ -76,7 +82,45 @@ const BusinessLocationManage = () => {
     if (res.ok) {
       navigate("/business/locations");
     } else {
-      alert(t("delete_failed"));
+      setModal({ show: true, message: t("delete_failed"), type: "error" });
+    }
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    const formData = new FormData();
+    files.forEach((file) => formData.append("images[]", file));
+
+    const res = await fetch(`http://localhost:8000/api/locations/${id}/images`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+
+    if (res.ok) {
+      setModal({ show: true, message: t("upload_success"), type: "info" });
+      fetchLocation();
+    } else {
+      const data = await res.json();
+      setModal({ show: true, message: data.message || t("upload_failed"), type: "error" });
+    }
+  };
+
+  const handleImageDelete = async (imageId) => {
+    if (!confirm(t("confirm_delete_image"))) return;
+
+    const res = await fetch(`http://localhost:8000/api/locations/images/${imageId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      setModal({ show: true, message: t("image_deleted"), type: "info" });
+      fetchLocation();
+    } else {
+      setModal({ show: true, message: t("delete_failed"), type: "error" });
     }
   };
 
@@ -85,6 +129,20 @@ const BusinessLocationManage = () => {
   return (
     <div className="auth-container">
       <h1>{t("edit_location")}</h1>
+      <ConfirmModal
+        show={modal.show}
+        message={modal.message}
+        type={modal.type}
+        onClose={() => setModal({ ...modal, show: false })}
+      />
+
+      {previewImage && (
+        <div className="fullscreen-overlay" onClick={() => setPreviewImage(null)}>
+          <img src={previewImage} alt="preview" className="fullscreen-image" />
+          <button className="close-btn" onClick={() => setPreviewImage(null)}>✕</button>
+        </div>
+      )}
+
       <form className="auth-form" onSubmit={handleUpdate}>
         <div className="form-grid">
           <label>
@@ -143,6 +201,62 @@ const BusinessLocationManage = () => {
                 onChange={handleChange}
                 placeholder={t("to") + " (20:00)"}
               />
+            </div>
+          </label>
+
+          <label className="grid-full">
+            <h3>{t("upload_location_photos")}</h3>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+            />
+            <div className="image-preview" style={{ display: "flex", flexWrap: "wrap", gap: "10px", marginTop: "10px" }}>
+              {images.map((img) => (
+                <div key={img.id} style={{ position: "relative" }}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setPreviewImage(`http://localhost:8000/storage/${img.path}`);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setPreviewImage(`http://localhost:8000/storage/${img.path}`);
+                      }
+                    }}
+                    style={{ cursor: "zoom-in" }}
+                  >
+                    <img
+                      src={`http://localhost:8000/storage/${img.path}`}
+                      alt="location"
+                      draggable={false}
+                      style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleImageDelete(img.id)}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      backgroundColor: "#e11d48",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                      cursor: "pointer",
+                      padding: "2px 5px"
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
           </label>
         </div>

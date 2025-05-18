@@ -17,6 +17,7 @@ class Location extends Model
         'max_bags',
         'open_hours',
         'hourly_rate',
+        'qr_token',
     ];
 
     protected $casts = [
@@ -37,4 +38,10 @@ class Location extends Model
     {
         return $this->hasMany(\App\Models\Review::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(LocationImage::class);
+    }
+
 }

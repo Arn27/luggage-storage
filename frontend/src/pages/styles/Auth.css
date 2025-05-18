@@ -94,6 +94,37 @@
   text-decoration: underline;
 }
 
+.fullscreen-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.fullscreen-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #000;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: #e11d48;
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
 @media (min-width: 768px) {
   .auth-container {
     max-width: 700px;

@@ -154,6 +154,17 @@
     "booking_details": "Rezervacijos detalės",
     "qr_checkin_title": "Greitas registravimas",
     "upload_luggage_photo": "Įkelkite bagažo nuotrauką",
-    "checkin_now": "Registruoti bagažą"
+    "checkin_now": "Registruoti bagažą",
+    "title": "Pradėti rezervaciją",
+    "businessUploaded": "Verslas jau įkėlė nuotrauką.",
+    "cannotStart": "Šiuo metu negalite pradėti šios rezervacijos.",
+    "uploadButton": "Įkelti bagažo nuotrauką ir patvirtinti",
+    "loadFail": "Nepavyko įkelti rezervacijos.",
+    "noPhoto": "Prašome įkelti nuotrauką.",
+    "successStart": "Rezervacija pradėta! Laukiama verslo patvirtinimo.",
+    "errorGeneric": "Įvyko klaida.",
+    "confirm_delete_image": "Ar tikrai norite ištrinti šią nuotrauką?",
+    "image_deleted": "Nuotrauka ištrinta.",
+    "upload_location_photos": "Įkelti lokacijos nuotraukas"
   }
   

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../components/admin/ConfirmModal";
+import ImageCarousel from "../../components/ImageCarousel";
 
 import "../styles/LocationDetail.css";
 
@@ -174,11 +175,11 @@ const LocationDetail = () => {
         ← {t("back")}
       </button>
 
-      <img
-        src={location.image_url || "/location.png"}
-        alt={location.name}
-        className="location-image"
-      />
+      {location.images && location.images.length > 0 ? (
+        <ImageCarousel images={location.images} />
+      ) : (
+        <img src="/location.png" alt={location.name} className="location-image" />
+      )}
 
       <div className="location-content">
         <div className="location-info">
@@ -252,13 +253,14 @@ const LocationDetail = () => {
       {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
     </>
   ) : (
-    <div className="guest-message">
-      <p>{t("login_to_book")}</p>
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Link to="/login" className="auth-btn">{t("login")}</Link>
-        <Link to="/register" className="auth-btn">{t("register")}</Link>
-      </div>
-    </div>
+<div className="guest-message">
+  <p>{t("login_to_book")}</p>
+  <div className="auth-actions">
+    <Link to="/login" className="auth-btn">{t("login")}</Link>
+    <Link to="/register" className="auth-btn">{t("register")}</Link>
+  </div>
+</div>
+
   )}
 
   {canReview && (

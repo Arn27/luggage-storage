@@ -53,7 +53,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/business/bookings/pending', [BookingController::class, 'businessPendingBookings']);
         Route::get('/business/bookings/upcoming', [BookingController::class, 'businessUpcomingBookings']);
         Route::get('/business/bookings/past', [BookingController::class, 'businessPastBookings']);
-        Route::post('/business/bookings/{id}/stop', [BookingController::class, 'businessStop']); // Business ends booking
+        Route::post('/business/bookings/{id}/stop', [BookingController::class, 'businessStop']);
+        Route::post('/locations/{id}/images', [LocationController::class, 'uploadImages']);
+        Route::delete('/locations/images/{id}', [LocationController::class, 'deleteImage']);
+
     });
 
     // Admin Routes

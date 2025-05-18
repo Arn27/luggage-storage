@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const StartBooking = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
   const [booking, setBooking] = useState(null);
@@ -19,11 +21,11 @@ const StartBooking = () => {
     })
       .then((res) => res.json())
       .then(setBooking)
-      .catch(() => setMessage("Failed to load booking."));
-  }, [id, token]);
+      .catch(() => setMessage(t("loadFail")));
+  }, [id, token, t]);
 
   const handleUpload = async () => {
-    if (!photo) return setMessage("Please upload a photo.");
+    if (!photo) return setMessage(t("noPhoto"));
 
     const formData = new FormData();
     formData.append("photo", photo);
@@ -38,34 +40,32 @@ const StartBooking = () => {
 
     const data = await res.json();
     if (res.ok) {
-      setMessage("✅ Booking started! Waiting for business to confirm.");
+      setMessage(t("successStart"));
       setTimeout(() => navigate("/user/booking/active"), 1500);
     } else {
-      setMessage(data?.message || "Something went wrong.");
+      setMessage(data?.message || t("errorGeneric"));
     }
   };
 
-  if (!booking) return <p>Loading...</p>;
+  if (!booking) return <p>{t("loading")}</p>;
 
   const showUpload = booking.status === "pending_start" || booking.status === "business_started";
   const businessUploaded = !!booking.business_start_photo;
 
   return (
     <div className="dashboard-container">
-      <h1>Start Booking</h1>
-      <p>📍 Location: {booking.location?.name}</p>
-      <p>📅 Date: {new Date(booking.date).toLocaleString()}</p>
-      <p>🧳 Bags: {booking.bag_count}</p>
-      <p>🔒 Status: {booking.status}</p>
+      <h1>{t("title")}</h1>
+      <p>📍 {t("location")}: {booking.location?.name}</p>
+      <p>📅 {t("date")}: {new Date(booking.date).toLocaleString()}</p>
+      <p>🧳 {t("bags")}: {booking.bag_count}</p>
+      <p>🔒 {t("status")}: {booking.status}</p>
 
       {businessUploaded && (
-        <p style={{ color: "green" }}>✅ Business has uploaded a photo.</p>
+        <p style={{ color: "green" }}>{t("businessUploaded")}</p>
       )}
 
       {!showUpload ? (
-        <p style={{ color: "red" }}>
-          You can't start this booking at the moment.
-        </p>
+        <p style={{ color: "red" }}>{t("cannotStart")}</p>
       ) : (
         <>
           <input
@@ -74,7 +74,7 @@ const StartBooking = () => {
             onChange={(e) => setPhoto(e.target.files[0])}
           />
           <button className="btn" onClick={handleUpload}>
-            Upload Bag Photo & Confirm
+            {t("uploadButton")}
           </button>
         </>
       )}

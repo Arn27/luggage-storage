@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'approved.business' => \App\Http\Middleware\EnsureBusinessIsApproved::class,
             'is.admin' => \App\Http\Middleware\IsAdmin::class,
+            'auth' => \App\Http\Middleware\CustomAuthenticate::class,
         ]);
 
         // Global middleware

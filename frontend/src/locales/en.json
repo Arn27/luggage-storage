@@ -151,6 +151,17 @@
     "booking_details": "Booking Details",
     "qr_checkin_title": "Quick Check-In",
     "upload_luggage_photo": "Upload a photo of your luggage",
-    "checkin_now": "Check In Now"
+    "checkin_now": "Check In Now",
+    "title": "Start Booking",
+    "businessUploaded": "Business has uploaded a photo.",
+    "cannotStart": "You can't start this booking at the moment.",
+    "uploadButton": "Upload Bag Photo & Confirm",
+    "loadFail": "Failed to load booking.",
+    "noPhoto": "Please upload a photo.",
+    "successStart": "Booking started! Waiting for business to confirm.",
+    "errorGeneric": "Something went wrong.",
+    "confirm_delete_image": "Are you sure you want to delete this image?",
+    "image_deleted": "Image deleted.",
+    "upload_location_photos": "Upload Location Photos"
   }
   

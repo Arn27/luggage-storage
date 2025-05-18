@@ -7,34 +7,39 @@ use Illuminate\Http\Request;
 use App\Models\Location;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\LocationImage;
+use Illuminate\Support\Facades\Storage;
 
 class LocationController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Location::query();
+        public function index(Request $request)
+        {
+            $query = Location::with('images'); // eager load images
 
-        if ($request->has('city')) {
-            $query->where('city', $request->city);
+            if ($request->has('city')) {
+                $query->where('city', 'LIKE', '%' . $request->city . '%');
+            }
+
+            if ($request->has('bags')) {
+                $query->where('max_bags', '>=', $request->bags);
+            }
+
+            return response()->json($query->get());
         }
 
-        if ($request->has('bags')) {
-            $query->where('max_bags', '>=', $request->bags);
-        }
+        public function show($id)
+        {
+            $location = Location::with(['reviews.user', 'images'])->findOrFail($id);
 
-        return response()->json($query->get());
-    }
+            // Convert to array to safely add custom fields
+            $data = $location->toArray();
 
-    public function show($id)
-    {
-        $location = Location::with(['reviews.user'])->findOrFail($id);
-    
-        if (Auth::check()) {
-            $location->current_user = Auth::user(); // Only if user is logged in
+            if (Auth::check()) {
+                $data['current_user'] = Auth::user();
+            }
+
+            return response()->json($data);
         }
-    
-        return response()->json($location);
-    }
     
     public function businessLocations()
     {
@@ -91,14 +96,14 @@ class LocationController extends Controller
             ...$validated
         ]);
 
-        return response()->json($location, 201);
+        return response()->json($location->toArray(), 201);
     }
 
     public function update(Request $request, $id)
     {
         $location = Location::findOrFail($id);
 
-        if ($location->business_id !== auth()->id()) {
+        if ($location->business_id !== auth()->user()->businessProfile->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -125,7 +130,7 @@ class LocationController extends Controller
     {
         $location = Location::findOrFail($id);
 
-        if ($location->business_id !== auth()->id()) {
+        if ($location->business_id !== auth()->user()->businessProfile->id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
@@ -133,4 +138,38 @@ class LocationController extends Controller
 
         return response()->json(['message' => 'Location deleted.']);
     }
+
+    public function uploadImages(Request $request, $id)
+    {
+        $request->validate([
+            'images.*' => 'required|image|max:5120', // max 5MB each
+        ]);
+
+        $location = Location::findOrFail($id);
+
+        if ($location->images()->count() + count($request->file('images')) > 5) {
+            return response()->json(['message' => 'Maximum 5 images allowed.'], 400);
+        }
+
+        foreach ($request->file('images', []) as $image) {
+            $path = $image->store('location_images', 'public');
+            LocationImage::create([
+                'location_id' => $location->id,
+                'path' => $path,
+            ]);
+        }
+
+        return response()->json(['message' => 'Images uploaded successfully.'], 200);
+    }
+
+    public function deleteImage($id)
+    {
+        $image = LocationImage::findOrFail($id);
+        Storage::disk('public')->delete($image->path);
+        $image->delete();
+
+        return response()->json(['message' => 'Image deleted.']);
+    }
+
+
 }

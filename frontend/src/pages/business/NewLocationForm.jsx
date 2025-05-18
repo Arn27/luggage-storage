@@ -23,6 +23,7 @@ const NewLocationForm = () => {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [autocomplete, setAutocomplete] = useState(null);
+  const [images, setImages] = useState([]);
   const addressRef = useRef(null);
 
   useEffect(() => {
@@ -71,6 +72,10 @@ const NewLocationForm = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    setImages(Array.from(e.target.files));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -101,6 +106,35 @@ const NewLocationForm = () => {
         setSubmitting(false);
         return;
       }
+
+      const location = await res.json();
+
+      if (images.length > 0) {
+        const formData = new FormData();
+        images.forEach((file) => formData.append("images[]", file));
+
+        try {
+          const imageRes = await fetch(`http://localhost:8000/api/locations/${location.id}/images`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          });
+
+          if (!imageRes.ok) {
+            const errorText = await imageRes.text();
+            console.error("Image upload failed with status", imageRes.status, errorText);
+            setSubmitting(false);
+            return;
+          }
+        } catch (uploadErr) {
+          console.error("Upload threw error", uploadErr);
+          setSubmitting(false);
+          return;
+        }
+      }
+
 
       localStorage.removeItem("new_location_draft");
       navigate("/business/locations");
@@ -199,6 +233,16 @@ const NewLocationForm = () => {
                 placeholder={t("to") + " (20:00)"}
               />
             </div>
+          </label>
+
+          <label className="grid-full">
+            {t("upload_location_photos")}
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+            />
           </label>
         </div>
 
