@@ -5,7 +5,7 @@ import ImageCarousel from "./ImageCarousel";
 
 const containerStyle = {
   width: "100%",
-  height: "600px",
+  height: "calc(100vh - 350px)",
 };
 
 const MapWrapper = (
@@ -30,7 +30,6 @@ const MapWrapper = (
       try {
         const res = await fetch(`http://127.0.0.1:8000/api/locations?city=${city}&bags=${bags}`);
         const data = await res.json();
-        console.log("Fetched locations:", data); // 👈 this line
         const validLocs = data.filter(loc => !isNaN(loc.lat) && !isNaN(loc.lng));
         const parsedLocs = validLocs.map(loc => {
           if (typeof loc.open_hours === "string") {

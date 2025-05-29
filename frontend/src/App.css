@@ -61,7 +61,7 @@ button.btn:hover,
 .landing-title {
   font-size: clamp(2rem, 6vw, 3rem);
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   color: var(--heading-color);
   line-height: 1.2;
 }
@@ -69,21 +69,21 @@ button.btn:hover,
 .landing-subtitle {
   font-size: clamp(1.1rem, 3.5vw, 1.4rem);
   color: #6b7280;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   max-width: 800px;
 }
 
 .landing-bg {
-  position: relative;
-  width: 100%;
-  min-height: 85vh;
-  background: url('/bg.png') center center/cover no-repeat;
+  min-height: calc(100vh - 110px - 100px);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 4rem 1rem;
+  position: relative;
+  padding: 2rem 1rem;
+  background: url('/bg.png') center center/cover no-repeat;
   box-sizing: border-box;
 }
+
 
 .landing-bg::before {
   content: "";
@@ -97,12 +97,13 @@ button.btn:hover,
 }
 
 .landing-content {
-  position: relative;
   z-index: 2;
   text-align: center;
   color: var(--white);
   max-width: 900px;
   width: 100%;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
 .landing-bg .landing-title,

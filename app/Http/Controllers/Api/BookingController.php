@@ -464,4 +464,23 @@ class BookingController extends Controller
 
             return response()->json($bookings);
         }
+
+        public function cancel($id)
+        {
+            $booking = Booking::findOrFail($id);
+
+            if (auth()->id() !== $booking->user_id) {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            if (!in_array($booking->status, ['confirmed', 'pending_start', 'user_started'])) {
+                return response()->json(['message' => 'Cannot cancel this booking'], 400);
+            }
+
+            $booking->status = 'cancelled';
+            $booking->save();
+
+            return response()->json(['message' => 'Booking cancelled successfully']);
+        }
+
 }

@@ -39,10 +39,11 @@ function LandingPage() {
             <DatePicker
               selected={date}
               onChange={(date) => setDate(date)}
-              className="input"
+              className="results-input"
               placeholderText={t("select_date")}
               dateFormat="yyyy-MM-dd"
               popperPlacement="bottom-start"
+              minDate={new Date()}
             />
           </div>
 

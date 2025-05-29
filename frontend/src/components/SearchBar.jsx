@@ -46,6 +46,7 @@ const SearchBar = ({
             placeholderText={t("select_date")}
             dateFormat="yyyy-MM-dd"
             popperPlacement="bottom-start"
+            minDate={new Date()}
           />
         </div>
 
