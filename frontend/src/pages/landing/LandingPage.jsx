@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -10,13 +10,17 @@ function LandingPage() {
   const [city, setCity] = useState("");
   const [date, setDate] = useState(null);
   const [bags, setBags] = useState(1);
+  const location = useLocation();
 
-  useEffect(() => {
-    const roles = JSON.parse(localStorage.getItem("roles") || "[]");
-    if (roles.includes("business")) {
-      navigate("/business");
-    }
-  }, [navigate]);
+useEffect(() => {
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const cameFromNavbar = location.state?.fromNavbar;
+
+  if (roles.includes("business") && !cameFromNavbar) {
+    navigate("/business");
+  }
+}, [navigate, location]);
+
 
   return (
     <section className="landing-bg">

@@ -72,7 +72,7 @@ function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-top">
-        <Link to="/" className="navbar-logo">BagStorage</Link>
+        <Link to="/" state={{ fromNavbar: true }} className="navbar-logo">BagStorage</Link>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? "✖" : "☰"}
         </button>

@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bookings/{id}/cancel', [BookingController::class, 'cancel']);
     Route::post('/bookings/{id}/user-start', [BookingController::class, 'userStart']);
     Route::post('/bookings/{id}/business-start', [BookingController::class, 'businessStart']);
-    Route::post('/bookings/{id}/stop', [BookingController::class, 'userStop']); // User ends booking
+    Route::post('/bookings/{id}/stop', [BookingController::class, 'userStop']);
     Route::post('/qr-checkin/{qr_token}', [BookingController::class, 'qrCheckIn']);
 
     // Traveler Dashboard

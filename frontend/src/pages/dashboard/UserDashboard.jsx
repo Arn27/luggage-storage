@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/UserDashboard.css";
-import ConfirmModal from "../components/admin/ConfirmModal";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 
 const UserDashboard = () => {
   const { t } = useTranslation();

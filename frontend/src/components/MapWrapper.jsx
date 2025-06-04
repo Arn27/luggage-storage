@@ -110,7 +110,7 @@ const MapWrapper = (
                     <ImageCarousel images={selectedMarker.images} />
                   ) : (
                     <img
-                      src={`http://localhost:8000/storage/${
+                      src={`http://localhost:8000/storage/location_images/${
                         selectedMarker.images?.[0]?.path || "default.jpg"
                       }`}
                       alt="Location"

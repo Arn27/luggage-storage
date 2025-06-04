@@ -376,7 +376,6 @@ class BookingController extends Controller
 
             $location = Location::where('qr_token', $qr_token)->firstOrFail();
 
-            // Check if user already has an active/pending booking
             $hasBooking = Booking::where('user_id', $user->id)
                 ->whereIn('status', ['user_started', 'business_started', 'active'])
                 ->exists();
@@ -394,7 +393,6 @@ class BookingController extends Controller
                 return response()->json(['errors' => $validator->errors()], 422);
             }
 
-            // Check capacity
             $currentBags = Booking::where('location_id', $location->id)
                 ->whereIn('status', ['user_started', 'business_started', 'active'])
                 ->sum('bag_count');
@@ -403,7 +401,6 @@ class BookingController extends Controller
                 return response()->json(['message' => 'Not enough capacity at this location.'], 400);
             }
 
-            // Store photo
             $path = $request->file('photo')->store('booking_photos', 'public');
 
             $booking = Booking::create([

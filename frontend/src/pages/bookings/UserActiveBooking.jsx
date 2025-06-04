@@ -6,6 +6,7 @@ const UserActiveBooking = () => {
   const { t } = useTranslation();
   const [booking, setBooking] = useState(null);
   const [photo, setPhoto] = useState(null);
+  const [uploadMode, setUploadMode] = useState(false);
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -32,8 +33,7 @@ const UserActiveBooking = () => {
           },
         });
         const data = await res.json();
-  
-        // Redirect if no active or pending_end booking
+
         if (!data || !["active", "pending_end"].includes(data.status)) {
           localStorage.setItem("bookingClosedMessage", t("booking_completed"));
           navigate("/user");
@@ -44,13 +44,12 @@ const UserActiveBooking = () => {
         console.error("Failed to fetch active booking", err);
       }
     };
-  
+
     fetchAndCheckBooking();
   }, [token, navigate, t]);
-  
 
   const handleStop = async () => {
-    if (!photo || !photo.name) {
+    if (!(photo instanceof File)) {
       setMessage(t("upload_required"));
       return;
     }
@@ -68,6 +67,8 @@ const UserActiveBooking = () => {
       const data = await res.json();
       if (res.ok) {
         setMessage(data.message || t("request_submitted"));
+        setUploadMode(false);
+        setPhoto(null);
         fetchBooking();
       } else {
         setMessage(data.message || t("error"));
@@ -154,29 +155,25 @@ const UserActiveBooking = () => {
             <p style={{ marginTop: "1rem", fontWeight: "500" }}>
               {t("waiting_for_business_to_confirm")}
             </p>
-          ) : (
+          ) : uploadMode ? (
             <>
-              {photo && photo.name ? (
-                <>
-                  <p className="upload-instructions">
-                    {t("please_upload_luggage_photo_to_confirm")}
-                  </p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setPhoto(e.target.files[0])}
-                    style={{ marginBottom: "0.5rem" }}
-                  />
-                  <button className="stop-btn" onClick={handleStop}>
-                    {t("confirm")}
-                  </button>
-                </>
-              ) : (
-                <button className="stop-btn" onClick={() => setPhoto({})}>
-                  {t("request_end")}
-                </button>
-              )}
+              <p className="upload-instructions">
+                {t("please_upload_luggage_photo_to_confirm")}
+              </p>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => setPhoto(e.target.files[0])}
+                style={{ marginBottom: "0.5rem" }}
+              />
+              <button className="stop-btn" onClick={handleStop}>
+                {t("confirm")}
+              </button>
             </>
+          ) : (
+            <button className="stop-btn" onClick={() => setUploadMode(true)}>
+              {t("request_end")}
+            </button>
           )}
           {message && <p style={{ marginTop: "1rem" }}>{message}</p>}
         </div>
