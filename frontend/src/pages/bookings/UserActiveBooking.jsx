@@ -11,42 +11,31 @@ const UserActiveBooking = () => {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-  const fetchBooking = () => {
-    fetch("http://localhost:8000/api/user/booking/active", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then(setBooking)
-      .catch((err) => console.error("Failed to fetch active booking", err));
+  const fetchBooking = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/api/user/booking/active", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
+      const data = await res.json();
+
+      if (!data || !["active", "pending_end"].includes(data.status)) {
+        localStorage.setItem("bookingClosedMessage", t("booking_completed"));
+        navigate("/user/dashboard");
+      } else {
+        setBooking(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch active booking", err);
+    }
   };
 
   useEffect(() => {
-    const fetchAndCheckBooking = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/api/user/booking/active", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
-        const data = await res.json();
-
-        if (!data || !["active", "pending_end"].includes(data.status)) {
-          localStorage.setItem("bookingClosedMessage", t("booking_completed"));
-          navigate("/user");
-        } else {
-          setBooking(data);
-        }
-      } catch (err) {
-        console.error("Failed to fetch active booking", err);
-      }
-    };
-
-    fetchAndCheckBooking();
-  }, [token, navigate, t]);
+    fetchBooking();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleStop = async () => {
     if (!(photo instanceof File)) {
@@ -66,10 +55,8 @@ const UserActiveBooking = () => {
 
       const data = await res.json();
       if (res.ok) {
-        setMessage(data.message || t("request_submitted"));
-        setUploadMode(false);
-        setPhoto(null);
-        fetchBooking();
+        localStorage.setItem("bookingClosedMessage", data.message || t("request_submitted"));
+        navigate("/user/dashboard");
       } else {
         setMessage(data.message || t("error"));
       }
@@ -80,20 +67,6 @@ const UserActiveBooking = () => {
   };
 
   if (!booking) return <p>{t("loading")}</p>;
-
-  if (booking.status === "completed") {
-    return (
-      <div className="dashboard-container">
-        <h1>{t("your_active_booking")}</h1>
-        <p style={{ marginTop: "1rem" }}>{t("booking_completed")}</p>
-        <p>
-          <a href="/user/dashboard" className="btn small-btn" style={{ marginTop: "1rem" }}>
-            {t("back_to_dashboard")}
-          </a>
-        </p>
-      </div>
-    );
-  }
 
   let openHours = { from: "?", to: "?" };
   try {

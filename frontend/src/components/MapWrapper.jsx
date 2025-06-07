@@ -109,19 +109,17 @@ const MapWrapper = (
                   {selectedMarker.images && selectedMarker.images.length > 1 ? (
                     <ImageCarousel images={selectedMarker.images} />
                   ) : (
-                    <img
-                      src={`http://localhost:8000/storage/location_images/${
-                        selectedMarker.images?.[0]?.path || "default.jpg"
-                      }`}
-                      alt="Location"
-                      style={{
-                        width: "100%",
-                        height: "100px",
-                        objectFit: "cover",
-                        borderRadius: "6px",
-                        marginBottom: "8px",
-                      }}
-                    />
+                <img
+                  src={`http://localhost:8000/storage/${selectedMarker.images?.[0]?.path || "default.jpg"}`}
+                  alt="Location"
+                  style={{
+                    width: "100%",
+                    height: "100px",
+                    objectFit: "cover",
+                    borderRadius: "6px",
+                    marginBottom: "8px",
+                  }}
+                />
                   )}
 
                 <h4>{selectedMarker.name}</h4>

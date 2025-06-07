@@ -162,6 +162,16 @@
     "errorGeneric": "Something went wrong.",
     "confirm_delete_image": "Are you sure you want to delete this image?",
     "image_deleted": "Image deleted.",
-    "upload_location_photos": "Upload Location Photos"
+    "upload_location_photos": "Upload Location Photos",
+    "start_booking": "Start Booking",
+    "confirm_start": "Confirm Start",
+    "booking_cancelled": "Booking cancelled successfully.",
+    "cancelled_bookings": "Cancelled Bookings",
+  "what_it_is_title": "What is this?",
+  "what_it_is_text": "An online system to book short-term luggage storage spots provided by local businesses.",
+  "how_it_works_title": "How it works",
+  "how_it_works_text": "Search by city and date, choose a location, reserve, and drop off your luggage.",
+  "why_use_title": "Why use it?",
+  "why_use_text": "Ideal for travelers with free time before check-in or after check-out."
   }
   

@@ -1,0 +1,57 @@
+.card input[type="file"] {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background-color: var(--white);
+  cursor: pointer;
+  width: 100%;
+  max-width: 320px; /* limits width */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card input[type="file"]::file-selector-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.card input[type="file"]::file-selector-button:hover {
+  background-color: var(--dark-hover);
+}
+
+.card .btn {
+  margin-top: 0.75rem;
+  background-color: #0e9488;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  max-width: 320px; /* match file input */
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card .btn:disabled {
+  background-color: #cbd5e1;
+  color: #555;
+  cursor: not-allowed;
+}
+
+.card .btn:hover:not(:disabled) {
+  background-color: #0c837a;
+}

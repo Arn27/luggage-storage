@@ -44,6 +44,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Reviews
     Route::post('/reviews', [ReviewController::class, 'store']);
+    Route::delete('/reviews/{id}', [ReviewController::class, 'destroy']);
 
     // Business Routes (Approved Only)
     Route::middleware(['approved.business'])->group(function () {

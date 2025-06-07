@@ -150,6 +150,42 @@
   margin-bottom: 1rem;
 }
 
+.action-btn {
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 10px;
+  min-width: 150px;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+  line-height: 1;
+}
+
+.start-btn {
+  background-color: #0e9488;
+  color: white;
+}
+
+.start-btn:hover {
+  background-color: #0c837a;
+}
+
+.cancel-btn {
+  background-color: #d9534f;
+  color: white;
+  margin-left: 10px;
+}
+
+.cancel-btn:hover {
+  background-color: #c9302c;
+}
+
+
 @media (min-width: 640px) {
   .form-row {
     flex-direction: row;

@@ -11,6 +11,7 @@ const UserDashboard = () => {
   const [user, setUser] = useState(null);
   const [upcomingBookings, setUpcomingBookings] = useState([]);
   const [pastBookings, setPastBookings] = useState([]);
+  const [cancelledBookings, setCancelledBookings] = useState([]);
   const [activeBooking, setActiveBooking] = useState(null);
   const [confirmationMessage, setConfirmationMessage] = useState("");
   const [confirmCancel, setConfirmCancel] = useState(null);
@@ -49,12 +50,15 @@ const UserDashboard = () => {
           ["confirmed", "pending_start", "user_started"].includes(b.status)
         );
 
-        const past = data.filter((b) =>
-          ["completed", "cancelled", "declined"].includes(b.status)
+        const past = data.filter((b) => b.status === "completed");
+
+        const cancelled = data.filter((b) =>
+          ["cancelled", "declined"].includes(b.status)
         );
 
         setUpcomingBookings(upcoming);
         setPastBookings(past);
+        setCancelledBookings(cancelled);
       } catch (err) {
         console.error("Failed to load bookings", err);
       }
@@ -120,8 +124,7 @@ const UserDashboard = () => {
           <strong>{t("email")}</strong>: {user.email}
         </p>
         <p>
-          <strong>{t("registered")}</strong>:{" "}
-          {new Date(user.created_at).toLocaleDateString()}
+          <strong>{t("registered")}</strong>: {new Date(user.created_at).toLocaleDateString()}
         </p>
       </section>
 
@@ -140,11 +143,9 @@ const UserDashboard = () => {
           upcomingBookings.map((booking) => (
             <div key={booking.id} className="booking-item">
               <p>
-                📍{" "}
-                <Link to={`/user/bookings/${booking.id}`} className="link">
+                📍 <Link to={`/user/bookings/${booking.id}`} className="link">
                   {booking.location?.name}
-                </Link>{" "}
-                — {new Date(booking.date).toLocaleDateString()}
+                </Link> — {new Date(booking.date).toLocaleDateString()}
               </p>
               <button
                 className="btn small-btn"
@@ -165,11 +166,26 @@ const UserDashboard = () => {
           pastBookings.map((booking) => (
             <div key={booking.id} className="booking-item">
               <p>
-                📍{" "}
-                <Link to={`/user/bookings/${booking.id}`} className="link">
+                📍 <Link to={`/user/bookings/${booking.id}`} className="link">
                   {booking.location?.name}
-                </Link>{" "}
-                — {new Date(booking.date).toLocaleDateString()}
+                </Link> — {new Date(booking.date).toLocaleDateString()}
+              </p>
+            </div>
+          ))
+        )}
+      </section>
+
+      <section className="dashboard-section">
+        <h2>{t("cancelled_bookings")}</h2>
+        {cancelledBookings.length === 0 ? (
+          <p>{t("no_cancelled_bookings")}</p>
+        ) : (
+          cancelledBookings.map((booking) => (
+            <div key={booking.id} className="booking-item">
+              <p>
+                📍 <Link to={`/user/bookings/${booking.id}`} className="link">
+                  {booking.location?.name}
+                </Link> — {new Date(booking.date).toLocaleDateString()}
               </p>
             </div>
           ))

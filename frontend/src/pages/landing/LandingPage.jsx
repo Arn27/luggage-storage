@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "../styles/LandingPage.css";
 
 function LandingPage() {
   const { t } = useTranslation();
@@ -75,6 +76,21 @@ useEffect(() => {
             {t("search")}
           </button>
         </div>
+        <div className="info-columns">
+          <div className="info-box">
+            <h3>{t("what_it_is_title")}</h3>
+            <p>{t("what_it_is_text")}</p>
+          </div>
+          <div className="info-box">
+            <h3>{t("how_it_works_title")}</h3>
+            <p>{t("how_it_works_text")}</p>
+          </div>
+          <div className="info-box">
+            <h3>{t("why_use_title")}</h3>
+            <p>{t("why_use_text")}</p>
+          </div>
+        </div>
+
       </div>
     </section>
   );

@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ConfirmModal from "../../components/admin/ConfirmModal";
 import ImageCarousel from "../../components/ImageCarousel";
-
 import "../styles/LocationDetail.css";
 
 const LocationDetail = () => {
@@ -21,12 +20,36 @@ const LocationDetail = () => {
   const [reviewSuccess, setReviewSuccess] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
+  const [showCancelSuccess, setShowCancelSuccess] = useState(false);
+  const [canReview, setCanReview] = useState(false);
 
   const isLoggedIn = !!localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
   const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const localUserId = storedUser?.id;
   const isAdmin = roles.includes("admin");
+
+  const fetchUserBookings = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await fetch("http://127.0.0.1:8000/api/user/bookings", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+
+      const found = data.find(
+        (b) => b.location_id === parseInt(id) && !["cancelled", "completed"].includes(b.status)
+      );
+      setUserBooking(found || null);
+
+      const reviewEligible = data.some(
+        (b) => b.location_id === parseInt(id) && b.status === "completed"
+      );
+      setCanReview(reviewEligible);
+    } catch (err) {
+      console.error("Failed to fetch bookings:", err);
+    }
+  };
 
   useEffect(() => {
     const fetchLocation = async () => {
@@ -46,25 +69,11 @@ const LocationDetail = () => {
       }
     };
 
-    const fetchUserBookings = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const res = await fetch("http://127.0.0.1:8000/api/user/bookings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await res.json();
-        const found = data.find((b) => b.location_id === parseInt(id));
-        setUserBooking(found || null);
-      } catch (err) {
-        console.error("Failed to fetch bookings:", err);
-      }
-    };
-
     fetchLocation();
     if (isLoggedIn) fetchUserBookings();
-  }, [id, isLoggedIn]);
+  }, 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [id, isLoggedIn]);
 
   const handleBooking = async () => {
     setBookingMessage("");
@@ -76,15 +85,12 @@ const LocationDetail = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        location_id: id,
-        date,
-        bag_count: bags,
-      }),
+      body: JSON.stringify({ location_id: id, date, bag_count: bags }),
     });
 
     if (res.ok) {
       setBookingMessage(t("booking_success"));
+      await fetchUserBookings();
     } else {
       const data = await res.json();
       setBookingMessage(data?.message || t("booking_error"));
@@ -94,15 +100,18 @@ const LocationDetail = () => {
   const handleCancel = async () => {
     if (!userBooking) return;
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://127.0.0.1:8000/api/bookings/${userBooking.id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+
+    const res = await fetch(`http://127.0.0.1:8000/api/bookings/${userBooking.id}/cancel`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
     });
+
     if (res.ok) {
       setUserBooking(null);
-      alert(t("booking_cancelled"));
+      setShowCancelSuccess(true);
+    } else {
+      const data = await res.json();
+      alert(data.message || t("error"));
     }
   };
 
@@ -114,11 +123,7 @@ const LocationDetail = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({
-        location_id: id,
-        rating,
-        comment: reviewText,
-      }),
+      body: JSON.stringify({ location_id: id, rating, comment: reviewText }),
     });
 
     if (res.ok) {
@@ -141,12 +146,10 @@ const LocationDetail = () => {
     try {
       const res = await fetch(`http://127.0.0.1:8000/api/reviews/${reviewToDelete}`, {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      alert(data.message);
+      console.log(data.message);
 
       const updated = await fetch(`http://127.0.0.1:8000/api/locations/${id}`);
       const dataRefreshed = await updated.json();
@@ -167,15 +170,11 @@ const LocationDetail = () => {
 
   if (!location) return <p>{t("loading")}</p>;
 
-  const canReview = userBooking && new Date(userBooking.date) <= new Date();
-
   return (
     <div className="location-page">
-      <button className="back-button" onClick={() => navigate(-1)}>
-        ← {t("back")}
-      </button>
+      <button className="back-button" onClick={() => navigate(-1)}>← {t("back")}</button>
 
-      {location.images && location.images.length > 0 ? (
+      {location.images?.length > 0 ? (
         <ImageCarousel images={location.images} />
       ) : (
         <img src="/location.png" alt={location.name} className="location-image" />
@@ -186,107 +185,92 @@ const LocationDetail = () => {
           <h1>{location.name}</h1>
           <p>📍 {location.address}, {location.city}</p>
           <p>🧳 {t("max_bags")}: {location.max_bags}</p>
-          <p>
-            💰 {t("hourly_rate")}: 
-            {Number(location.hourly_rate) > 0
-              ? Number(location.hourly_rate).toFixed(2)
-              : "0.00"} €
-          </p>
+          <p>💰 {t("hourly_rate")}: {Number(location.hourly_rate).toFixed(2)} €</p>
           <p>⏰ {t("open_hours")}: {location.open_hours.from}-{location.open_hours.to}</p>
           <p>📝 {t("description")}: {location.description}</p>
           <p>📞 {t("contact")}: {location.phone || location.email || "N/A"}</p>
         </div>
 
         <div className="booking-form">
-  {userBooking ? (
-    <div className="user-booking-box">
-      <h2>{t("your_booking")}</h2>
-      <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
-      <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
-      <p>🔒 {t("status")}: {t(userBooking.status)}</p>
+          {userBooking ? (
+            <div className="user-booking-box">
+              <h2>{t("your_booking")}</h2>
+              <p>🗓️ {t("date")}: {new Date(userBooking.date).toLocaleDateString()}</p>
+              <p>🧳 {t("bags")}: {userBooking.bag_count}</p>
+              <p>🔒 {t("status")}: {t(userBooking.status)}</p>
 
-      {userBooking.status === "user_started" && (
-        <p style={{ color: "#0e9488" }}>{t("waiting_business_confirm")}</p>
-      )}
+              {userBooking.status === "user_started" && (
+                <p style={{ color: "#0e9488" }}>{t("waiting_business_confirm")}</p>
+              )}
 
-      {userBooking.status === "business_started" && !userBooking.user_start_photo && (
-        <Link to={`/booking/${userBooking.id}/start`} className="btn">
-          {t("start_booking")}
-        </Link>
-      )}
+              {(userBooking.status === "business_started" && !userBooking.user_start_photo) ||
+              (new Date(userBooking.date).toDateString() === new Date().toDateString() &&
+                userBooking.status === "pending_start") ? (
+                <Link to={`/booking/${userBooking.id}/start`} className="action-btn start-btn">
+                  {t("start_booking")}
+                </Link>
+              ) : null}
 
-      {new Date(userBooking.date).toDateString() === new Date().toDateString() &&
-        userBooking.status === "pending_start" && (
-          <Link to={`/booking/${userBooking.id}/start`} className="btn">
-            {t("start_booking")}
-          </Link>
-      )}
+              <button onClick={handleCancel} className="action-btn cancel-btn">
+                {t("cancel_booking")}
+              </button>
+            </div>
+          ) : isLoggedIn ? (
+            <>
+              <h2>{t("book_now")}</h2>
+              <div className="form-row">
+                <label>
+                  {t("date")}
+                  <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                </label>
+                <label>
+                  {t("bags")}
+                  <input
+                    type="number"
+                    min="1"
+                    value={bags}
+                    onChange={(e) => setBags(e.target.value)}
+                  />
+                </label>
+              </div>
+              <button className="book-button" onClick={handleBooking}>
+                {t("confirm_booking")}
+              </button>
+              {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
+            </>
+          ) : (
+            <div className="guest-message">
+              <p>{t("login_to_book")}</p>
+              <div className="auth-actions">
+                <Link to="/login" className="auth-btn">{t("login")}</Link>
+                <Link to="/register" className="auth-btn">{t("register")}</Link>
+              </div>
+            </div>
+          )}
 
-      <button className="cancel-btn" onClick={handleCancel}>
-        {t("cancel_booking")}
-      </button>
-    </div>
-  ) : isLoggedIn ? (
-    <>
-      <h2>{t("book_now")}</h2>
-      <div className="form-row">
-        <label>
-          {t("date")}
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-        </label>
-
-        <label>
-          {t("bags")}
-          <input
-            type="number"
-            min="1"
-            value={bags}
-            onChange={(e) => setBags(e.target.value)}
-          />
-        </label>
-      </div>
-
-      <button className="book-button" onClick={handleBooking}>
-        {t("confirm_booking")}
-      </button>
-
-      {bookingMessage && <p className="booking-message">{bookingMessage}</p>}
-    </>
-  ) : (
-<div className="guest-message">
-  <p>{t("login_to_book")}</p>
-  <div className="auth-actions">
-    <Link to="/login" className="auth-btn">{t("login")}</Link>
-    <Link to="/register" className="auth-btn">{t("register")}</Link>
-  </div>
-</div>
-
-  )}
-
-  {canReview && (
-    <div className="review-form">
-      <h3>{t("leave_review")}</h3>
-      <label>
-        {t("rating")}:{" "}
-        <input
-          type="number"
-          min="1"
-          max="5"
-          value={rating}
-          onChange={(e) => setRating(e.target.value)}
-        />
-      </label>
-      <textarea
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
-        placeholder={t("write_review")}
-      ></textarea>
-      <button onClick={handleReviewSubmit}>{t("submit_review")}</button>
-      {reviewSuccess && <p>{reviewSuccess}</p>}
-    </div>
-  )}
-</div>
-
+          {canReview && (
+            <div className="review-form">
+              <h3>{t("leave_review")}</h3>
+              <label>
+                {t("rating")}: {" "}
+                <input
+                  type="number"
+                  min="1"
+                  max="5"
+                  value={rating}
+                  onChange={(e) => setRating(e.target.value)}
+                />
+              </label>
+              <textarea
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+                placeholder={t("write_review")}
+              ></textarea>
+              <button onClick={handleReviewSubmit}>{t("submit_review")}</button>
+              {reviewSuccess && <p>{reviewSuccess}</p>}
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="reviews-section">
@@ -295,7 +279,7 @@ const LocationDetail = () => {
         {location.reviews?.length === 0 ? (
           <p>{t("no_reviews")}</p>
         ) : (
-          location.reviews?.map((review) => (
+          location.reviews.map((review) => (
             <div key={review.id} className="review-card">
               <div className="review-header">
                 <div>
@@ -316,10 +300,7 @@ const LocationDetail = () => {
               <div className="review-rating">
                 {"★".repeat(review.rating)}{"☆".repeat(5 - review.rating)}
               </div>
-
-              {review.comment && (
-                <p className="review-comment">{review.comment}</p>
-              )}
+              {review.comment && <p className="review-comment">{review.comment}</p>}
             </div>
           ))
         )}
@@ -330,6 +311,16 @@ const LocationDetail = () => {
         onClose={() => setShowDeleteConfirm(false)}
         onConfirm={handleDeleteReview}
         message={t("confirm_delete_review") || "Are you sure you want to delete this review?"}
+      />
+
+      <ConfirmModal
+        show={showCancelSuccess}
+        type="success"
+        onClose={() => {
+          setShowCancelSuccess(false);
+          navigate("/user/dashboard");
+        }}
+        message={t("booking_cancelled")}
       />
     </div>
   );

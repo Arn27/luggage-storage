@@ -165,6 +165,16 @@
     "errorGeneric": "Įvyko klaida.",
     "confirm_delete_image": "Ar tikrai norite ištrinti šią nuotrauką?",
     "image_deleted": "Nuotrauka ištrinta.",
-    "upload_location_photos": "Įkelti lokacijos nuotraukas"
+    "upload_location_photos": "Įkelti lokacijos nuotraukas",
+    "start_booking": "Pradėti rezervaciją",
+    "confirm_start": "Patvirtinti pradžią",
+    "booking_cancelled": "Rezervacija sėkmingai atšaukta",
+    "cancelled_bookings": "Atšauktos rezervacijos",
+  "what_it_is_title": "Kas tai?",
+  "what_it_is_text": "Internetinė sistema, leidžianti trumpam rezervuoti bagažo saugojimo vietas, kurias siūlo vietiniai verslai.",
+  "how_it_works_title": "Kaip tai veikia?",
+  "how_it_works_text": "Pasirinkite miestą ir datą, rezervuokite vietą, atneškite bagažą ir mėgaukitės laisvu laiku.",
+  "why_use_title": "Kodėl verta naudotis?",
+  "why_use_text": "Puikiai tinka keliautojams, turintiems laisvo laiko prieš registraciją arba po išsiregistravimo."
   }
   
