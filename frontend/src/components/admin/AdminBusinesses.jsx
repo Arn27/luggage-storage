@@ -96,9 +96,20 @@ const AdminBusinesses = ({ pendingOnly = false }) => {
       ) : (
         businesses.map((b) => (
           <div key={b.id} className="business-card">
-            <h3>{b.business_name}</h3>
-            <p>\ud83d\udce7 {b.email}</p>
-            <p>\ud83d\udcde {b.phone || t("no_phone")}</p>
+          <p>🏢 {b.name}</p>
+          <p>📞 {b.phone || t("no_phone")}</p>
+          {b.users?.length > 0 && (
+            <div>
+              <strong>{t("associated_users")}:</strong>
+              <ul>
+                {b.users.map((u) => (
+                  <li key={u.id}>
+                    👤 {u.name} – 📧 {u.email}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
             {pendingOnly ? (
               <button
                 className="btn"

@@ -13,7 +13,11 @@ class AdminController extends Controller
 {
     public function pendingBusinesses()
     {
-        return BusinessProfile::where('is_approved', false)->get();
+        $businesses = BusinessProfile::with('users')
+            ->where('is_approved', false)
+            ->get();
+
+        return response()->json($businesses);
     }
 
     public function approveBusiness($id)

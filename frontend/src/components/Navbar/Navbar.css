@@ -97,8 +97,9 @@
   border: 1px solid var(--border-color);
   border-radius: 8px;
   box-shadow: 0 6px 16px var(--shadow-color);
+  align-items: center;
   z-index: 999;
-  min-width: 120px;
+  min-width: 80px;
 }
 
 .language-options img {

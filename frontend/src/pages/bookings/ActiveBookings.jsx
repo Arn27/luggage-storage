@@ -31,7 +31,6 @@ const ActiveBookings = () => {
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          // Filter for active or pending_end bookings
           const filtered = data.filter(b =>
             ["active", "pending_end"].includes(b.status)
           );
@@ -160,11 +159,11 @@ const ActiveBookings = () => {
             </div>
 
             <div className="booking-actions">
-              {booking.status === "active" && expandedBookingId !== booking.id ? (
+              {["active", "pending_end"].includes(booking.status) && expandedBookingId !== booking.id ? (
                 <button className="stop-btn" onClick={() => setExpandedBookingId(booking.id)}>
                   {t("stop_booking")}
                 </button>
-              ) : booking.status === "active" && expandedBookingId === booking.id ? (
+              ) : ["active", "pending_end"].includes(booking.status) && expandedBookingId === booking.id ? (
                 <div style={{ marginTop: "1rem" }}>
                   <p className="upload-instructions">{t("please_upload_luggage_photo_to_confirm")}</p>
                   <input
@@ -181,10 +180,6 @@ const ActiveBookings = () => {
                     {t("confirm")}
                   </button>
                 </div>
-              ) : booking.status === "pending_end" ? (
-                <p style={{ fontStyle: "italic", marginTop: "0.5rem" }}>
-                  {t("waiting_for_user_confirmation")}
-                </p>
               ) : null}
 
               {messageMap[booking.id] && (

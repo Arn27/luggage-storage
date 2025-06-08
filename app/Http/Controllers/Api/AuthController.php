@@ -23,12 +23,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        // Block login for unapproved businesses
         if (
             $user->hasRole('business') &&
-            optional($user->businessProfile)->is_approved === false
+            (!$user->businessProfile || !$user->businessProfile->is_approved)
         ) {
-            return response()->json(['message' => 'Business not approved yet'], 403);
+            return response()->json(['message' => 'Your business account must be approved by administration.'], 403);
         }
 
         return response()->json([
@@ -37,6 +36,7 @@ class AuthController extends Controller
             'roles' => $user->roles->pluck('name')
         ]);
     }
+
 
     public function register(Request $request)
     {

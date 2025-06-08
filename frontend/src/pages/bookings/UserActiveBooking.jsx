@@ -23,7 +23,7 @@ const UserActiveBooking = () => {
 
       if (!data || !["active", "pending_end"].includes(data.status)) {
         localStorage.setItem("bookingClosedMessage", t("booking_completed"));
-        navigate("/user/dashboard");
+        navigate("/user");
       } else {
         setBooking(data);
       }
