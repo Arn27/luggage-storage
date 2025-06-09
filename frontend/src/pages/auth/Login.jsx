@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 import "../styles/Auth.css";
 
 const Login = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [modal, setModal] = useState({ show: false, message: "", type: "info", onConfirm: null });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,7 +29,7 @@ const Login = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Login failed");
+        setModal({ show: true, message: data.message || t("login_failed"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
         return;
       }
 
@@ -39,7 +41,7 @@ const Login = () => {
       navigate("/");
     } catch (err) {
       console.error("Login error:", err);
-      alert("Something went wrong");
+      setModal({ show: true, message: t("something_went_wrong"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
     }
   };
 
@@ -57,6 +59,7 @@ const Login = () => {
         </label>
         <button type="submit" className="auth-btn">{t("login")}</button>
       </form>
+      <ConfirmModal show={modal.show} onClose={modal.onConfirm} onConfirm={modal.onConfirm} message={modal.message} type={modal.type} />
     </div>
   );
 };

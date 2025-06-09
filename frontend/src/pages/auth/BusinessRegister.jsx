@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 import "../styles/Auth.css";
 
 const BusinessRegister = () => {
@@ -13,6 +14,7 @@ const BusinessRegister = () => {
     phone: "",
     password: "",
   });
+  const [modal, setModal] = useState({ show: false, message: "", type: "info", onConfirm: null });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -33,15 +35,14 @@ const BusinessRegister = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Registration failed");
+        setModal({ show: true, message: data.message || t("registration_failed"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
         return;
       }
 
-      alert("Registration submitted! Please wait for admin approval.");
-      navigate("/");
+      setModal({ show: true, message: t("registration_submitted"), type: "info", onConfirm: () => { setModal({ ...modal, show: false }); navigate("/"); } });
     } catch (err) {
       console.error("Registration error:", err);
-      alert("Something went wrong.");
+      setModal({ show: true, message: t("something_went_wrong"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
     }
   };
 
@@ -51,57 +52,27 @@ const BusinessRegister = () => {
       <form className="auth-form" onSubmit={handleSubmit}>
         <label>
           {t("name")} (Owner)
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="name" value={form.name} onChange={handleChange} required />
         </label>
         <label>
           {t("business_name")}
-          <input
-            type="text"
-            name="business_name"
-            value={form.business_name}
-            onChange={handleChange}
-            required
-          />
+          <input type="text" name="business_name" value={form.business_name} onChange={handleChange} required />
         </label>
         <label>
           {t("email")}
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
+          <input type="email" name="email" value={form.email} onChange={handleChange} required />
         </label>
         <label>
           {t("phone")}
-          <input
-            type="text"
-            name="phone"
-            value={form.phone}
-            onChange={handleChange}
-          />
+          <input type="text" name="phone" value={form.phone} onChange={handleChange} />
         </label>
         <label>
           {t("password")}
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+          <input type="password" name="password" value={form.password} onChange={handleChange} required />
         </label>
-        <button type="submit" className="auth-btn">
-          {t("signup")}
-        </button>
+        <button type="submit" className="auth-btn">{t("signup")}</button>
       </form>
+      <ConfirmModal show={modal.show} onClose={modal.onConfirm} onConfirm={modal.onConfirm} message={modal.message} type={modal.type} />
     </div>
   );
 };

@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import ConfirmModal from "../../components/admin/ConfirmModal";
 import "../styles/Auth.css";
 
 const TravellerRegister = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [modal, setModal] = useState({ show: false, message: "", type: "confirm", onConfirm: null });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -27,15 +29,14 @@ const TravellerRegister = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data.message || "Registration failed");
+        setModal({ show: true, message: data.message || t("registration_failed"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
         return;
       }
 
-      alert("Registration successful!");
-      navigate("/login");
+      setModal({ show: true, message: t("registration_successful"), type: "info", onConfirm: () => { setModal({ ...modal, show: false }); navigate("/login"); } });
     } catch (err) {
       console.error("Registration error:", err);
-      alert("Something went wrong");
+      setModal({ show: true, message: t("something_went_wrong"), type: "info", onConfirm: () => setModal({ ...modal, show: false }) });
     }
   };
 
@@ -57,6 +58,7 @@ const TravellerRegister = () => {
         </label>
         <button type="submit" className="auth-btn">{t("signup")}</button>
       </form>
+      <ConfirmModal show={modal.show} onClose={modal.onConfirm} onConfirm={modal.onConfirm} message={modal.message} type={modal.type} />
     </div>
   );
 };

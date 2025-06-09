@@ -173,6 +173,8 @@
   "how_it_works_text": "Search by city and date, choose a location, reserve, and drop off your luggage.",
   "why_use_title": "Why use it?",
   "why_use_text": "Ideal for travelers with free time before check-in or after check-out.",
-  "associated_users": "Associated Users"
+  "associated_users": "Associated Users",
+  "registration_successful": "Registration successful! Please log in.",
+  "registration_submitted": "Registration submitted! Please wait for admin approval."
   }
   

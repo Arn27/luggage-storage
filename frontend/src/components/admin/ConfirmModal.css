@@ -62,12 +62,12 @@
 
 /* ✅ Make Confirm green by default */
 .confirm-btn {
-  background-color: var(--success-color, #2ecc71);
+  background-color: var(--success-color, #0c7b72);
   color: var(--white);
 }
 
 .confirm-btn:hover {
-  background-color: #27ae60;
+  background-color: #0e8b81;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -97,11 +97,11 @@
 
 /* Optional: success and error classes if used in future */
 .confirm-btn.success {
-  background-color: var(--success-color, #2ecc71);
+  background-color: var(--success-color, #0c7b72);
 }
 
 .confirm-btn.success:hover {
-  background-color: #27ae60;
+  background-color: #0c7b72;
 }
 
 .confirm-btn.error {

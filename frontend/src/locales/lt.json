@@ -176,6 +176,8 @@
   "how_it_works_text": "Pasirinkite miestą ir datą, rezervuokite vietą, atneškite bagažą ir mėgaukitės laisvu laiku.",
   "why_use_title": "Kodėl verta naudotis?",
   "why_use_text": "Puikiai tinka keliautojams, turintiems laisvo laiko prieš registraciją arba po išsiregistravimo.",
-  "associated_users": "Susiję naudotojai"
+  "associated_users": "Susiję naudotojai",
+  "registration_successful": "Registracija sėkminga! Prašome prisijungti.",
+  "registration_submitted": "Registracija pateikta! Laukite administracijos patvirtinimo."
   }
   
